@@ -1,0 +1,14 @@
+c:\users\ksyu\documents\DFA\DFA\bin\Debug\DFA.exe.config
+c:\users\ksyu\documents\DFA\DFA\bin\Debug\DFA.exe
+c:\users\ksyu\documents\DFA\DFA\bin\Debug\DFA.pdb
+c:\users\ksyu\documents\DFA\DFA\obj\Debug\DFA.csprojResolveAssemblyReference.cache
+c:\users\ksyu\documents\DFA\DFA\obj\Debug\DFA.exe
+c:\users\ksyu\documents\DFA\DFA\obj\Debug\DFA.pdb
+E:\1.1\Language\DFA\DFA\bin\Debug\DFA.exe.config
+E:\1.1\Language\DFA\DFA\bin\Debug\DFA.exe
+E:\1.1\Language\DFA\DFA\bin\Debug\DFA.pdb
+E:\1.1\Language\DFA\DFA\obj\Debug\DFA.csproj.AssemblyReference.cache
+E:\1.1\Language\DFA\DFA\obj\Debug\DFA.csproj.SuggestedBindingRedirects.cache
+E:\1.1\Language\DFA\DFA\obj\Debug\DFA.csproj.CoreCompileInputs.cache
+E:\1.1\Language\DFA\DFA\obj\Debug\DFA.exe
+E:\1.1\Language\DFA\DFA\obj\Debug\DFA.pdb
