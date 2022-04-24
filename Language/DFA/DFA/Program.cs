@@ -29,18 +29,27 @@ namespace DFA
             {
                 Console.WriteLine(alphabet[i]);
             }
-            Console.Write("Input the string: ");
-            string str = Console.ReadLine();
-            Console.WriteLine();
-            for (int i = 0; i < str.Length; i++)
+            while (true)
             {
-                int symbol = Convert.ToInt32(str[i].ToString());
-                currentState = moving[currentState][symbol];
+                currentState = start;
+                Console.Write("Input the string: ");
+                string str = Console.ReadLine();
+                Console.WriteLine();
+                for (int i = 0; i < str.Length; i++)
+                {
+                    int symbol = Convert.ToInt32(str[i].ToString());
+                    currentState = moving[currentState][symbol];
+                }
+                bool result = false;
+                for (int i = 0; i < ends.Length; i++)
+                {
+                    if (ends[i] == currentState) result = true;
+                }
+                if (result) Console.WriteLine("Accept");
+                else Console.WriteLine("Reject");
+                Console.WriteLine();
+                Console.ReadKey(true);
             }
-            if (Array.IndexOf(ends, currentState) == -1) Console.WriteLine("Reject!");
-            else Console.WriteLine("Accept!");
-            Console.WriteLine();
-            Console.ReadKey(true);
         }
 
         static void ParsFile(string file)
@@ -78,7 +87,7 @@ namespace DFA
                     {
                         string[] movings = line.Split(',');
                         moving[Convert.ToInt32(movings[0])] = new int[alphabet.Length];
-                        for (int i = 0; i < alphabet.Length; i++)
+                        for (int i = 0; i <= alphabet.Length - 1; i++)
                         {
                             moving[Convert.ToInt32(movings[0])][i] = Convert.ToInt32(movings[i+1]);
                         }
