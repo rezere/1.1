@@ -17,3 +17,5 @@ E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.pdb
 E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.genruntimeconfig.cache
 E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\ref\Lab_2.dll
 E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.Properties.Resources.resources
+E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.Regist.resources
+E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.Auto.resources
