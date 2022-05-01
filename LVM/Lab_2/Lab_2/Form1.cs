@@ -10,7 +10,7 @@ namespace Lab_2
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Regist mainForm = new Regist();
+            Main mainForm = new Main();
             mainForm.Show();
             mainForm.StartPosition = FormStartPosition.CenterScreen;
         }

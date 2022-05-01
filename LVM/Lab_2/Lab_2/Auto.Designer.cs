@@ -68,9 +68,9 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label3.Location = new System.Drawing.Point(81, 188);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(54, 21);
+            this.label3.Size = new System.Drawing.Size(48, 21);
             this.label3.TabIndex = 13;
-            this.label3.Text = "Почта";
+            this.label3.Text = "Email";
             // 
             // password
             // 
@@ -93,11 +93,12 @@
             // 
             // RegisterBtn
             // 
+            this.RegisterBtn.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.RegisterBtn.Location = new System.Drawing.Point(202, 343);
             this.RegisterBtn.Name = "RegisterBtn";
             this.RegisterBtn.Size = new System.Drawing.Size(143, 59);
             this.RegisterBtn.TabIndex = 15;
-            this.RegisterBtn.Text = "Авторизоваться";
+            this.RegisterBtn.Text = "Вход";
             this.RegisterBtn.UseVisualStyleBackColor = true;
             this.RegisterBtn.Click += new System.EventHandler(this.RegisterBtn_Click);
             // 
@@ -116,7 +117,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Snow;
+            this.BackColor = System.Drawing.Color.AliceBlue;
             this.ClientSize = new System.Drawing.Size(485, 663);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.RegisterBtn);

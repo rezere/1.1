@@ -5,7 +5,6 @@ E:\1.1\LVM\Lab_2\Lab_2\bin\Debug\net6.0-windows\Lab_2.dll
 E:\1.1\LVM\Lab_2\Lab_2\bin\Debug\net6.0-windows\Lab_2.pdb
 E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.csproj.AssemblyReference.cache
 E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.Form1.resources
-E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.MainForm.resources
 E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.csproj.GenerateResource.cache
 E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.GeneratedMSBuildEditorConfig.editorconfig
 E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.AssemblyInfoInputs.cache
@@ -19,3 +18,5 @@ E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\ref\Lab_2.dll
 E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.Properties.Resources.resources
 E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.Regist.resources
 E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.Auto.resources
+E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.Katalog.resources
+E:\1.1\LVM\Lab_2\Lab_2\obj\Debug\net6.0-windows\Lab_2.Main.resources
