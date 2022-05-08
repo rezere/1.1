@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\1.1\\PPPI\\1\\Lab 1\\Lab 1.csproj": {}
+    "E:\\1.1\\PPPI\\1\\Lab 1\\Lab 1.csproj": {}
   },
   "projects": {
-    "D:\\1.1\\PPPI\\1\\Lab 1\\Lab 1.csproj": {
+    "E:\\1.1\\PPPI\\1\\Lab 1\\Lab 1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\1.1\\PPPI\\1\\Lab 1\\Lab 1.csproj",
+        "projectUniqueName": "E:\\1.1\\PPPI\\1\\Lab 1\\Lab 1.csproj",
         "projectName": "Lab 1",
-        "projectPath": "D:\\1.1\\PPPI\\1\\Lab 1\\Lab 1.csproj",
-        "packagesPath": "C:\\Users\\qmerkyr\\.nuget\\packages\\",
-        "outputPath": "D:\\1.1\\PPPI\\1\\Lab 1\\obj\\",
+        "projectPath": "E:\\1.1\\PPPI\\1\\Lab 1\\Lab 1.csproj",
+        "packagesPath": "C:\\Users\\merkyr\\.nuget\\packages\\",
+        "outputPath": "E:\\1.1\\PPPI\\1\\Lab 1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\qmerkyr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\merkyr\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -54,7 +54,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -8,8 +8,8 @@ namespace Lab
         static void Main(string[] args)
         {
             string line;
-            DateTime dateCreate = new DateTime(2002, 3, 16);
-            DateTime dateLastWrite = new DateTime(2002, 3, 16);
+            DateTime dateCreate = new DateTime(2010, 3, 16);
+            DateTime dateLastWrite = new DateTime(2010, 3, 16);
             met:
             Console.WriteLine(" Vvedite put");
             line = Console.ReadLine(); //E:\1.1\test\2.txt
@@ -41,9 +41,9 @@ namespace Lab
                         if (subs.Length == 3)
                         {
                             FileAttributes attributes = File.GetAttributes(dir);
-                            for (int i = 0; i < subs[1].Length; i++)
+                            for (int i = 0; i < subs[2].Length; i++)
                             {
-                                if (subs[1][i] == 'a')
+                                if (subs[2][i] == 'a')
                                 {
                                     if ((attributes & FileAttributes.Archive) == FileAttributes.Archive)
                                     {
@@ -51,7 +51,7 @@ namespace Lab
                                         System.IO.File.SetLastWriteTime(dir, dateCreate);
                                     }
                                 }
-                                if (subs[1][i] == 'h')
+                                if (subs[2][i] == 'h')
                                 {
                                     if ((attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
                                     {
@@ -60,7 +60,7 @@ namespace Lab
                                         System.IO.File.SetLastWriteTime(dir, dateCreate);
                                     }
                                 }
-                                if (subs[1][i] == 'r')
+                                if (subs[2][i] == 'r')
                                 {
                                     if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                                     {

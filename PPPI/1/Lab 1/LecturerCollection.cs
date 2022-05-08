@@ -8,29 +8,51 @@ namespace Lab_2
 {
     class LecturerCollection
     {
+        public delegate void LecturertListHandler(object source, LecturerListHandlerEventArgs args);
+        
+        public  LecturertListHandler LecturersCountChanged;
+        public event LecturertListHandler LecturersReferenceChanged;
+
         private List<Lecturer> lecturers;
         public string nameCollection { get; set; }
-        delegate void LecturertListHandler(object source, LecturerListHandlerEventArgs args);
-        public LecturerCollection() { lecturers = new List<Lecturer>(); }
+
+        public LecturerCollection(string name) 
+        { 
+            lecturers = new List<Lecturer>();
+            nameCollection = name;
+        }
+        public Lecturer this[int index]
+        {
+            get => lecturers[index];
+            set
+            {
+                lecturers[index] = value;
+                LecturersReferenceChanged?.Invoke(this, new LecturerListHandlerEventArgs(nameCollection, " ", lecturers[index]));
+            }
+        }
 
         public void AddDefaults()
         {
-            lecturers.Add(new Lecturer(new Person("Andrey", "Petrov", new DateTime(2000, 06, 10)), "FPM", Post.Assistant, 8));
-            lecturers.Add(new Lecturer(new Person("Ivan", "Romanov", new DateTime(2001, 01, 20)), "FPM", Post.Professor, 5));
-            lecturers.Add(new Lecturer(new Person("Petro", "Ivanov", new DateTime(1999, 11, 11)), "FPM", Post.AssociateProfessor, 1));
+            for (int i = 0; i < 3; i++)
+            {
+                lecturers.Add(new Lecturer(new Person("Andrey", "Petrov", new DateTime(2000, 06, 08)), "FPM", Post.Assistant, 8));
+                LecturersCountChanged?.Invoke(this, new LecturerListHandlerEventArgs(nameCollection, "Added item of collection! AddDefaults()", lecturers[i]));
+            }
         }
         public void AddLecturers(params Lecturer[] parameters)
         {
             lecturers.AddRange(parameters);
-
+            LecturersCountChanged?.Invoke(this, new LecturerListHandlerEventArgs(nameCollection, "Added item of collection! AddLecturers()", lecturers[lecturers.Count-1]));
         }
         public bool Remove(int j)
         {
             if(j >= 0 && j < lecturers.Count)
             {
+                LecturersCountChanged?.Invoke(this, new LecturerListHandlerEventArgs(nameCollection, "Successful delete item of collection!", lecturers[j]));
                 lecturers.RemoveAt(j);
                 return true;
             }
+            LecturersCountChanged?.Invoke(this, new LecturerListHandlerEventArgs(nameCollection, "Unsuccessful delete item of collection!", lecturers[lecturers.Count-1]));
             return false;
         }
         public override string ToString()

@@ -18,7 +18,12 @@ namespace Lab_2
             changeType = "";
             objLecturer = new Lecturer();
         }
-
+        public LecturerListHandlerEventArgs(string name, string type, Lecturer lc)
+        {
+            collectionName = name;
+            changeType = type;
+            objLecturer = lc;
+        }
         public override string ToString()
         {
             return collectionName + " " + changeType + " " + objLecturer;
