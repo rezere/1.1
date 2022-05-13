@@ -127,6 +127,7 @@
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.pictureBox10 = new System.Windows.Forms.PictureBox();
+            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -1202,6 +1203,10 @@
             this.pictureBox10.TabStop = false;
             this.pictureBox10.Click += new System.EventHandler(this.pictureBox10_Click);
             // 
+            // helpProvider1
+            // 
+            this.helpProvider1.HelpNamespace = "E:\\1.1\\LVM\\Lab_2\\Lab_2\\bin\\Debug\\net6.0-windows\\Lvm.chm";
+            // 
             // Katalog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1232,7 +1237,11 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.search);
             this.Controls.Add(this.groupBox1);
+            this.helpProvider1.SetHelpKeyword(this, "6");
+            this.helpProvider1.SetHelpNavigator(this, System.Windows.Forms.HelpNavigator.TopicId);
+            this.helpProvider1.SetHelpString(this, "6");
             this.Name = "Katalog";
+            this.helpProvider1.SetShowHelp(this, true);
             this.Text = "Магазин";
             this.Load += new System.EventHandler(this.Katalog_Load);
             this.groupBox1.ResumeLayout(false);
@@ -1375,5 +1384,6 @@
         private CheckBox checkBox1;
         private CheckBox checkBox4;
         private PictureBox pictureBox10;
+        private HelpProvider helpProvider1;
     }
 }

@@ -40,6 +40,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -154,6 +155,10 @@
             this.linkLabel1.Text = "Авторизоваться";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // helpProvider1
+            // 
+            this.helpProvider1.HelpNamespace = "E:\\1.1\\LVM\\Lab_2\\Lab_2\\bin\\Debug\\net6.0-windows\\Lvm.chm";
+            // 
             // Regist
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -171,7 +176,11 @@
             this.Controls.Add(this.mail);
             this.Controls.Add(this.phoneNumber);
             this.Controls.Add(this.PIB);
+            this.helpProvider1.SetHelpKeyword(this, "5");
+            this.helpProvider1.SetHelpNavigator(this, System.Windows.Forms.HelpNavigator.TopicId);
+            this.helpProvider1.SetHelpString(this, "5");
             this.Name = "Regist";
+            this.helpProvider1.SetShowHelp(this, true);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Регистрация";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -193,5 +202,6 @@
         private Label label4;
         private PictureBox pictureBox1;
         private LinkLabel linkLabel1;
+        private HelpProvider helpProvider1;
     }
 }

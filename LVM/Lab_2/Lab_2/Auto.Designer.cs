@@ -36,6 +36,7 @@
             this.mail = new System.Windows.Forms.TextBox();
             this.RegisterBtn = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,7 +45,7 @@
             this.pictureBox1.ErrorImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.ErrorImage")));
             this.pictureBox1.Image = global::Lab_2.Properties.Resources._1785813_200;
             this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(187, 36);
+            this.pictureBox1.Location = new System.Drawing.Point(186, 27);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(120, 122);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -113,6 +114,10 @@
             this.linkLabel1.Text = "Зарегистрироваться";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // helpProvider1
+            // 
+            this.helpProvider1.HelpNamespace = "E:\\1.1\\LVM\\Lab_2\\Lab_2\\bin\\Debug\\net6.0-windows\\Lvm.chm";
+            // 
             // Auto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -126,7 +131,11 @@
             this.Controls.Add(this.password);
             this.Controls.Add(this.mail);
             this.Controls.Add(this.pictureBox1);
+            this.helpProvider1.SetHelpKeyword(this, "5");
+            this.helpProvider1.SetHelpNavigator(this, System.Windows.Forms.HelpNavigator.TopicId);
+            this.helpProvider1.SetHelpString(this, "5");
             this.Name = "Auto";
+            this.helpProvider1.SetShowHelp(this, true);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Авторизация";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -144,5 +153,6 @@
         private TextBox mail;
         private Button RegisterBtn;
         private LinkLabel linkLabel1;
+        private HelpProvider helpProvider1;
     }
 }

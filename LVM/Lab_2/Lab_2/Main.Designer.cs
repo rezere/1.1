@@ -44,8 +44,9 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -231,6 +232,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Шоколадные изделия";
             // 
+            // button7
+            // 
+            this.button7.Font = new System.Drawing.Font("Yu Gothic", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point);
+            this.button7.Location = new System.Drawing.Point(106, 143);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(203, 47);
+            this.button7.TabIndex = 1;
+            this.button7.Text = "Узнать больше";
+            this.button7.UseVisualStyleBackColor = true;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -243,15 +254,9 @@
             this.label1.Text = "В колекции вы найдёте широкий \r\nассортимент шоколадных конфет,\r\nбатончиков та пли" +
     "ток шоколаду.\r\n";
             // 
-            // button7
+            // helpProvider1
             // 
-            this.button7.Font = new System.Drawing.Font("Yu Gothic", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point);
-            this.button7.Location = new System.Drawing.Point(106, 143);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(203, 47);
-            this.button7.TabIndex = 1;
-            this.button7.Text = "Узнать больше";
-            this.button7.UseVisualStyleBackColor = true;
+            this.helpProvider1.HelpNamespace = "E:\\1.1\\LVM\\Lab_2\\Lab_2\\bin\\Debug\\net6.0-windows\\Lvm.chm";
             // 
             // Main
             // 
@@ -271,7 +276,11 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pictureBox4);
+            this.helpProvider1.SetHelpKeyword(this, "4");
+            this.helpProvider1.SetHelpNavigator(this, System.Windows.Forms.HelpNavigator.TopicId);
+            this.helpProvider1.SetHelpString(this, "4");
             this.Name = "Main";
+            this.helpProvider1.SetShowHelp(this, true);
             this.Text = "Главная";
             this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -305,5 +314,6 @@
         private GroupBox groupBox1;
         private Label label1;
         private Button button7;
+        private HelpProvider helpProvider1;
     }
 }

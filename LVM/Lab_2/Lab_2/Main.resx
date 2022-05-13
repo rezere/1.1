@@ -4323,7 +4323,7 @@
   <data name="button6.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wAAADsABataJCQAAAmJJREFUaEPtmFtLlUEUhnd1lUmm2MmCMivSfnkXQvflKYoOSmrZmTyF2L+o5wUX
+        vwAADr8BOAVTJAAAAmJJREFUaEPtmFtLlUEUhnd1lUmm2MmCMivSfnkXQvflKYoOSmrZmTyF2L+o5wUX
         LD50Djez1yf7hQc2s+divd/MWrNmBiONdP40DW/hI9zSQB91Hbbg3wk7cAN6JQX8CWTgK2yf/P4CvTFz
         G76BAv8MClzbysZkUKsVWt6EAvZfvzdmZuA7pAKVUZuzAZMQSn4llA+pr30TlDea+04DUeRXQlVKJTcl
         /W/Jv6mBCLoDP0FBrUNuqyhPbDWsEAxdd8FMfIBrkNJp1Wzoug97oKDeQ42JbjUbmmZhH0pNlFSz5vIm
@@ -4336,4 +4336,7 @@
         VbBSK15Ab1aiKx2Cu7AIvTUx0jnXYPAfHFfri0paprIAAAAASUVORK5CYII=
 </value>
   </data>
+  <metadata name="helpProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>
