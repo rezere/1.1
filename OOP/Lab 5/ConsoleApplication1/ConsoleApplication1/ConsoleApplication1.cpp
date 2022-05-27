@@ -19,18 +19,14 @@ public:
 };
 string Person::list[] =
 {
-  "Tom", "Dick", "Harry", "Bubba"
+  "Nickolay", "Pavel", "Anton", "Vasya"
 };
 int Person::next = 0;
+int balance = 500;
 
 class PettyCashProtected
 {
-    int balance;
 public:
-    PettyCashProtected()
-    {
-        balance = 500;
-    }
     bool withdraw(int amount)
     {
         if (amount > balance)
@@ -43,22 +39,60 @@ public:
         return balance;
     }
 };
-
-class PettyCash
+class PettyCashOffline
 {
-    PettyCashProtected realThing;
 public:
-    bool withdraw(Person& p, int amount)
+    bool withdraw(int amount)
     {
-        if (p.name() == "Tom" || p.name() == "Harry"
-            || p.name() == "Bubba")
-            return realThing.withdraw(amount);
-        else
+        if (amount > balance)
             return false;
+        balance -= amount;
+        return true;
     }
     int getBalance()
     {
-        return realThing.getBalance();
+        return balance;
+    }
+};
+class PettyCash
+{
+    PettyCashProtected realThing;
+    PettyCashOffline offlineCash;
+    bool operation = false;
+public:
+    bool withdraw(Person& p, int amount, string type)
+    {
+        if(!operation)
+        {
+            if (p.name() == "Nickolay" || p.name() == "Pavel"
+                || p.name() == "Anton")
+                if(type == "online")
+                {
+                    operation = true;
+                    return realThing.withdraw(amount);
+                }
+                else if(type == "offline")
+                {
+                    operation = true;
+                    return offlineCash.withdraw(amount);
+                }
+            else
+                return false;
+        }
+        else 
+            cout << "Operation not end " << '\n';
+    }
+    void endOperation()
+    {
+        operation = false;
+    }
+    int getBalance()
+    {
+        if (!operation)
+        {
+            return realThing.getBalance();
+        }
+        else return -1;
     }
 };
 
@@ -66,10 +100,19 @@ int main()
 {
     PettyCash pc;
     Person workers[4];
-    for (int i = 0, amount = 100; i < 4; i++, amount += 100)
-        if (!pc.withdraw(workers[i], amount))
-            cout << "No money for " << workers[i].name() << '\n';
-        else
-            cout << amount << " dollars for " << workers[i].name() << '\n';
-    cout << "Remaining balance is " << pc.getBalance() << '\n';
+    int amount = 100;
+    if (!pc.withdraw(workers[0], amount, "online"))
+        cout << "No money for " << workers[0].name() << '\n';
+    else
+        cout << amount << " UAH for " << workers[0].name() << '\n';
+    if (pc.getBalance() == -1)
+    {
+        cout << "Operation not End"  <<'\n';
+    }
+    else
+    {
+        cout << "Ballans " << pc.getBalance() << '\n';
+    }
+    pc.endOperation();
+    cout << "Ballans " << pc.getBalance() << '\n';
 }
