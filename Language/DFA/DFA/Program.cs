@@ -55,7 +55,8 @@ namespace DFA
         static void ParsFile(string file)
         {
             int lineCounter = 0;
-            using (StreamReader streamReader = new StreamReader(file, Encoding.Default))
+            using (
+                StreamReader streamReader = new StreamReader(file, Encoding.Default))
             {
                 string line;
                 while (true)
