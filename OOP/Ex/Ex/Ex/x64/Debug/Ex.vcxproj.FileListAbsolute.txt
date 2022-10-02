@@ -1,0 +1,2 @@
+E:\1.1\OOP\Ex\Ex\Ex\x64\Debug\Ex.vcxproj.AssemblyReference.cache
+E:\1.1\OOP\Ex\Ex\Ex\x64\Debug\Ex.vcxproj.SuggestedBindingRedirects.cache
