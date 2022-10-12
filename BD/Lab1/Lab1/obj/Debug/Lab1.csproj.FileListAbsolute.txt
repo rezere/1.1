@@ -1,0 +1,12 @@
+E:\1.1\BD\Lab1\Lab1\bin\Debug\Lab1.exe.config
+E:\1.1\BD\Lab1\Lab1\bin\Debug\Lab1.exe
+E:\1.1\BD\Lab1\Lab1\bin\Debug\Lab1.pdb
+E:\1.1\BD\Lab1\Lab1\obj\Debug\Lab1.csproj.AssemblyReference.cache
+E:\1.1\BD\Lab1\Lab1\obj\Debug\Lab1.csproj.SuggestedBindingRedirects.cache
+E:\1.1\BD\Lab1\Lab1\obj\Debug\Lab1.Client.resources
+E:\1.1\BD\Lab1\Lab1\obj\Debug\Lab1.Properties.Resources.resources
+E:\1.1\BD\Lab1\Lab1\obj\Debug\Lab1.csproj.GenerateResource.cache
+E:\1.1\BD\Lab1\Lab1\obj\Debug\Lab1.csproj.CoreCompileInputs.cache
+E:\1.1\BD\Lab1\Lab1\obj\Debug\Lab1.exe
+E:\1.1\BD\Lab1\Lab1\obj\Debug\Lab1.pdb
+E:\1.1\BD\Lab1\Lab1\obj\Debug\Lab1.Form1.resources
