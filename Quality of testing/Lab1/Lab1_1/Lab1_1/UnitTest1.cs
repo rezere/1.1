@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Safari;
 using OpenQA.Selenium.Support.UI;
 using NUnit.Framework;
 using OpenQA.Selenium.Remote;
@@ -18,27 +19,34 @@ namespace Lab1_1
             [Test]
             public void TestCase()
             {
+                string actualUrl= "https://pastebin.com";
                 IWebDriver driver = new ChromeDriver();
-                driver.Navigate().GoToUrl("https://pastebin.com");
+                driver.Navigate().GoToUrl(actualUrl);
                 driver.FindElement(By.Id("postform-text")).SendKeys("Lab 1 New Paste");
-                //IWebElement selectElement = driver.FindElement(By.Name("PostForm[expiration]"));
-                //SelectElement ss = new SelectElement(driver.FindElement(By.Id("postform-status")));
-                SelectElement selectElement = new SelectElement(driver.FindElement(By.Id("postform-status")));
-                selectElement.Options.ToList().Find(x => x.Text == "10 Minutes").Click();
-                //Assert.IsTrue(driver.Url.Contains("google.com"), "Что-то не так =(");
+                driver.FindElement(By.Id("select2-postform-expiration-container")).Click();
+                driver.FindElement(By.CssSelector("#select2-postform-expiration-results>li:nth-child(3)")).Click();
+                driver.FindElement(By.Id("postform-name")).SendKeys("Lab 1 Title");
+                driver.FindElement(By.XPath("//*[contains(text(), 'Create New Paste')]")).Click();
+                string expectedUrl = driver.Url;
+                Assert.AreNotEqual(actualUrl, expectedUrl);
                 //driver.Quit();
 
             }
 
-            //[Test()]
-            //public void Test2()
-            //{
-            //    IWebDriver driver = new ChromeDriver();
-            //    driver.Navigate().GoToUrl("https://demowebshop.tricentis.com/login?ReturnUrl=%2fcustomer%2finfo");
-            //    driver.FindElement(By.Id("Email")).SendKeys("test@gmail.com");
-            //    driver.FindElement(By.Id("Password")).SendKeys("0123456789");
-            //    driver.FindElement(By.Id("Password")).SendKeys("0123456789");
-            //}
+            [Test()]
+            public void Test2()
+            {
+                string actualUrl = "https://demowebshop.tricentis.com";
+                IWebDriver driver = new ChromeDriver();
+                driver.Navigate().GoToUrl(actualUrl);
+                driver.FindElement(By.XPath("//a[contains(text(), 'My account')]")).Click();
+                driver.FindElement(By.Id("Email")).SendKeys("test@gmail.com");
+                driver.FindElement(By.Id("Password")).SendKeys("0123456789");
+                actualUrl = driver.Url;
+                driver.FindElement(By.XPath("//*[@class='button-1 login-button']")).Click();
+                string expectedUrl = driver.Url;
+                Assert.AreEqual(actualUrl, expectedUrl);
+            }
         }
     }
 }
