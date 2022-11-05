@@ -1,0 +1,12 @@
+V:\1.1\BD\Lab1_1\Lab1_1\bin\Debug\Lab1_1.exe.config
+V:\1.1\BD\Lab1_1\Lab1_1\bin\Debug\Lab1_1.exe
+V:\1.1\BD\Lab1_1\Lab1_1\bin\Debug\Lab1_1.pdb
+V:\1.1\BD\Lab1_1\Lab1_1\obj\Debug\Lab1_1.csproj.AssemblyReference.cache
+V:\1.1\BD\Lab1_1\Lab1_1\obj\Debug\Lab1_1.csproj.SuggestedBindingRedirects.cache
+V:\1.1\BD\Lab1_1\Lab1_1\obj\Debug\Lab1_1.Form1.resources
+V:\1.1\BD\Lab1_1\Lab1_1\obj\Debug\Lab1_1.Properties.Resources.resources
+V:\1.1\BD\Lab1_1\Lab1_1\obj\Debug\Lab1_1.csproj.GenerateResource.cache
+V:\1.1\BD\Lab1_1\Lab1_1\obj\Debug\Lab1_1.csproj.CoreCompileInputs.cache
+V:\1.1\BD\Lab1_1\Lab1_1\obj\Debug\Lab1_1.exe
+V:\1.1\BD\Lab1_1\Lab1_1\obj\Debug\Lab1_1.pdb
+V:\1.1\BD\Lab1_1\Lab1_1\obj\Debug\Lab1_1.Patient.resources
