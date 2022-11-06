@@ -14,7 +14,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 namespace Lab1_1
 {
-    public partial class Form1 : Form
+    public partial class Appeal : Form
     {
         SqlConnection sqlConnection1 =
     new SqlConnection("Data Source=DESKTOP-TLF53UJ\\SQLEXPRESS;Initial Catalog=Hospital;Integrated Security=True");
@@ -22,13 +22,9 @@ namespace Lab1_1
         SqlDataAdapter adapter;
 
         DataTable table;
-        public Form1()
+        public Appeal()
         {
             InitializeComponent();
-            Patient newForm = new Patient();
-            newForm.Show();
-            Appeal Form = new Appeal();
-            Form.Show();
         }
 
         private void patientBindingNavigatorSaveItem_Click(object sender, EventArgs e)
@@ -48,7 +44,7 @@ namespace Lab1_1
         {
             this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
             sqlConnection1.Open();
-            adapter = new SqlDataAdapter("SELECT *FROM Medic", sqlConnection1);
+            adapter = new SqlDataAdapter("SELECT *FROM Appeal", sqlConnection1);
             table = new DataTable();
 
             adapter.Fill(table);
@@ -59,40 +55,22 @@ namespace Lab1_1
         {
             if (textBox1.Text.Length < 1 || textBox2.Text.Length < 1 
                 || textBox3.Text.Length < 1
-                || textBox4.Text.Length < 1
-                || textBox5.Text.Length < 1)
+                || textBox4.Text.Length < 1)
             {
                 MessageBox.Show("Не все поля заполнены!");
             }
-            else if(textBox1.Text.Length > 30)
+            else if (textBox3.Text.Length > 50)
             {
-                MessageBox.Show("Фамилия не может превышать 30 символов!");
-            }
-            else if (textBox2.Text.Length > 30)
-            {
-                MessageBox.Show("Имя не может превышать 30 символов!");
-            }
-            else if (textBox3.Text.Length > 30)
-            {
-                MessageBox.Show("Отчество не может превышать 30 символов!");
-            }
-            else if (textBox4.Text.Length > 20)
-            {
-                MessageBox.Show("Специальность не может превышать 20 символов!");
-            }
-            else if (textBox5.Text.Length > 20)
-            {
-                MessageBox.Show("Категория не может превышать 20 символов!");
+                MessageBox.Show("Диагноз не может превышать 50 символов!");
             }
             else
             {
+                string date = DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day;
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "INSERT Medic (m_code, Surname, Name, Patronymic, Specialty, Category) VALUES ("+ CheckCount()+1 + ", '"+ textBox1.Text + "', '" + 
-                                                                                                                        textBox2.Text + "', '" + 
-                                                                                                                        textBox3.Text + "', '" + 
-                                                                                                                        textBox4.Text + "', '" +
-                                                                                                                        textBox5.Text + "')";
+                cmd.CommandText = "INSERT Appeal (a_code, m_code, p_code, DateOfApp, Diagnosis, Cost) VALUES (" + CheckCount() + 1 + ", " + textBox1.Text + ", " +
+                                                                                                                        textBox2.Text + ", CAST('" + date + "' as datetime),'"
+                                                                                                                        + textBox3.Text + "', " + float.Parse(textBox3.Text) + ")";
                 cmd.Connection = sqlConnection1;
                 sqlConnection1.Open();
                 cmd.ExecuteNonQuery();
@@ -108,7 +86,7 @@ namespace Lab1_1
             int count = -1;
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "SELECT COUNT(m_code) FROM Medic";
+            cmd.CommandText = "SELECT COUNT(a_code) FROM Appeal";
             cmd.Connection = sqlConnection1;
             sqlConnection1.Open();
             count = (int)cmd.ExecuteScalar();
@@ -124,7 +102,7 @@ namespace Lab1_1
             }
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "DELETE FROM Medic WHERE m_code = " + Convert.ToInt32(textBox6.Text);
+            cmd.CommandText = "DELETE FROM Appeal WHERE a_code = " + Convert.ToInt32(textBox6.Text);
             cmd.Connection = sqlConnection1;
             sqlConnection1.Open();
             cmd.ExecuteNonQuery();
@@ -134,20 +112,24 @@ namespace Lab1_1
 
         private void button3_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Количество врачей - " + CheckCount());
+            MessageBox.Show("Количество записей - " + CheckCount());
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             if (textBox7.Text.Length < 1)
             {
-                MessageBox.Show("Введите специальность для поиска");
+                MessageBox.Show("Введите год для поиска");
+            }
+            else if (Convert.ToInt32(textBox7.Text) < 1930 || Convert.ToInt32(textBox7.Text)>DateTime.Now.Year)
+            {
+                MessageBox.Show("Не верный год");
             }
             else
             {
                 this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
                 sqlConnection1.Open();
-                string sql = "SELECT *FROM Medic where Specialty = '" + textBox7.Text + "'" ;
+                string sql = "SELECT count(*) as 'Количество', MONTH(DateOfApp) as 'месяц' from Appeal where year(DateOfApp) = " + Convert.ToInt32(textBox7.Text)  + " group by month(DateOfApp)";
                 adapter = new SqlDataAdapter(sql, sqlConnection1);
                 table = new DataTable();
 
@@ -169,7 +151,7 @@ namespace Lab1_1
             {
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "SELECT Surname FROM Medic where m_code = " + Convert.ToInt32(textBox8.Text);
+                cmd.CommandText = "SELECT m_code FROM Appeal where a_code = " + Convert.ToInt32(textBox8.Text);
                 cmd.Connection = sqlConnection1;
                 sqlConnection1.Open();
                 if (cmd.ExecuteScalar() == null)
@@ -184,7 +166,7 @@ namespace Lab1_1
 
                     this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
                     sqlConnection1.Open();
-                    string sql = "SELECT *FROM Medic where m_code = " + textBox8.Text;
+                    string sql = "SELECT *FROM Appeal where a_code = " + textBox8.Text;
                     adapter = new SqlDataAdapter(sql, sqlConnection1);
                     table = new DataTable();
 
@@ -193,40 +175,32 @@ namespace Lab1_1
                     sqlConnection1.Close();
 
                     cmd.CommandType = System.Data.CommandType.Text;
-                    cmd.CommandText = "SELECT Surname FROM Medic where m_code = " + Convert.ToInt32(textBox8.Text);
+                    cmd.CommandText = "SELECT m_code FROM Appeal where a_code = " + Convert.ToInt32(textBox8.Text);
                     cmd.Connection = sqlConnection1;
                     sqlConnection1.Open();
                     textBox1.Text = cmd.ExecuteScalar().ToString();
                     sqlConnection1.Close();
 
                     cmd.CommandType = System.Data.CommandType.Text;
-                    cmd.CommandText = "SELECT Name FROM Medic where m_code = " + Convert.ToInt32(textBox8.Text);
+                    cmd.CommandText = "SELECT p_code FROM Appeal where a_code = " + Convert.ToInt32(textBox8.Text);
                     cmd.Connection = sqlConnection1;
                     sqlConnection1.Open();
                     textBox2.Text = cmd.ExecuteScalar().ToString();
                     sqlConnection1.Close();
 
                     cmd.CommandType = System.Data.CommandType.Text;
-                    cmd.CommandText = "SELECT Patronymic FROM Medic where m_code = " + Convert.ToInt32(textBox8.Text);
+                    cmd.CommandText = "SELECT Diagnosis FROM Appeal where a_code = " + Convert.ToInt32(textBox8.Text);
                     cmd.Connection = sqlConnection1;
                     sqlConnection1.Open();
                     textBox3.Text = cmd.ExecuteScalar().ToString();
                     sqlConnection1.Close();
 
                     cmd.CommandType = System.Data.CommandType.Text;
-                    cmd.CommandText = "SELECT Specialty FROM Medic where m_code = " + Convert.ToInt32(textBox8.Text);
+                    cmd.CommandText = "SELECT Cost FROM Appeal where a_code = " + Convert.ToInt32(textBox8.Text);
                     cmd.Connection = sqlConnection1;
                     sqlConnection1.Open();
                     textBox4.Text = cmd.ExecuteScalar().ToString();
                     sqlConnection1.Close();
-
-                    cmd.CommandType = System.Data.CommandType.Text;
-                    cmd.CommandText = "SELECT Category FROM Medic where m_code = " + Convert.ToInt32(textBox8.Text);
-                    cmd.Connection = sqlConnection1;
-                    sqlConnection1.Open();
-                    textBox5.Text = cmd.ExecuteScalar().ToString();
-                    sqlConnection1.Close();
-
 
                     button6.Enabled = true;
                 }
@@ -235,20 +209,41 @@ namespace Lab1_1
 
         private void button6_Click(object sender, EventArgs e)
         {
+            string date;
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "DELETE FROM Medic WHERE m_code = " + Convert.ToInt32(textBox8.Text);
+            cmd.CommandText = "SELECT YEAR(DateOfApp) FROM Appeal where a_code = " + Convert.ToInt32(textBox8.Text);
+            cmd.Connection = sqlConnection1;
+            sqlConnection1.Open();
+            date = cmd.ExecuteScalar().ToString() + "-";
+            sqlConnection1.Close();
+
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = "SELECT MONTH(DateOfApp) FROM Appeal where a_code = " + Convert.ToInt32(textBox8.Text);
+            cmd.Connection = sqlConnection1;
+            sqlConnection1.Open();
+            date += cmd.ExecuteScalar().ToString() + "-";
+            sqlConnection1.Close();
+
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = "SELECT DAY(DateOfApp) FROM Appeal where a_code = " + Convert.ToInt32(textBox8.Text);
+            cmd.Connection = sqlConnection1;
+            sqlConnection1.Open();
+            date += cmd.ExecuteScalar().ToString();
+            sqlConnection1.Close();
+
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = "DELETE FROM Appeal WHERE a_code = " + Convert.ToInt32(textBox8.Text);
             cmd.Connection = sqlConnection1;
             sqlConnection1.Open();
             cmd.ExecuteNonQuery();
             sqlConnection1.Close();
 
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "INSERT Medic (m_code, Surname, Name, Patronymic, Specialty, Category) VALUES (" + Convert.ToInt32(textBox8.Text) + ", '" + textBox1.Text + "', '" +
-                                                                                                                                    textBox2.Text + "', '" +
-                                                                                                                                    textBox3.Text + "', '" +
-                                                                                                                                    textBox4.Text + "', '" +
-                                                                                                                                    textBox5.Text + "')";
+            cmd.CommandText = "INSERT Appeal (a_code, m_code, p_code, DateOfApp, Diagnosis, Cost) VALUES (" + CheckCount() + 1 + ", '" + textBox1.Text + "', '" +
+                                                                                                                        textBox2.Text + "', CAST('" + date + "' as datetime),'"
+                                                                                                                        + textBox3.Text + "', '" + float.Parse(textBox3.Text) + "')";
             cmd.Connection = sqlConnection1;
             sqlConnection1.Open();
             cmd.ExecuteNonQuery();
@@ -263,23 +258,10 @@ namespace Lab1_1
             textBox2.Text = "";
             textBox3.Text = "";
             textBox4.Text = "";
-            textBox5.Text = "";
+            //textBox5.Text = "";
             textBox6.Text = "";
             textBox7.Text = "";
             textBox8.Text = "";
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
-            sqlConnection1.Open();
-            string sql = "SELECT count(*) as 'Количество', Specialty as 'Специальность' from Medic group by Specialty";
-            adapter = new SqlDataAdapter(sql, sqlConnection1);
-            table = new DataTable();
-
-            adapter.Fill(table);
-            dataGridView1.DataSource = table;
-            sqlConnection1.Close();
         }
     }
 }

@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Appeal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Appeal.Designer.cs">
+      <DependentUpon>Appeal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Patient.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +71,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Appeal.resx">
+      <DependentUpon>Appeal.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Patient.resx">
       <DependentUpon>Patient.cs</DependentUpon>
     </EmbeddedResource>

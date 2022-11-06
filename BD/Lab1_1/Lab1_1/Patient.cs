@@ -204,74 +204,77 @@ namespace Lab1_1
 
         private void textBox11_TextChanged(object sender, EventArgs e)
         {
-            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "SELECT Surname FROM Patient where p_code = " + Convert.ToInt32(textBox11.Text);
-            cmd.Connection = sqlConnection1;
-            sqlConnection1.Open();
-            if (cmd.ExecuteScalar() == null)
+            if (textBox11.Text.Length > 0)
             {
-                sqlConnection1.Close();
-                button7.Enabled = false;
-                return;
-            }
-            else
-            {
-                sqlConnection1.Close();
-
-                this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
-                sqlConnection1.Open();
-                string sql = "SELECT *FROM Patient where p_code = " + textBox11.Text;
-                adapter = new SqlDataAdapter(sql, sqlConnection1);
-                table = new DataTable();
-
-                adapter.Fill(table);
-                dataGridView1.DataSource = table;
-                sqlConnection1.Close();
-
+                System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = "SELECT Surname FROM Patient where p_code = " + Convert.ToInt32(textBox11.Text);
                 cmd.Connection = sqlConnection1;
                 sqlConnection1.Open();
-                textBox1.Text = cmd.ExecuteScalar().ToString();
-                sqlConnection1.Close();
+                if (cmd.ExecuteScalar() == null)
+                {
+                    sqlConnection1.Close();
+                    button7.Enabled = false;
+                    return;
+                }
+                else
+                {
+                    sqlConnection1.Close();
 
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "SELECT Name FROM Patient where p_code = " + Convert.ToInt32(textBox11.Text);
-                cmd.Connection = sqlConnection1;
-                sqlConnection1.Open();
-                textBox2.Text = cmd.ExecuteScalar().ToString();
-                sqlConnection1.Close();
+                    this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
+                    sqlConnection1.Open();
+                    string sql = "SELECT *FROM Patient where p_code = " + textBox11.Text;
+                    adapter = new SqlDataAdapter(sql, sqlConnection1);
+                    table = new DataTable();
 
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "SELECT Patronymic FROM Patient where p_code = " + Convert.ToInt32(textBox11.Text);
-                cmd.Connection = sqlConnection1;
-                sqlConnection1.Open();
-                textBox3.Text = cmd.ExecuteScalar().ToString();
-                sqlConnection1.Close();
+                    adapter.Fill(table);
+                    dataGridView1.DataSource = table;
+                    sqlConnection1.Close();
 
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "SELECT DAY(DateOfBorn) FROM Patient where p_code = " + Convert.ToInt32(textBox11.Text);
-                cmd.Connection = sqlConnection1;
-                sqlConnection1.Open();
-                textBox4.Text = cmd.ExecuteScalar().ToString();
-                sqlConnection1.Close();
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = "SELECT Surname FROM Patient where p_code = " + Convert.ToInt32(textBox11.Text);
+                    cmd.Connection = sqlConnection1;
+                    sqlConnection1.Open();
+                    textBox1.Text = cmd.ExecuteScalar().ToString();
+                    sqlConnection1.Close();
 
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "SELECT MONTH(DateOfBorn) FROM Patient where p_code = " + Convert.ToInt32(textBox11.Text);
-                cmd.Connection = sqlConnection1;
-                sqlConnection1.Open();
-                textBox5.Text = cmd.ExecuteScalar().ToString();
-                sqlConnection1.Close();
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = "SELECT Name FROM Patient where p_code = " + Convert.ToInt32(textBox11.Text);
+                    cmd.Connection = sqlConnection1;
+                    sqlConnection1.Open();
+                    textBox2.Text = cmd.ExecuteScalar().ToString();
+                    sqlConnection1.Close();
 
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "SELECT YEAR(DateOfBorn) FROM Patient where p_code = " + Convert.ToInt32(textBox11.Text);
-                cmd.Connection = sqlConnection1;
-                sqlConnection1.Open();
-                textBox8.Text = cmd.ExecuteScalar().ToString();
-                sqlConnection1.Close();
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = "SELECT Patronymic FROM Patient where p_code = " + Convert.ToInt32(textBox11.Text);
+                    cmd.Connection = sqlConnection1;
+                    sqlConnection1.Open();
+                    textBox3.Text = cmd.ExecuteScalar().ToString();
+                    sqlConnection1.Close();
 
-                button7.Enabled = true;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = "SELECT DAY(DateOfBorn) FROM Patient where p_code = " + Convert.ToInt32(textBox11.Text);
+                    cmd.Connection = sqlConnection1;
+                    sqlConnection1.Open();
+                    textBox4.Text = cmd.ExecuteScalar().ToString();
+                    sqlConnection1.Close();
+
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = "SELECT MONTH(DateOfBorn) FROM Patient where p_code = " + Convert.ToInt32(textBox11.Text);
+                    cmd.Connection = sqlConnection1;
+                    sqlConnection1.Open();
+                    textBox5.Text = cmd.ExecuteScalar().ToString();
+                    sqlConnection1.Close();
+
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = "SELECT YEAR(DateOfBorn) FROM Patient where p_code = " + Convert.ToInt32(textBox11.Text);
+                    cmd.Connection = sqlConnection1;
+                    sqlConnection1.Open();
+                    textBox8.Text = cmd.ExecuteScalar().ToString();
+                    sqlConnection1.Close();
+
+                    button7.Enabled = true;
+                }
             }
         }
 

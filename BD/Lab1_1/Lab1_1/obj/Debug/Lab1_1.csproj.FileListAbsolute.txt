@@ -10,3 +10,4 @@ V:\1.1\BD\Lab1_1\Lab1_1\obj\Debug\Lab1_1.csproj.CoreCompileInputs.cache
 V:\1.1\BD\Lab1_1\Lab1_1\obj\Debug\Lab1_1.exe
 V:\1.1\BD\Lab1_1\Lab1_1\obj\Debug\Lab1_1.pdb
 V:\1.1\BD\Lab1_1\Lab1_1\obj\Debug\Lab1_1.Patient.resources
+V:\1.1\BD\Lab1_1\Lab1_1\obj\Debug\Lab1_1.Appeal.resources
