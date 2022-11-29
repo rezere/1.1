@@ -66,11 +66,13 @@ namespace Lab1_1
             else
             {
                 string date = DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day;
+
+                int count = CheckCount() + 1;
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "INSERT Appeal (a_code, m_code, p_code, DateOfApp, Diagnosis, Cost) VALUES (" + CheckCount() + 1 + ", " + textBox1.Text + ", " +
-                                                                                                                        textBox2.Text + ", CAST('" + date + "' as datetime),'"
-                                                                                                                        + textBox3.Text + "', " + float.Parse(textBox3.Text) + ")";
+                cmd.CommandText = "INSERT  Appeal (a_code, m_code, p_code, DateOfApp, Diagnosis, Cost) VALUES (" + count + ", '" + textBox1.Text + "', '" +
+                                                                                                                        textBox2.Text + "', '" + date + "', '"
+                                                                                                                        + textBox3.Text + "', " + float.Parse(textBox4.Text) + ")"; //float.Parse(textBox3.Text)
                 cmd.Connection = sqlConnection1;
                 sqlConnection1.Open();
                 cmd.ExecuteNonQuery();
@@ -81,7 +83,7 @@ namespace Lab1_1
 
         }
 
-        private int CheckCount()
+        public int CheckCount()
         {
             int count = -1;
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
@@ -91,6 +93,7 @@ namespace Lab1_1
             sqlConnection1.Open();
             count = (int)cmd.ExecuteScalar();
             sqlConnection1.Close();
+
             return count;
         }
 
@@ -241,9 +244,9 @@ namespace Lab1_1
             sqlConnection1.Close();
 
             cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = "INSERT Appeal (a_code, m_code, p_code, DateOfApp, Diagnosis, Cost) VALUES (" + CheckCount() + 1 + ", '" + textBox1.Text + "', '" +
-                                                                                                                        textBox2.Text + "', CAST('" + date + "' as datetime),'"
-                                                                                                                        + textBox3.Text + "', '" + float.Parse(textBox3.Text) + "')";
+            cmd.CommandText = "INSERT  Appeal (a_code, m_code, p_code, DateOfApp, Diagnosis, Cost) VALUES (" + Convert.ToInt32(textBox8.Text) + ", '" + textBox1.Text + "', '" +
+                                                                                                                        textBox2.Text + "', '" + date + "', '"
+                                                                                                                        + textBox3.Text + "', " + float.Parse(textBox4.Text) + ")";
             cmd.Connection = sqlConnection1;
             sqlConnection1.Open();
             cmd.ExecuteNonQuery();
@@ -262,6 +265,27 @@ namespace Lab1_1
             textBox6.Text = "";
             textBox7.Text = "";
             textBox8.Text = "";
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (textBox12.Text.Length < 1)
+            {
+                MessageBox.Show("Введите Диагноз для поиска");
+            }
+            else
+            {
+                this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
+                sqlConnection1.Open();
+                string sql = "SELECT Patient.p_code, Surname, Name, Patronymic, DateOfBorn FROM Patient join Appeal on (Appeal.p_code = Patient.p_code) and (Appeal.Diagnosis = '" + textBox12.Text + "')";
+                adapter = new SqlDataAdapter(sql, sqlConnection1);
+                table = new DataTable();
+
+                adapter.Fill(table);
+                dataGridView1.DataSource = table;
+                sqlConnection1.Close();
+
+            }
         }
     }
 }

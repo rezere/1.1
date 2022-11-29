@@ -1,15 +1,20 @@
-﻿using System;
+﻿using iTextSharp.text.pdf;
+using iTextSharp.text;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
+using System.Threading;
+using Font = iTextSharp.text.Font;
 
 namespace Lab1_1
 {
@@ -89,12 +94,13 @@ namespace Lab1_1
             }
             else
             {
-                string date = textBox8.Text + "-" + textBox5.Text + "-" + textBox4.Text;
+                string date = textBox8.Text + "-" + textBox4.Text + "-" + textBox5.Text;
+                int count = CheckCount() + 1;
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "INSERT Patient (p_code, Surname, Name, Patronymic, DateOfBorn) VALUES ("+ CheckCount()+1 + ", '"+ textBox1.Text + "', '" + 
+                cmd.CommandText = "INSERT Patient (p_code, Surname, Name, Patronymic, DateOfBorn) VALUES ("+ count + ", '"+ textBox1.Text + "', '" + 
                                                                                                                         textBox2.Text + "', '" + 
-                                                                                                                        textBox3.Text + "', CAST('"+ date + "' as datetime))";
+                                                                                                                        textBox3.Text + "', '"+ date + "')";
                 cmd.Connection = sqlConnection1;
                 sqlConnection1.Open();
                 cmd.ExecuteNonQuery();
@@ -123,24 +129,55 @@ namespace Lab1_1
             {
                 MessageBox.Show("Не все поля заполнены!");
             }
-            if (Convert.ToInt32(textBox6.Text) > CheckCount() 
-                || Convert.ToInt32(textBox6.Text) < 1 
-                || CheckCount() == 0)
-            {
-                MessageBox.Show("Записи с таким номером нет");
-            }
+            //if (Convert.ToInt32(textBox6.Text) > CheckCount() 
+            //    || Convert.ToInt32(textBox6.Text) < 1 
+            //    || CheckCount() == 0)
+            //{
+            //    MessageBox.Show("Записи с таким номером нет");
+            //}
             else
             {
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+                if (check())
+                {
+                   
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = "DELETE FROM Appeal WHERE p_code = " + Convert.ToInt32(textBox6.Text);
+                    cmd.Connection = sqlConnection1;
+                    sqlConnection1.Open();
+                    cmd.ExecuteNonQuery();
+                    sqlConnection1.Close();
+                }
+
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "DELETE FROM Patient WHERE p_code = " + Convert.ToInt32(textBox5.Text);
+                cmd.CommandText = "DELETE FROM Patient WHERE p_code = " + Convert.ToInt32(textBox6.Text);
                 cmd.Connection = sqlConnection1;
                 sqlConnection1.Open();
                 cmd.ExecuteNonQuery();
                 sqlConnection1.Close();
+
+                LoadTable();
             }
         }
+        private bool check()
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = "SELECT Surname FROM Patient where p_code = " + Convert.ToInt32(textBox6.Text);
+            cmd.Connection = sqlConnection1;
+            sqlConnection1.Open();
+            string str = cmd.ExecuteScalar().ToString();
+            sqlConnection1.Close();
+            if(str !=  null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
+        }
         private void button3_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Количество пациентов - " + CheckCount());
@@ -196,10 +233,6 @@ namespace Lab1_1
                 dataGridView1.DataSource = table;
                 sqlConnection1.Close();
             }
-        }
-        private void Edit()
-        {
-            
         }
 
         private void textBox11_TextChanged(object sender, EventArgs e)
@@ -289,16 +322,135 @@ namespace Lab1_1
             cmd.ExecuteNonQuery();
             sqlConnection1.Close();
 
+
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = "INSERT Patient (p_code, Surname, Name, Patronymic, DateOfBorn) VALUES (" + Convert.ToInt32(textBox11.Text) + ", '" + textBox1.Text + "', '" +
                                                                                                                         textBox2.Text + "', '" +
-                                                                                                                        textBox3.Text + "', CAST('" + date + "' as datetime))";
+                                                                                                                        textBox3.Text + "', '" + date + "')";
             cmd.Connection = sqlConnection1;
             sqlConnection1.Open();
             cmd.ExecuteNonQuery();
             sqlConnection1.Close();
             LoadTable();
             button7.Enabled = false;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (textBox12.Text.Length < 1)
+            {
+                MessageBox.Show("Введите Диагноз для поиска");
+            }
+            else
+            {
+                this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
+                sqlConnection1.Open();
+                string sql = "SELECT *FROM Patient, Appeal, Medic where  (Patient.p_code = Appeal.p_code) and (Medic.m_code = Appeal.m_code) and (Medic.Surname = '" + textBox12.Text + "')";
+                adapter = new SqlDataAdapter(sql, sqlConnection1);
+                table = new DataTable();
+
+                adapter.Fill(table);
+                dataGridView1.DataSource = table;
+                sqlConnection1.Close();
+
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
+            sqlConnection1.Open();
+            string sql = "SELECT  Patient.Surname, Patient.Name, Patient.Patronymic, count(Medic.m_code) as 'Всего врачей' from Medic, Appeal, Patient " +
+                "where Patient.p_code = Appeal.p_code and Medic.m_code = Appeal.m_code GROUP BY Patient.Surname, Patient.Name, Patient.Patronymic";
+            adapter = new SqlDataAdapter(sql, sqlConnection1);
+            table = new DataTable();
+
+            adapter.Fill(table);
+            dataGridView1.DataSource = table;
+            sqlConnection1.Close();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
+            sqlConnection1.Open();
+            string sql = "SELECT  Patient.Surname, Patient.Name, Patient.Patronymic, sum(Appeal.Cost) as 'Потраченно' from Appeal, Patient " +
+                "where Patient.p_code = Appeal.p_code group by Patient.Surname, Patient.Name, Patient.Patronymic having sum(Appeal.Cost) > 6000";
+            adapter = new SqlDataAdapter(sql, sqlConnection1);
+            table = new DataTable();
+
+            adapter.Fill(table);
+            dataGridView1.DataSource = table;
+            sqlConnection1.Close();
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            if (textBox13.Text.Length > 0)
+            {
+                string str;
+
+                var doc = new Document();
+                PdfWriter.GetInstance(doc, new FileStream(Application.StartupPath + @"\Document.pdf", FileMode.Create));
+                doc.Open();
+                iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(Application.StartupPath + @"/images.png");
+                jpg.Alignment = Element.ALIGN_LEFT;
+                doc.Add(jpg);
+                PdfPTable table = new PdfPTable(5);
+
+                BaseFont baseFont = BaseFont.CreateFont("c:/Windows/Fonts/arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                Font font = new Font(baseFont);
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = "SELECT Surname FROM Patient where p_code = " + Convert.ToInt32(textBox13.Text);
+                cmd.Connection = sqlConnection1;
+                sqlConnection1.Open();
+                str = cmd.ExecuteScalar().ToString();
+                table.AddCell(new Phrase(str, font));
+                sqlConnection1.Close();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = "SELECT Name FROM Patient where p_code = " + Convert.ToInt32(textBox13.Text);
+                cmd.Connection = sqlConnection1;
+                sqlConnection1.Open();
+                str = cmd.ExecuteScalar().ToString();
+                table.AddCell(new Phrase(str, font));
+                sqlConnection1.Close();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = "SELECT Patronymic FROM Patient where p_code = " + Convert.ToInt32(textBox13.Text);
+                cmd.Connection = sqlConnection1;
+                sqlConnection1.Open();
+                str = cmd.ExecuteScalar().ToString();
+                table.AddCell(new Phrase(str, font));
+                sqlConnection1.Close();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = "SELECT Patronymic FROM Patient where p_code = " + Convert.ToInt32(textBox13.Text);
+                cmd.Connection = sqlConnection1;
+                sqlConnection1.Open();
+                str = cmd.ExecuteScalar().ToString();
+                table.AddCell(new Phrase(str, font));
+                sqlConnection1.Close();
+
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = "SELECT DateOfBorn FROM Patient where p_code = " + Convert.ToInt32(textBox13.Text);
+                cmd.Connection = sqlConnection1;
+                sqlConnection1.Open();
+                str = cmd.ExecuteScalar().ToString();
+                table.AddCell(new Phrase(str, font));
+                sqlConnection1.Close();
+
+                doc.Add(table);
+                doc.Close();
+
+                
+/*
+                
+
+
+*/
+            }
         }
     }
 }

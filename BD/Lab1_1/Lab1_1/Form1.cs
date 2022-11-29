@@ -87,8 +87,9 @@ namespace Lab1_1
             else
             {
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+                int count = CheckCount() + 1;
                 cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "INSERT Medic (m_code, Surname, Name, Patronymic, Specialty, Category) VALUES ("+ CheckCount()+1 + ", '"+ textBox1.Text + "', '" + 
+                cmd.CommandText = "INSERT Medic (m_code, Surname, Name, Patronymic, Specialty, Category) VALUES ("+ count + ", '"+ textBox1.Text + "', '" + 
                                                                                                                         textBox2.Text + "', '" + 
                                                                                                                         textBox3.Text + "', '" + 
                                                                                                                         textBox4.Text + "', '" +
@@ -123,16 +124,48 @@ namespace Lab1_1
                 MessageBox.Show("Не все поля заполнены!");
             }
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            if (check())
+            {
+                
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = "DELETE FROM Appeal WHERE m_code = " + Convert.ToInt32(textBox6.Text);
+                cmd.Connection = sqlConnection1;
+                sqlConnection1.Open();
+                cmd.ExecuteNonQuery();
+                sqlConnection1.Close();
+            }
+
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = "DELETE FROM Medic WHERE m_code = " + Convert.ToInt32(textBox6.Text);
             cmd.Connection = sqlConnection1;
             sqlConnection1.Open();
             cmd.ExecuteNonQuery();
             sqlConnection1.Close();
+
             Clear();
+            LoadTable();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private bool check()
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = "SELECT Surname FROM Medic WHERE m_code = " + Convert.ToInt32(textBox6.Text);
+            cmd.Connection = sqlConnection1;
+            sqlConnection1.Open();
+            string str = cmd.ExecuteScalar().ToString();
+            sqlConnection1.Close();
+            if (str != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+            private void button3_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Количество врачей - " + CheckCount());
         }
@@ -274,6 +307,62 @@ namespace Lab1_1
             this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
             sqlConnection1.Open();
             string sql = "SELECT count(*) as 'Количество', Specialty as 'Специальность' from Medic group by Specialty";
+            adapter = new SqlDataAdapter(sql, sqlConnection1);
+            table = new DataTable();
+
+            adapter.Fill(table);
+            dataGridView1.DataSource = table;
+            sqlConnection1.Close();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
+            sqlConnection1.Open();
+            string sql = "SELECT sum(Appeal.Cost), Medic.Surname, Medic.Name, Medic.Patronymic from Appeal, Medic where " +
+                "Medic.m_code = Appeal.m_code and Medic.m_code = (select Medic.m_code from Medic where Medic.Surname = '"+ textBox9.Text + "') group by Medic.Surname, Medic.Name, Medic.Patronymic";
+            adapter = new SqlDataAdapter(sql, sqlConnection1);
+            table = new DataTable();
+
+            adapter.Fill(table);
+            dataGridView1.DataSource = table;
+            sqlConnection1.Close();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
+            sqlConnection1.Open();
+            string sql = "SELECT  Medic.Surname, Medic.Name, Medic.Patronymic, count(Patient.p_code) as 'Всего больных' from Medic, Appeal, Patient " +
+                "where Medic.m_code = Appeal.m_code and Patient.p_code = Appeal.p_code GROUP BY Medic.Surname, Medic.Name, Medic.Patronymic";
+            adapter = new SqlDataAdapter(sql, sqlConnection1);
+            table = new DataTable();
+
+            adapter.Fill(table);
+            dataGridView1.DataSource = table;
+            sqlConnection1.Close();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
+            sqlConnection1.Open();
+            string sql = "SELECT  Medic.Surname, Medic.Name, Medic.Patronymic, count(Patient.p_code) as 'Всего больных' from Medic, Appeal, Patient " +
+                "where Medic.m_code = Appeal.m_code and Patient.p_code = Appeal.p_code GROUP BY Medic.Surname, Medic.Name, Medic.Patronymic";
+            adapter = new SqlDataAdapter(sql, sqlConnection1);
+            table = new DataTable();
+
+            adapter.Fill(table);
+            dataGridView1.DataSource = table;
+            sqlConnection1.Close();
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            this.patientTableAdapter.Fill(this.hospitalDataSet.Patient);
+            sqlConnection1.Open();
+            string sql = "SELECT  Medic.Surname, Medic.Name, Medic.Patronymic, sum(Appeal.Cost) as 'Заработано' from Appeal, Medic " +
+                "where Medic.m_code = Appeal.m_code group by Medic.Surname, Medic.Name, Medic.Patronymic having sum(Appeal.Cost) > 2000";
             adapter = new SqlDataAdapter(sql, sqlConnection1);
             table = new DataTable();
 
