@@ -1,0 +1,4 @@
+<resources>
+    <string name = "app_name"> Локалізований додаток</string>
+    <string name="hello">Здравствуй, Мир!</string>
+</resources>
