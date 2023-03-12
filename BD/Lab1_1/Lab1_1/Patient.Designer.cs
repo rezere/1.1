@@ -40,6 +40,12 @@
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.Pages = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
@@ -72,16 +78,16 @@
             this.button10 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.label10 = new System.Windows.Forms.Label();
-            this.textBox11 = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.Меню = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.воспитателиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.родителиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.группыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textBox14 = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.textBox15 = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.hospitalDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.patientBindingSource)).BeginInit();
             this.Pages.SuspendLayout();
@@ -168,6 +174,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label15);
             this.tabPage1.Controls.Add(this.comboBox2);
             this.tabPage1.Controls.Add(this.label14);
             this.tabPage1.Controls.Add(this.comboBox1);
@@ -194,6 +201,59 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Добавление";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(118, 272);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(150, 21);
+            this.comboBox2.TabIndex = 21;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label14.Location = new System.Drawing.Point(17, 272);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(73, 24);
+            this.label14.TabIndex = 20;
+            this.label14.Text = "Группа";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(118, 236);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(150, 21);
+            this.comboBox1.TabIndex = 19;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label13.Location = new System.Drawing.Point(17, 236);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(98, 24);
+            this.label13.TabIndex = 18;
+            this.label13.Text = "Родители";
+            // 
+            // textBox11
+            // 
+            this.textBox11.Location = new System.Drawing.Point(115, 202);
+            this.textBox11.Name = "textBox11";
+            this.textBox11.Size = new System.Drawing.Size(153, 20);
+            this.textBox11.TabIndex = 17;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label10.Location = new System.Drawing.Point(17, 197);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(67, 24);
+            this.label10.TabIndex = 16;
+            this.label10.Text = "Адрес";
             // 
             // textBox8
             // 
@@ -277,7 +337,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(317, 425);
+            this.tabPage2.Size = new System.Drawing.Size(317, 415);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Удаление";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -326,7 +386,7 @@
             this.tabPage4.Controls.Add(this.button3);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(317, 425);
+            this.tabPage4.Size = new System.Drawing.Size(317, 415);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Запросы";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -454,7 +514,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(317, 425);
+            this.tabPage3.Size = new System.Drawing.Size(317, 415);
             this.tabPage3.TabIndex = 4;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -517,59 +577,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(775, 441);
             this.dataGridView1.TabIndex = 9;
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label10.Location = new System.Drawing.Point(17, 197);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(67, 24);
-            this.label10.TabIndex = 16;
-            this.label10.Text = "Адрес";
-            // 
-            // textBox11
-            // 
-            this.textBox11.Location = new System.Drawing.Point(115, 202);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(153, 20);
-            this.textBox11.TabIndex = 17;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label13.Location = new System.Drawing.Point(17, 236);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(98, 24);
-            this.label13.TabIndex = 18;
-            this.label13.Text = "Родители";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(118, 236);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(150, 21);
-            this.comboBox1.TabIndex = 19;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label14.Location = new System.Drawing.Point(17, 272);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(73, 24);
-            this.label14.TabIndex = 20;
-            this.label14.Text = "Группа";
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(118, 272);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(150, 21);
-            this.comboBox2.TabIndex = 21;
-            // 
             // Меню
             // 
             this.Меню.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -577,32 +584,91 @@
             this.родителиToolStripMenuItem,
             this.группыToolStripMenuItem});
             this.Меню.Name = "Меню";
-            this.Меню.Size = new System.Drawing.Size(181, 92);
+            this.Меню.Size = new System.Drawing.Size(145, 70);
             this.Меню.Text = "Меню";
             // 
             // воспитателиToolStripMenuItem
             // 
             this.воспитателиToolStripMenuItem.Name = "воспитателиToolStripMenuItem";
-            this.воспитателиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.воспитателиToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.воспитателиToolStripMenuItem.Text = "Воспитатели";
             // 
             // родителиToolStripMenuItem
             // 
             this.родителиToolStripMenuItem.Name = "родителиToolStripMenuItem";
-            this.родителиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.родителиToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.родителиToolStripMenuItem.Text = "Родители";
             // 
             // группыToolStripMenuItem
             // 
             this.группыToolStripMenuItem.Name = "группыToolStripMenuItem";
-            this.группыToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.группыToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.группыToolStripMenuItem.Text = "Группы";
+            // 
+            // textBox14
+            // 
+            this.textBox14.Location = new System.Drawing.Point(527, 776);
+            this.textBox14.Name = "textBox14";
+            this.textBox14.Size = new System.Drawing.Size(150, 20);
+            this.textBox14.TabIndex = 22;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label15.Location = new System.Drawing.Point(110, 195);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(96, 24);
+            this.label15.TabIndex = 22;
+            this.label15.Text = "Фамилия ";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label16.Location = new System.Drawing.Point(457, 772);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(64, 24);
+            this.label16.TabIndex = 23;
+            this.label16.Text = "Логин";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label17.Location = new System.Drawing.Point(445, 816);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(76, 24);
+            this.label17.TabIndex = 24;
+            this.label17.Text = "Пароль";
+            // 
+            // textBox15
+            // 
+            this.textBox15.Location = new System.Drawing.Point(527, 820);
+            this.textBox15.Name = "textBox15";
+            this.textBox15.Size = new System.Drawing.Size(150, 20);
+            this.textBox15.TabIndex = 25;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label18.Location = new System.Drawing.Point(538, 713);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(129, 24);
+            this.label18.TabIndex = 26;
+            this.label18.Text = "Авторизация";
             // 
             // Patient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1129, 569);
+            this.ClientSize = new System.Drawing.Size(1129, 1061);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.textBox15);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.textBox14);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.Pages);
             this.Name = "Patient";
@@ -622,6 +688,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.Меню.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -680,6 +747,12 @@
         private System.Windows.Forms.ToolStripMenuItem воспитателиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem родителиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem группыToolStripMenuItem;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox textBox14;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox textBox15;
+        private System.Windows.Forms.Label label18;
     }
 }
 
