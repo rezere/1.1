@@ -34,7 +34,7 @@ namespace Kyrsach
             else if(password.Text == adminPass)
             {
                 user = "admin";
-                Form2 example = new Form2();
+                Form3 example = new Form3();
                 example.Show();
             }
             else if(adminPass == eduPass)

@@ -34,3 +34,6 @@ V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\System.Buffers.xml
 V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\System.Memory.xml
 V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\System.Numerics.Vectors.xml
 V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+V:\1.1\BD\2 semest\Kyrsach\Kyrsach\obj\Debug\Kyrsach.Form3.resources
+V:\1.1\BD\2 semest\Kyrsach\Kyrsach\obj\Debug\Kyrsach.Form4.resources
+V:\1.1\BD\2 semest\Kyrsach\Kyrsach\obj\Debug\Kyrsach.Form5.resources

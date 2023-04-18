@@ -24,8 +24,7 @@ namespace Kyrsach
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            // TODO: данная строка кода позволяет загрузить данные в таблицу "kindergartenDataSet.kindergartener". При необходимости она может быть перемещена или удалена.
-            //this.kindergartenerTableAdapter.Fill(this.kindergartenDataSet.kindergartener);
+
             LoadTable("SELECT * FROM kindergartener");
 
 
@@ -90,7 +89,7 @@ namespace Kyrsach
             {
                 MessageBox.Show("Некоректний день");
             }
-            else if (Int32.Parse(Year.Text) < 1960 || Int32.Parse(Day.Text) > 2002)
+            else if (Int32.Parse(Year.Text) < 1960 || Int32.Parse(Year.Text) > 2002)
             {
                 MessageBox.Show("Некоректний рік");
             }
@@ -106,7 +105,7 @@ namespace Kyrsach
             {
                 MySqlCommand command = connection.CreateCommand();
 
-                command.CommandText = "SELECT COUNT(*) FROM kindergartener";
+                command.CommandText = "SELECT MAX(ID) FROM kindergartener";
 
                 connection.Open();
                 int count = Convert.ToInt32(command.ExecuteScalar());
@@ -170,6 +169,53 @@ namespace Kyrsach
         private void button3_Click(object sender, EventArgs e)
         {
             LoadTable("SELECT * FROM kindergartener WHERE YEAR(CURDATE()) - YEAR(Born) BETWEEN 57 AND 60;");
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+            MySqlCommand command = connection.CreateCommand();
+
+            command.CommandText = "SELECT COUNT(*) FROM kindergartener where ID = " + Delete.Text;
+
+            connection.Open();
+            int count = Convert.ToInt32(command.ExecuteScalar());
+            connection.Close();
+            if (Delete.Text.Length < 1)
+            {
+                MessageBox.Show("Введіть номер запису");
+            }
+            else if (count == 0)
+            {
+                MessageBox.Show("Такого запису не існує");
+            }
+            else
+            {
+                command = connection.CreateCommand();
+
+                command.CommandText = "SELECT COUNT(*) FROM groups where ID_k = " + Delete.Text;
+
+                connection.Open();
+                count = Convert.ToInt32(command.ExecuteScalar());
+                connection.Close();
+                if(count == 0)
+                {
+                    command = connection.CreateCommand();
+
+                    command.CommandText = "DELETE FROM kindergartener WHERE ID = " + Delete.Text;
+
+                    connection.Open();
+                    command.ExecuteScalar();
+                    connection.Close();
+                    LoadTable("SELECT * FROM kindergartener");
+                    Delete.Text = "";
+                }
+                else
+                {
+                    MessageBox.Show("Данний вихователь працює в групі. Заменіть його спочатку");
+                }
+            }
+
         }
     }
 }
