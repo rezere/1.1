@@ -8,13 +8,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Tls;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskBand;
 
 namespace Kyrsach
 {
     public partial class Form3 : Form
     {
         MySqlConnection connection = new MySqlConnection("User Id=root;Host=127.0.0.1;Database=kindergarten;Charset=utf8;");
+        string NameGroup;
         public Form3()
         {
             InitializeComponent();
@@ -198,6 +202,131 @@ namespace Kyrsach
                     MessageBox.Show("Не можливо видалити, бо в цій группі є діти");
                 }
             }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            using (connection)
+            {
+                connection.Open();
+                string sql = "SELECT Name, MaxClindren, MinYear, MaxYear, Schedule, ID_k FROM groups WHERE Name = @groupName";
+                using (MySqlCommand cmd = new MySqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@groupName", edit.Text);
+                    using (MySqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            NameGroup = edit.Text;
+                            string name = rdr.GetString(0);
+                            int maxClindren = rdr.GetInt32(1);
+                            int minYear = rdr.GetInt32(2);
+                            int maxYear = rdr.GetInt32(3);
+                            string schedule = rdr.GetString(4);
+                            int id_k = rdr.GetInt32(5);
+
+                            // Присваиваем значения текстбоксам:
+                            NameBox.Text = name;
+                            MaxCount.Text = maxClindren.ToString();
+                            MinAge.Text = minYear.ToString();
+                            MaxAge.Text = maxYear.ToString();
+                            string searchText = schedule;
+                            int index = Rozklad.FindStringExact(searchText);
+                            if (index != -1) // Если найдено совпадение
+                            {
+                                Rozklad.SelectedIndex = index; // Выбрать элемент в комбобоксе
+                            }
+
+                            Edu.SelectedIndex = id_k-1;
+                            tabControl1.SelectedIndex = 0;
+                            button1.Visible = false;
+                            EditButton.Visible = true;
+                        }
+                        else
+                        {
+                            NameGroup = "";
+                            MessageBox.Show("Запис не існує");
+                        }
+                    }
+                }
+            }
+        }
+
+        private void EditButton_Click(object sender, EventArgs e)
+        {
+            if (NameBox.Text.Length == 0)
+            {
+                MessageBox.Show("Введіть назву групи");
+            }
+            else if (MaxCount.Text.Length == 0)
+            {
+                MessageBox.Show("Введіть максимальну кількість в групі");
+            }
+            else if (MinAge.Text.Length == 0)
+            {
+                MessageBox.Show("Введіть мінімальний вік");
+            }
+            else if (MaxAge.Text.Length == 0)
+            {
+                MessageBox.Show("Введіть максимальний вік");
+            }
+            else
+            {
+                MySqlCommand command;
+                if (NameBox.Text != NameGroup)
+                {
+                    command = connection.CreateCommand();
+                    command.CommandText = "UPDATE children SET G_Name = '" + NameBox.Text + "' WHERE Name = '" + NameGroup + "';";
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+                command = connection.CreateCommand();
+                command.CommandText = "UPDATE groups SET Name = '" + NameBox.Text +"', MaxClindren = " + MaxCount.Text + ", MinYear = " + MinAge.Text + ", MaxYear = " + MaxAge.Text + ", Schedule = '" + Rozklad.Text + "', ID_k = " + (Edu.SelectedIndex + 1) + " WHERE Name = '" + NameGroup + "';";
+
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
+                
+                NameGroup = "";
+                LoadTable("SELECT groups.Name, groups.MaxClindren, groups.MinYear, groups.MaxYear, " +
+               "groups.Schedule, " +
+               "CONCAT(kindergartener.Surname, ' ', SUBSTR(kindergartener.Name, 1, 1), '.', " +
+               "SUBSTR(kindergartener.SName, 1, 1), '.') AS Surname " +
+               "FROM groups INNER JOIN kindergartener ON groups.ID_k = kindergartener.ID");
+                Clear();
+                button1.Visible = true;
+                EditButton.Visible = false;
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            string temp = "SELECT g.Schedule, COUNT(c.ID_c) as ChildrenCount " +
+                "FROM groups g LEFT JOIN children c ON c.G_Name = g.Name GROUP BY g.Schedule; ";
+            LoadTable(temp);
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            string temp = "SELECT COUNT(DISTINCT g.Name) as 'К-ть груп', COUNT(c.ID_c) as 'К-ть дітей' " +
+                "FROM groups g LEFT JOIN children c ON c.G_Name = g.Name;";
+            LoadTable(temp);
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            string temp = "SELECT *FROM children WHERE G_Name LIKE '%" + textBox1.Text + "%'; ";
+            LoadTable(temp);
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            string temp = "SELECT p.Surname, p.Name, p.SName, p.Adress, p.Number," +
+                " p.Email FROM children d JOIN pclind pc ON d.ID_c = pc.ID_C " +
+                "JOIN parent p ON p.ID = pc.ID_P WHERE d.G_Name LIKE '%" + textBox1.Text + "%'; ";
+            LoadTable(temp);
         }
     }
 }

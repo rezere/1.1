@@ -45,6 +45,7 @@
             this.kindergartenerTableAdapter = new Kyrsach.kindergartenDataSetTableAdapters.kindergartenerTableAdapter();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.EditButton = new System.Windows.Forms.Button();
             this.Add = new System.Windows.Forms.Button();
             this.Number = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -62,7 +63,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.Surname = new System.Windows.Forms.TextBox();
             this.SurnameText = new System.Windows.Forms.Label();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.button5 = new System.Windows.Forms.Button();
+            this.edit = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button4 = new System.Windows.Forms.Button();
             this.Delete = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -72,7 +78,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.kindergartenerBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.button4 = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.AgeSearch = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenerBindingSource2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenerBindingSource)).BeginInit();
@@ -80,6 +87,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenDataSet)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenerBindingSource1)).BeginInit();
@@ -179,6 +187,7 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(834, 57);
@@ -189,6 +198,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.EditButton);
             this.tabPage1.Controls.Add(this.Add);
             this.tabPage1.Controls.Add(this.Number);
             this.tabPage1.Controls.Add(this.label7);
@@ -211,8 +221,19 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(333, 355);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.Text = "Додавання";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // EditButton
+            // 
+            this.EditButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.EditButton.Location = new System.Drawing.Point(9, 264);
+            this.EditButton.Name = "EditButton";
+            this.EditButton.Size = new System.Drawing.Size(168, 58);
+            this.EditButton.TabIndex = 17;
+            this.EditButton.Text = "Редагувати";
+            this.EditButton.UseVisualStyleBackColor = true;
+            this.EditButton.Click += new System.EventHandler(this.EditButton_Click);
             // 
             // Add
             // 
@@ -367,6 +388,44 @@
             this.SurnameText.TabIndex = 0;
             this.SurnameText.Text = "Прізвище";
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.button5);
+            this.tabPage4.Controls.Add(this.edit);
+            this.tabPage4.Controls.Add(this.label10);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(333, 355);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Редагування";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(229, 12);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 58);
+            this.button5.TabIndex = 2;
+            this.button5.Text = "Редагувати";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // edit
+            // 
+            this.edit.Location = new System.Drawing.Point(100, 12);
+            this.edit.Name = "edit";
+            this.edit.Size = new System.Drawing.Size(104, 20);
+            this.edit.TabIndex = 1;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(15, 15);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(79, 13);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "Номер запису";
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.button4);
@@ -377,8 +436,18 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(333, 355);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "Видалення";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(216, 15);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 53);
+            this.button4.TabIndex = 2;
+            this.button4.Text = "Видалити";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // Delete
             // 
@@ -398,6 +467,8 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.AgeSearch);
+            this.tabPage3.Controls.Add(this.label11);
             this.tabPage3.Controls.Add(this.button3);
             this.tabPage3.Controls.Add(this.SurnameSearch);
             this.tabPage3.Controls.Add(this.label8);
@@ -408,13 +479,13 @@
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage3.Size = new System.Drawing.Size(333, 355);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "tabPage3";
+            this.tabPage3.Text = "Запити";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.Location = new System.Drawing.Point(6, 148);
+            this.button3.Location = new System.Drawing.Point(6, 73);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(132, 61);
             this.button3.TabIndex = 4;
@@ -424,7 +495,7 @@
             // 
             // SurnameSearch
             // 
-            this.SurnameSearch.Location = new System.Drawing.Point(78, 89);
+            this.SurnameSearch.Location = new System.Drawing.Point(77, 144);
             this.SurnameSearch.Name = "SurnameSearch";
             this.SurnameSearch.Size = new System.Drawing.Size(146, 20);
             this.SurnameSearch.TabIndex = 3;
@@ -433,7 +504,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 92);
+            this.label8.Location = new System.Drawing.Point(6, 147);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(56, 13);
             this.label8.TabIndex = 2;
@@ -442,7 +513,7 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Location = new System.Drawing.Point(177, 6);
+            this.button2.Location = new System.Drawing.Point(144, 6);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(132, 61);
             this.button2.TabIndex = 1;
@@ -466,15 +537,22 @@
             this.kindergartenerBindingSource1.DataMember = "kindergartener";
             this.kindergartenerBindingSource1.DataSource = this.kindergartenerBindingSource;
             // 
-            // button4
+            // label11
             // 
-            this.button4.Location = new System.Drawing.Point(216, 15);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 53);
-            this.button4.TabIndex = 2;
-            this.button4.Text = "Видалити";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 182);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(22, 13);
+            this.label11.TabIndex = 5;
+            this.label11.Text = "Вік";
+            // 
+            // AgeSearch
+            // 
+            this.AgeSearch.Location = new System.Drawing.Point(77, 179);
+            this.AgeSearch.Name = "AgeSearch";
+            this.AgeSearch.Size = new System.Drawing.Size(61, 20);
+            this.AgeSearch.TabIndex = 6;
+            this.AgeSearch.TextChanged += new System.EventHandler(this.AgeSearch_TextChanged);
             // 
             // Form2
             // 
@@ -494,6 +572,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
@@ -549,5 +629,12 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox Delete;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox edit;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button EditButton;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox AgeSearch;
     }
 }

@@ -121,5 +121,21 @@ namespace Kyrsach
         {
             LoadTable("SELECT * FROM parent");
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string temp = "SELECT G_Name, COUNT(DISTINCT ID_P) AS 'Кількість батьків'" +
+                " FROM children JOIN pclind ON children.ID_c = pclind.ID_C" +
+                " JOIN parent ON parent.ID = pclind.ID_P GROUP BY G_Name;";
+            LoadTable(temp);
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string temp = "SELECT p.Surname, COUNT(DISTINCT pc.ID_C) as ChildrenCount" +
+                " FROM parent p JOIN pclind pc ON p.ID = pc.ID_P GROUP BY p.ID HAVING ChildrenCount >= 2; ";
+            LoadTable(temp);
+        }
     }
 }

@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Kyrsach
 {
@@ -18,6 +20,10 @@ namespace Kyrsach
         public Form5()
         {
             InitializeComponent();
+            label9.Visible = false;
+            Mother.Visible = false;
+            label10.Visible = false;
+            Father.Visible = false;
         }
         private void LoadTable(string query)
         {
@@ -38,6 +44,8 @@ namespace Kyrsach
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.Father = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -62,10 +70,20 @@ namespace Kyrsach
             this.Surname = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label12 = new System.Windows.Forms.Label();
+            this.Search = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -73,17 +91,19 @@ namespace Kyrsach
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 48);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(646, 390);
+            this.dataGridView1.Size = new System.Drawing.Size(736, 437);
             this.dataGridView1.TabIndex = 0;
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(754, 48);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Location = new System.Drawing.Point(754, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(377, 390);
+            this.tabControl1.Size = new System.Drawing.Size(377, 473);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
@@ -110,13 +130,15 @@ namespace Kyrsach
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(369, 364);
+            this.tabPage1.Size = new System.Drawing.Size(369, 447);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.Text = "Додавання";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.comboBox1);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.Father);
             this.groupBox1.Controls.Add(this.label10);
@@ -124,14 +146,36 @@ namespace Kyrsach
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Location = new System.Drawing.Point(21, 270);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(322, 87);
+            this.groupBox1.Size = new System.Drawing.Size(322, 171);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Visible = false;
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(10, 22);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(46, 13);
+            this.label11.TabIndex = 21;
+            this.label11.Text = " Батьки";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Мати",
+            "Батько",
+            "Мати та батько"});
+            this.comboBox1.Location = new System.Drawing.Point(58, 19);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(137, 21);
+            this.comboBox1.TabIndex = 20;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(210, 13);
+            this.button1.Location = new System.Drawing.Point(210, 107);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(106, 58);
             this.button1.TabIndex = 19;
@@ -155,7 +199,7 @@ namespace Kyrsach
             "Жовтень",
             "Листопад",
             "Грудень"});
-            this.Father.Location = new System.Drawing.Point(56, 50);
+            this.Father.Location = new System.Drawing.Point(58, 137);
             this.Father.Name = "Father";
             this.Father.Size = new System.Drawing.Size(137, 21);
             this.Father.TabIndex = 18;
@@ -163,7 +207,7 @@ namespace Kyrsach
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(8, 53);
+            this.label10.Location = new System.Drawing.Point(10, 140);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(43, 13);
             this.label10.TabIndex = 17;
@@ -185,7 +229,7 @@ namespace Kyrsach
             "Жовтень",
             "Листопад",
             "Грудень"});
-            this.Mother.Location = new System.Drawing.Point(56, 13);
+            this.Mother.Location = new System.Drawing.Point(58, 107);
             this.Mother.Name = "Mother";
             this.Mother.Size = new System.Drawing.Size(137, 21);
             this.Mother.TabIndex = 16;
@@ -193,7 +237,7 @@ namespace Kyrsach
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 16);
+            this.label9.Location = new System.Drawing.Point(8, 110);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(33, 13);
             this.label9.TabIndex = 0;
@@ -372,14 +416,103 @@ namespace Kyrsach
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(369, 364);
+            this.tabPage2.Size = new System.Drawing.Size(369, 447);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "Видалення";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(369, 447);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Редагування";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.textBox1);
+            this.tabPage4.Controls.Add(this.label13);
+            this.tabPage4.Controls.Add(this.label12);
+            this.tabPage4.Controls.Add(this.Search);
+            this.tabPage4.Controls.Add(this.button4);
+            this.tabPage4.Controls.Add(this.button3);
+            this.tabPage4.Controls.Add(this.button2);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(369, 447);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Запити";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(10, 96);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(56, 13);
+            this.label12.TabIndex = 4;
+            this.label12.Text = "Прізвище";
+            // 
+            // Search
+            // 
+            this.Search.Location = new System.Drawing.Point(72, 93);
+            this.Search.Name = "Search";
+            this.Search.Size = new System.Drawing.Size(121, 20);
+            this.Search.TabIndex = 3;
+            this.Search.TextChanged += new System.EventHandler(this.Search_TextChanged);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(244, 14);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(105, 42);
+            this.button4.TabIndex = 2;
+            this.button4.Text = "Діти які закінчують садик";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(133, 14);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(105, 42);
+            this.button3.TabIndex = 1;
+            this.button3.Text = "Всі діти";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(13, 14);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(105, 42);
+            this.button2.TabIndex = 0;
+            this.button2.Text = "К-ть дтей в групах";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(10, 134);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(145, 13);
+            this.label13.TabIndex = 5;
+            this.label13.Text = "Прізвище для ін-ціїї батьків";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(173, 131);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(121, 20);
+            this.textBox1.TabIndex = 6;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // Form5
             // 
-            this.ClientSize = new System.Drawing.Size(1187, 450);
+            this.ClientSize = new System.Drawing.Size(1187, 497);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.dataGridView1);
             //this.Name = "Form5";
@@ -390,6 +523,8 @@ namespace Kyrsach
             this.tabPage1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -397,23 +532,23 @@ namespace Kyrsach
         private DataGridView dataGridView1;
         private TabControl tabControl1;
         private TabPage tabPage1;
-        private TextBox Name;
+        private System.Windows.Forms.TextBox Name;
         private Label label2;
-        private TextBox Surname;
+        private System.Windows.Forms.TextBox Surname;
         private Label label1;
         private TabPage tabPage2;
-        private TextBox SName;
+        private System.Windows.Forms.TextBox SName;
         private Label label3;
         private Label label5;
-        private TextBox Day;
+        private System.Windows.Forms.TextBox Day;
         private Label label4;
-        private ComboBox Month;
+        private System.Windows.Forms.ComboBox Month;
         private Label label6;
-        private TextBox Year;
-        private TextBox Adress;
+        private System.Windows.Forms.TextBox Year;
+        private System.Windows.Forms.TextBox Adress;
         private Label label7;
         private Label label8;
-        private ComboBox Group;
+        private System.Windows.Forms.ComboBox Group;
         private RadioButton radioButton1;
         private RadioButton Parent;
 
@@ -449,11 +584,12 @@ namespace Kyrsach
 
         private GroupBox groupBox1;
         private Label label9;
-        private ComboBox Mother;
-        private ComboBox Father;
+        private System.Windows.Forms.ComboBox Mother;
+        private System.Windows.Forms.ComboBox Father;
         private Label label10;
-        private Button button1;
-
+        private System.Windows.Forms.Button button1;
+        private Label label11;
+        private System.Windows.Forms.ComboBox comboBox1;
         private void button1_Click(object sender, EventArgs e)
         {
             
@@ -497,7 +633,7 @@ namespace Kyrsach
             {
                 MessageBox.Show("Некоректний день");
             }
-            else if (int.Parse(Year.Text) < 2018 || int.Parse(Year.Text) > 2023)
+            else if (int.Parse(Year.Text) < 2016 || int.Parse(Year.Text) > 2023)
             {
                 MessageBox.Show("Некоректний рік");
             }
@@ -507,66 +643,135 @@ namespace Kyrsach
             }
             else
             {
+
                 MySqlCommand command = connection.CreateCommand();
-
-                command.CommandText = "SELECT COUNT(*) FROM children";
-
-                connection.Open();
-                int count = Convert.ToInt32(command.ExecuteScalar());
-                connection.Close();
-                DateTime birthdate = new DateTime(Int32.Parse(Year.Text), Month.SelectedIndex + 1, Int32.Parse(Day.Text));
-
-                command.CommandText = "INSERT INTO children (ID_c, Surname, Name, SName, Born, Adress, G_Name) " +
-                                      "VALUES (@ID, @Прізвище, @Ім_я, @По_батькові, @Дата_народження, @Адреса, @Група)";
-
-                command.Parameters.AddWithValue("@ID", count + 1);
-                command.Parameters.AddWithValue("@Прізвище", Surname.Text);
-                command.Parameters.AddWithValue("@Ім_я", Name.Text);
-                command.Parameters.AddWithValue("@По_батькові", SName.Text);
-                command.Parameters.AddWithValue("@Дата_народження", birthdate);
-                command.Parameters.AddWithValue("@Адреса", Adress.Text);
-                command.Parameters.AddWithValue("@Група", Group.Text);
-
-                connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();
-                connection.Close();
-
-                if (Mother.Text != "" && Father.Text != "")
+                if (Group.Items.Count > 0)
                 {
-                    command.CommandText = "SELECT COUNT(*) FROM pclind";
+                    command.CommandText = "SELECT COUNT(*) FROM children";
 
                     connection.Open();
-                    int mothercount = Convert.ToInt32(command.ExecuteScalar());
+                    int count = Convert.ToInt32(command.ExecuteScalar());
                     connection.Close();
-                    command = connection.CreateCommand();
-                    command.CommandText = "INSERT INTO pclind (ID_PC, ID_P, ID_C) " +
-                                          "VALUES (@ID, @Code, @Ім_я)";
+                    DateTime birthdate = new DateTime(Int32.Parse(Year.Text), Month.SelectedIndex + 1, Int32.Parse(Day.Text));
 
-                    command.Parameters.AddWithValue("@ID", mothercount + 1);
-                    command.Parameters.AddWithValue("@Code", Mother.SelectedIndex+1);
-                    command.Parameters.AddWithValue("@Ім_я", count + 1);
+                    command.CommandText = "INSERT INTO children (ID_c, Surname, Name, SName, Born, Adress, G_Name) " +
+                                          "VALUES (@ID, @Прізвище, @Ім_я, @По_батькові, @Дата_народження, @Адреса, @Група)";
 
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    connection.Close();
-
-                    command.CommandText = "SELECT COUNT(*) FROM pclind";
-
-                    connection.Open();
-                    mothercount = Convert.ToInt32(command.ExecuteScalar());
-                    connection.Close();
-                    command = connection.CreateCommand();
-                    command.CommandText = "INSERT INTO pclind (ID_PC, ID_P, ID_C) " +
-                                          "VALUES (@ID, @Code, @Ім_я)";
-
-                    command.Parameters.AddWithValue("@ID", mothercount + 1);
-                    command.Parameters.AddWithValue("@Code", Father.SelectedIndex+1);
-                    command.Parameters.AddWithValue("@Ім_я", count + 1);
+                    command.Parameters.AddWithValue("@ID", count + 1);
+                    command.Parameters.AddWithValue("@Прізвище", Surname.Text);
+                    command.Parameters.AddWithValue("@Ім_я", Name.Text);
+                    command.Parameters.AddWithValue("@По_батькові", SName.Text);
+                    command.Parameters.AddWithValue("@Дата_народження", birthdate);
+                    command.Parameters.AddWithValue("@Адреса", Adress.Text);
+                    command.Parameters.AddWithValue("@Група", Group.Text);
 
                     connection.Open();
                     command.ExecuteNonQuery();
                     connection.Close();
+                    connection.Close();
+                    int mothercount;
+                    if (comboBox1.SelectedIndex != 1)
+                    {
+                        command.CommandText = "SELECT COUNT(*) FROM pclind";
+
+                        connection.Open();
+                        mothercount = Convert.ToInt32(command.ExecuteScalar());
+                        connection.Close();
+                        command = connection.CreateCommand();
+                        command.CommandText = "INSERT INTO pclind (ID_PC, ID_P, ID_C) " +
+                                              "VALUES (@ID, @Code, @Ім_я)";
+
+                        command.Parameters.AddWithValue("@ID", mothercount + 1);
+                        command.Parameters.AddWithValue("@Code", Mother.SelectedIndex + 1);
+                        command.Parameters.AddWithValue("@Ім_я", count + 1);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                    if(comboBox1.SelectedIndex != 0)
+                    {
+                        command.CommandText = "SELECT COUNT(*) FROM pclind";
+
+                        connection.Open();
+                        mothercount = Convert.ToInt32(command.ExecuteScalar());
+                        connection.Close();
+                        command = connection.CreateCommand();
+                        command.CommandText = "INSERT INTO pclind (ID_PC, ID_P, ID_C) " +
+                                              "VALUES (@ID, @Code, @Ім_я)";
+
+                        command.Parameters.AddWithValue("@ID", mothercount + 1);
+                        command.Parameters.AddWithValue("@Code", Father.SelectedIndex + 1);
+                        command.Parameters.AddWithValue("@Ім_я", count + 1);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                        
+                }
+                else
+                {
+                    command.CommandText = "SELECT COUNT(*) FROM queue";
+
+                    connection.Open();
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+                    connection.Close();
+                    DateTime birthdate = new DateTime(Int32.Parse(Year.Text), Month.SelectedIndex + 1, Int32.Parse(Day.Text));
+
+                    command.CommandText = "INSERT INTO queue (ID_Q, Surname, Name, SName, Born, Adress) " +
+                                          "VALUES (@ID, @Прізвище, @Ім_я, @По_батькові, @Дата_народження, @Адреса)";
+
+                    command.Parameters.AddWithValue("@ID", count + 1);
+                    command.Parameters.AddWithValue("@Прізвище", Surname.Text);
+                    command.Parameters.AddWithValue("@Ім_я", Name.Text);
+                    command.Parameters.AddWithValue("@По_батькові", SName.Text);
+                    command.Parameters.AddWithValue("@Дата_народження", birthdate);
+                    command.Parameters.AddWithValue("@Адреса", Adress.Text);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                    connection.Close();
+                    int mothercount;
+                    if (comboBox1.SelectedIndex != 1)
+                    {
+                        command.CommandText = "SELECT COUNT(*) FROM pqueue";
+
+                        connection.Open();
+                        mothercount = Convert.ToInt32(command.ExecuteScalar());
+                        connection.Close();
+                        command = connection.CreateCommand();
+                        command.CommandText = "INSERT INTO pqueue (ID_PQ, ID_P, ID_Q) " +
+                                              "VALUES (@ID, @Code, @Ім_я)";
+
+                        command.Parameters.AddWithValue("@ID", mothercount + 1);
+                        command.Parameters.AddWithValue("@Code", Mother.SelectedIndex + 1);
+                        command.Parameters.AddWithValue("@Ім_я", count + 1);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                    if(comboBox1.SelectedIndex != 0)
+                    {
+                        command.CommandText = "SELECT COUNT(*) FROM pqueue";
+
+                        connection.Open();
+                        mothercount = Convert.ToInt32(command.ExecuteScalar());
+                        connection.Close();
+                        command = connection.CreateCommand();
+                        command.CommandText = "INSERT INTO pqueue (ID_PQ, ID_P, ID_Q) " +
+                                              "VALUES (@ID, @Code, @Ім_я)";
+
+                        command.Parameters.AddWithValue("@ID", mothercount + 1);
+                        command.Parameters.AddWithValue("@Code", Father.SelectedIndex + 1);
+                        command.Parameters.AddWithValue("@Ім_я", count + 1);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
                 }
             }
         }
@@ -597,6 +802,79 @@ namespace Kyrsach
 
             // закриття з'єднання
             connection.Close();
+        }
+
+
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(comboBox1.SelectedIndex == 0)
+            {
+                label9.Visible = true;
+                Mother.Visible = true;
+                label10.Visible = false;
+                Father.Visible = false;
+            }
+            if(comboBox1.SelectedIndex == 1)
+            {
+                label10.Visible = true;
+                Father.Visible = true;
+                label9.Visible = false;
+                Mother.Visible = false;
+            }
+            if(comboBox1.SelectedIndex == 2)
+            {
+                label9.Visible = true;
+                Mother.Visible = true;
+                label10.Visible = true;
+                Father.Visible = true;
+            }
+        }
+
+        private TabPage tabPage3;
+        private TabPage tabPage4;
+        private System.Windows.Forms.Button button2;
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string value = "SELECT G_Name, COUNT(*) AS 'Количество детей' FROM children GROUP BY G_Name;";
+            LoadTable(value);
+        }
+
+        private System.Windows.Forms.Button button3;
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string value = "SELECT *FROM children";
+            LoadTable(value);
+        }
+
+        private System.Windows.Forms.Button button4;
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string value = "SELECT *FROM children WHERE YEAR(CURDATE()) - YEAR(Born) = 6;";
+            LoadTable(value);
+        }
+
+        private System.Windows.Forms.TextBox Search;
+        private Label label12;
+
+        private void Search_TextChanged(object sender, EventArgs e)
+        {
+            string temp = " SELECT *FROM children WHERE Surname LIKE '%" + Search.Text + "%'";
+            LoadTable(temp);
+        }
+
+        private System.Windows.Forms.TextBox textBox1;
+        private Label label13;
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            string temp = " SELECT p.ID, p.Surname, p.Name, p.SName, p.Adress, p.Number, " +
+                "p.Email FROM children c JOIN pclind pc ON c.ID_c = pc.ID_C JOIN parent p " +
+                "ON p.ID = pc.ID_P WHERE c.Surname LIKE '%" + textBox1.Text + "%'";
+            LoadTable(temp);
         }
     }
 }

@@ -38,6 +38,7 @@
             this.groupTableAdapter = new Kyrsach.kindergartenDataSet1TableAdapters.groupTableAdapter();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.EditButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.Edu = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -51,8 +52,17 @@
             this.label2 = new System.Windows.Forms.Label();
             this.NameBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.button5 = new System.Windows.Forms.Button();
+            this.edit = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button4 = new System.Windows.Forms.Button();
+            this.Delete = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             this.SearchName = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
@@ -60,9 +70,10 @@
             this.ZapMin = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.Delete = new System.Windows.Forms.TextBox();
-            this.button4 = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenDataSet1)).BeginInit();
@@ -70,6 +81,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenerBindingSource)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.SuspendLayout();
@@ -113,6 +125,7 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(747, 48);
@@ -123,6 +136,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.EditButton);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.Edu);
             this.tabPage1.Controls.Add(this.label6);
@@ -141,8 +155,19 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(377, 364);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.Text = "Додавання";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // EditButton
+            // 
+            this.EditButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.EditButton.Location = new System.Drawing.Point(23, 216);
+            this.EditButton.Name = "EditButton";
+            this.EditButton.Size = new System.Drawing.Size(166, 58);
+            this.EditButton.TabIndex = 13;
+            this.EditButton.Text = "Редагувати";
+            this.EditButton.UseVisualStyleBackColor = true;
+            this.EditButton.Click += new System.EventHandler(this.EditButton_Click);
             // 
             // button1
             // 
@@ -259,6 +284,44 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Назва";
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.button5);
+            this.tabPage4.Controls.Add(this.edit);
+            this.tabPage4.Controls.Add(this.label10);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(377, 364);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Редагування";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(240, 13);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 49);
+            this.button5.TabIndex = 2;
+            this.button5.Text = "Редагувати";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // edit
+            // 
+            this.edit.Location = new System.Drawing.Point(98, 13);
+            this.edit.Name = "edit";
+            this.edit.Size = new System.Drawing.Size(111, 20);
+            this.edit.TabIndex = 1;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(13, 16);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(70, 13);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "Назва групи";
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.button4);
@@ -269,11 +332,43 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(377, 364);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "Видалення";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(243, 15);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(90, 51);
+            this.button4.TabIndex = 2;
+            this.button4.Text = "Видалити";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // Delete
+            // 
+            this.Delete.Location = new System.Drawing.Point(100, 15);
+            this.Delete.Name = "Delete";
+            this.Delete.Size = new System.Drawing.Size(120, 20);
+            this.Delete.TabIndex = 1;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(15, 18);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(70, 13);
+            this.label9.TabIndex = 0;
+            this.label9.Text = "Назва групи";
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.textBox2);
+            this.tabPage3.Controls.Add(this.label12);
+            this.tabPage3.Controls.Add(this.textBox1);
+            this.tabPage3.Controls.Add(this.label11);
+            this.tabPage3.Controls.Add(this.button7);
+            this.tabPage3.Controls.Add(this.button6);
             this.tabPage3.Controls.Add(this.SearchName);
             this.tabPage3.Controls.Add(this.label8);
             this.tabPage3.Controls.Add(this.button3);
@@ -286,12 +381,32 @@
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage3.Size = new System.Drawing.Size(377, 364);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "tabPage3";
+            this.tabPage3.Text = "Запит";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(234, 6);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(108, 58);
+            this.button7.TabIndex = 8;
+            this.button7.Text = "Всього груп та дітей";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(120, 6);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(108, 58);
+            this.button6.TabIndex = 7;
+            this.button6.Text = "К-ть дітей в кожній змінні";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // SearchName
             // 
-            this.SearchName.Location = new System.Drawing.Point(51, 156);
+            this.SearchName.Location = new System.Drawing.Point(85, 156);
             this.SearchName.Name = "SearchName";
             this.SearchName.Size = new System.Drawing.Size(101, 20);
             this.SearchName.TabIndex = 6;
@@ -302,9 +417,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(6, 159);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(39, 13);
+            this.label8.Size = new System.Drawing.Size(70, 13);
             this.label8.TabIndex = 5;
-            this.label8.Text = "Назва";
+            this.label8.Text = "Назва групи";
             // 
             // button3
             // 
@@ -349,31 +464,39 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // label9
+            // label11
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(15, 18);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(70, 13);
-            this.label9.TabIndex = 0;
-            this.label9.Text = "Назва групи";
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 195);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(196, 13);
+            this.label11.TabIndex = 9;
+            this.label11.Text = "Назва групи для інформації про дітей";
             // 
-            // Delete
+            // textBox1
             // 
-            this.Delete.Location = new System.Drawing.Point(100, 15);
-            this.Delete.Name = "Delete";
-            this.Delete.Size = new System.Drawing.Size(120, 20);
-            this.Delete.TabIndex = 1;
+            this.textBox1.Location = new System.Drawing.Point(208, 192);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(101, 20);
+            this.textBox1.TabIndex = 10;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // button4
+            // label12
             // 
-            this.button4.Location = new System.Drawing.Point(243, 15);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(90, 51);
-            this.button4.TabIndex = 2;
-            this.button4.Text = "Видалити";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 230);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(185, 13);
+            this.label12.TabIndex = 11;
+            this.label12.Text = "Назва групи для інф-ції про батьків";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(208, 227);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(101, 20);
+            this.textBox2.TabIndex = 12;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // Form3
             // 
@@ -393,6 +516,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
@@ -437,5 +562,16 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.TextBox Delete;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.TextBox edit;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button EditButton;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }
