@@ -17,6 +17,10 @@ namespace Kyrsach
         public Form1()
         {
             InitializeComponent();
+            GroupButton.Visible = false;
+            parentButton.Visible = false;
+            TeachersButton.Visible = false;
+            childrenButton.Visible = false;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -25,28 +29,63 @@ namespace Kyrsach
 
         }
 
+        private void TeachersButton_Click(object sender, EventArgs e)
+        {
+            Form2 example = new Form2();
+            example.Show();
+        }
+
+        private void GroupButton_Click(object sender, EventArgs e)
+        {
+            Form3 example = new Form3();
+            example.Show();
+        }
+
+        private void childrenButton_Click(object sender, EventArgs e)
+        {
+            Form5 example = new Form5();
+            example.Show();
+        }
+
+        private void parentButton_Click(object sender, EventArgs e)
+        {
+            Form4 example = new Form4();
+            example.Show();
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             if (password.Text.Length == 0)
             {
                 user = "parent";
+                GroupButton.Visible = true;
+                parentButton.Visible = false;
+                TeachersButton.Visible = false;
+                childrenButton.Visible = true;
             }
             else if(password.Text == adminPass)
             {
                 user = "admin";
-                Form2 example = new Form2();
-                example.Show();
+                GroupButton.Visible = true;
+                parentButton.Visible = true;
+                TeachersButton.Visible = true;
+                childrenButton.Visible = true;
+                //Form5 example = new Form5();
+                //example.Show();
             }
-            else if(adminPass == eduPass)
+            else if(password.Text == eduPass)
             {
                 user = "educ";
+                GroupButton.Visible = true;
+                parentButton.Visible = true;
+                TeachersButton.Visible = false;
+                childrenButton.Visible = true;
             }
             else
             {
                 MessageBox.Show("Данный пароль не верный");
             }
             password.Text = "";
-            
         }
     }
 }

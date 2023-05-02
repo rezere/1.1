@@ -19,6 +19,16 @@ namespace Kyrsach
         {
             InitializeComponent();
             LoadTable("SELECT * FROM parent");
+            if(Form1.user == "educ")
+            {
+                tabPage1.Enabled = false;
+                tabPage1.Hide();
+
+                tabPage2.Enabled = false;
+                tabPage2.Hide();
+
+                button3.Enabled = false;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

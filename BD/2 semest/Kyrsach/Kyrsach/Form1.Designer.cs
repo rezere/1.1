@@ -37,6 +37,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.password = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.GroupButton = new System.Windows.Forms.Button();
+            this.TeachersButton = new System.Windows.Forms.Button();
+            this.childrenButton = new System.Windows.Forms.Button();
+            this.parentButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenerBindingSource)).BeginInit();
@@ -91,7 +95,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(73, 275);
+            this.button1.Location = new System.Drawing.Point(71, 160);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(140, 65);
             this.button1.TabIndex = 3;
@@ -99,11 +103,59 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // GroupButton
+            // 
+            this.GroupButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.GroupButton.Location = new System.Drawing.Point(12, 273);
+            this.GroupButton.Name = "GroupButton";
+            this.GroupButton.Size = new System.Drawing.Size(102, 31);
+            this.GroupButton.TabIndex = 4;
+            this.GroupButton.Text = "Групи";
+            this.GroupButton.UseVisualStyleBackColor = true;
+            this.GroupButton.Click += new System.EventHandler(this.GroupButton_Click);
+            // 
+            // TeachersButton
+            // 
+            this.TeachersButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.TeachersButton.Location = new System.Drawing.Point(154, 273);
+            this.TeachersButton.Name = "TeachersButton";
+            this.TeachersButton.Size = new System.Drawing.Size(102, 31);
+            this.TeachersButton.TabIndex = 5;
+            this.TeachersButton.Text = "Вихователі";
+            this.TeachersButton.UseVisualStyleBackColor = true;
+            this.TeachersButton.Click += new System.EventHandler(this.TeachersButton_Click);
+            // 
+            // childrenButton
+            // 
+            this.childrenButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.childrenButton.Location = new System.Drawing.Point(12, 322);
+            this.childrenButton.Name = "childrenButton";
+            this.childrenButton.Size = new System.Drawing.Size(102, 31);
+            this.childrenButton.TabIndex = 6;
+            this.childrenButton.Text = "Діти";
+            this.childrenButton.UseVisualStyleBackColor = true;
+            this.childrenButton.Click += new System.EventHandler(this.childrenButton_Click);
+            // 
+            // parentButton
+            // 
+            this.parentButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.parentButton.Location = new System.Drawing.Point(154, 322);
+            this.parentButton.Name = "parentButton";
+            this.parentButton.Size = new System.Drawing.Size(102, 31);
+            this.parentButton.TabIndex = 7;
+            this.parentButton.Text = "Батьки";
+            this.parentButton.UseVisualStyleBackColor = true;
+            this.parentButton.Click += new System.EventHandler(this.parentButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(268, 352);
+            this.ClientSize = new System.Drawing.Size(268, 467);
+            this.Controls.Add(this.parentButton);
+            this.Controls.Add(this.childrenButton);
+            this.Controls.Add(this.TeachersButton);
+            this.Controls.Add(this.GroupButton);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.password);
             this.Controls.Add(this.label2);
@@ -129,6 +181,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox password;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button GroupButton;
+        private System.Windows.Forms.Button TeachersButton;
+        private System.Windows.Forms.Button childrenButton;
+        private System.Windows.Forms.Button parentButton;
     }
 }
 

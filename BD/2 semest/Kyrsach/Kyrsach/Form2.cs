@@ -30,7 +30,6 @@ namespace Kyrsach
 
             LoadTable("SELECT * FROM kindergartener");
 
-
         }
 
         private void LoadTable(string query)
@@ -368,6 +367,12 @@ namespace Kyrsach
                     "WHERE g.MinYear <= " + AgeSearch.Text + " AND g.MaxYear >= " + AgeSearch.Text + "; ";
                 LoadTable(temp);
             }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            string temp = "SELECT * FROM kindergartener WHERE DATEDIFF(CURDATE(), Work) >= 1460";
+            LoadTable(temp);
         }
     }
 }

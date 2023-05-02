@@ -22,6 +22,28 @@ namespace Kyrsach
         public Form3()
         {
             InitializeComponent();
+            if (Form1.user == "parent")
+            {
+                tabControl1.Visible = false;
+
+            }
+            else if (Form1.user == "educ")
+            {
+                tabPage1.Enabled = false;
+                tabPage1.Hide();
+
+                tabPage2.Enabled = false;
+                tabPage2.Hide();
+
+                tabPage4.Enabled = false;
+                tabPage4.Hide();
+
+                label7.Enabled = false;
+                ZapMin.Enabled = false;
+                ZapMax.Enabled = false;
+                button3.Enabled = false;
+
+            }
         }
         private void LoadTable(string query)
         {

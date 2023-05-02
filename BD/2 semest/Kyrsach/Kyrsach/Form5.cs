@@ -24,6 +24,22 @@ namespace Kyrsach
             Mother.Visible = false;
             label10.Visible = false;
             Father.Visible = false;
+
+            if(Form1.user == "parent")
+            {
+                tabControl1.Visible = false;
+                button6.Visible = false;
+            }
+            else if(Form1.user == "educ")
+            {
+                tabPage1.Enabled = false;
+                tabPage1.Hide();
+            }
+            string temp = "SELECT c.ID_c, c.Surname, c.Name, c.SName, c.Born, c.Adress, c.G_Name, " +
+                "p.ID as Parent_ID, p.Surname as Parent_Surname, p.Name as Parent_Name, p.SName" +
+                " as Parent_SName, p.Adress as Parent_Adress, p.Number, p.Email FROM children c" +
+                " INNER JOIN pclind pc ON c.ID_c = pc.ID_C INNER JOIN parent p ON pc.ID_P = p.ID;";
+            LoadTable(temp);
         }
         private void LoadTable(string query)
         {
@@ -72,13 +88,15 @@ namespace Kyrsach
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.button5 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.Search = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.label13 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button6 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -432,6 +450,8 @@ namespace Kyrsach
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.button6);
+            this.tabPage4.Controls.Add(this.button5);
             this.tabPage4.Controls.Add(this.textBox1);
             this.tabPage4.Controls.Add(this.label13);
             this.tabPage4.Controls.Add(this.label12);
@@ -445,6 +465,33 @@ namespace Kyrsach
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Запити";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(13, 178);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(105, 42);
+            this.button5.TabIndex = 7;
+            this.button5.Text = "Виведення черги";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(173, 131);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(121, 20);
+            this.textBox1.TabIndex = 6;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(10, 134);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(145, 13);
+            this.label13.TabIndex = 5;
+            this.label13.Text = "Прізвище для ін-ціїї батьків";
             // 
             // label12
             // 
@@ -493,22 +540,15 @@ namespace Kyrsach
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // label13
+            // button6
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(10, 134);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(145, 13);
-            this.label13.TabIndex = 5;
-            this.label13.Text = "Прізвище для ін-ціїї батьків";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(173, 131);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(121, 20);
-            this.textBox1.TabIndex = 6;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.button6.Location = new System.Drawing.Point(244, 62);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(105, 58);
+            this.button6.TabIndex = 8;
+            this.button6.Text = "Виведення дітей, у яких день народженя цього місяця";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // Form5
             // 
@@ -874,6 +914,25 @@ namespace Kyrsach
             string temp = " SELECT p.ID, p.Surname, p.Name, p.SName, p.Adress, p.Number, " +
                 "p.Email FROM children c JOIN pclind pc ON c.ID_c = pc.ID_C JOIN parent p " +
                 "ON p.ID = pc.ID_P WHERE c.Surname LIKE '%" + textBox1.Text + "%'";
+            LoadTable(temp);
+        }
+
+        private System.Windows.Forms.Button button5;
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string temp = "SELECT c.ID_Q, c.Surname, c.Name, c.SName, c.Born, c.Adress, " +
+                "p.ID as Parent_ID, p.Surname as Parent_Surname, p.Name as Parent_Name, p.SName" +
+                " as Parent_SName, p.Adress as Parent_Adress, p.Number, p.Email FROM queue c" +
+                " INNER JOIN pqueue pc ON c.ID_Q = pc.ID_Q INNER JOIN parent p ON pc.ID_P = p.ID;";
+            LoadTable(temp);
+        }
+
+        private System.Windows.Forms.Button button6;
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            string temp = "SELECT * FROM children WHERE MONTH(Born) = MONTH(CURRENT_DATE())";
             LoadTable(temp);
         }
     }
