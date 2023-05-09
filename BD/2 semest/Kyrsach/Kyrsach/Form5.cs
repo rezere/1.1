@@ -1,8 +1,11 @@
 ﻿using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
+using MySqlX.XDevAPI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace Kyrsach
 {
@@ -56,6 +60,7 @@ namespace Kyrsach
         }
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form5));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -86,8 +91,12 @@ namespace Kyrsach
             this.Surname = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button7 = new System.Windows.Forms.Button();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -96,16 +105,17 @@ namespace Kyrsach
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
             // 
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Info;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 48);
             this.dataGridView1.Name = "dataGridView1";
@@ -431,6 +441,9 @@ namespace Kyrsach
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.button7);
+            this.tabPage2.Controls.Add(this.textBox2);
+            this.tabPage2.Controls.Add(this.label14);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -438,6 +451,33 @@ namespace Kyrsach
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Видалення";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F);
+            this.button7.Location = new System.Drawing.Point(218, 11);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(125, 43);
+            this.button7.TabIndex = 2;
+            this.button7.Text = "Видалити";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(100, 11);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 20);
+            this.textBox2.TabIndex = 1;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(15, 14);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(79, 13);
+            this.label14.TabIndex = 0;
+            this.label14.Text = "Номер запису";
             // 
             // tabPage3
             // 
@@ -465,6 +505,16 @@ namespace Kyrsach
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Запити";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(13, 226);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(105, 64);
+            this.button6.TabIndex = 8;
+            this.button6.Text = "Виведення дітей, у яких день народженя цього місяця";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button5
             // 
@@ -540,22 +590,14 @@ namespace Kyrsach
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(244, 62);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(105, 58);
-            this.button6.TabIndex = 8;
-            this.button6.Text = "Виведення дітей, у яких день народженя цього місяця";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
             // Form5
             // 
+            this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(1187, 497);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.dataGridView1);
-            //this.Name = "Form5";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "Form5";
             this.Text = "Діти";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabControl1.ResumeLayout(false);
@@ -563,6 +605,8 @@ namespace Kyrsach
             this.tabPage1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.ResumeLayout(false);
@@ -687,7 +731,7 @@ namespace Kyrsach
                 MySqlCommand command = connection.CreateCommand();
                 if (Group.Items.Count > 0)
                 {
-                    command.CommandText = "SELECT COUNT(*) FROM children";
+                    command.CommandText = "SELECT MAX(ID_c) FROM children";
 
                     connection.Open();
                     int count = Convert.ToInt32(command.ExecuteScalar());
@@ -934,6 +978,138 @@ namespace Kyrsach
         {
             string temp = "SELECT * FROM children WHERE MONTH(Born) = MONTH(CURRENT_DATE())";
             LoadTable(temp);
+        }
+
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.TextBox textBox2;
+        private Label label14;
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            string connectionString = "User Id=root;Host=127.0.0.1;Database=kindergarten;Charset=utf8;";
+            // Получить ID удаленного ребенка из таблицы "Дети"
+            int deletedChildId = Convert.ToInt32(textBox2.Text); // Пример удаленного ID ребенка
+
+            // Создать соединение с базой данных
+            using (connection)
+            {
+                connection.Open();
+
+                // Найти возрастную группу удаленного ребенка
+                string childGroupQuery = "SELECT G_Name FROM children WHERE ID_c = @DeletedChildId";
+                MySqlCommand childGroupCommand = new MySqlCommand(childGroupQuery, connection);
+                childGroupCommand.Parameters.AddWithValue("@DeletedChildId", deletedChildId);
+                string deletedChildGroup = Convert.ToString(childGroupCommand.ExecuteScalar());
+
+                // Найти ребенка в таблице "Очередь" с возрастом, соответствующим возрастной группе
+                string queueChildQuery = "SELECT * FROM queue WHERE YEAR(Born)" +
+                    " >= (YEAR(CURDATE()) - (SELECT MaxYear FROM groups WHERE Name" +
+                    " = @DeletedChildGroup)) AND YEAR(Born) <= (YEAR(CURDATE())" +
+                    " - (SELECT MinYear FROM groups WHERE Name = @DeletedChildGroup));";
+                MySqlCommand queueChildCommand = new MySqlCommand(queueChildQuery, connection);
+                queueChildCommand.Parameters.AddWithValue("@DeletedChildGroup", deletedChildGroup);
+
+                // Выполнить запрос и получить результаты
+                using (MySqlDataReader queueChildReader = queueChildCommand.ExecuteReader())
+                {
+                    if (!queueChildReader.HasRows)
+                    {
+                        MySqlCommand command = connection.CreateCommand();
+                        connection.Close();
+                        connection.Open();
+                        command.CommandText = "DELETE FROM pclind WHERE ID_C = @DeletedChild";
+                        command.Parameters.AddWithValue("@DeletedChild", deletedChildId);
+                        command.ExecuteNonQuery();
+                        connection.Close();
+
+                        connection.Open();
+                        command.CommandText = "DELETE FROM children WHERE ID_C = @DeletedChildG";
+                        command.Parameters.AddWithValue("@DeletedChildG", deletedChildId);
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                    else
+                    {
+                        while (queueChildReader.Read())
+                        {
+                            //connection.Close();
+                            MySqlCommand command = connection.CreateCommand();
+                            //command.CommandText = "SELECT MAX(ID_c) FROM children";
+
+                            //connection.Open();
+                            //int count = Convert.ToInt32(command.ExecuteScalar());
+                            //connection.Close();
+
+                            int queueChildId = queueChildReader.GetInt32("ID_Q");
+                            string surname = queueChildReader.GetString("Surname");
+                            string name = queueChildReader.GetString("Name");
+                            string sname = queueChildReader.GetString("SName");
+                            DateTime born = queueChildReader.GetDateTime("Born");
+                            string adress = queueChildReader.GetString("Adress");
+                            MessageBox.Show(queueChildId + surname);
+                            connection.Close();
+                            command.CommandText = "SELECT MAX(ID_c) FROM children";
+                            connection.Open();
+                            int count = Convert.ToInt32(command.ExecuteScalar());
+                            connection.Close();
+                            command.CommandText = "INSERT INTO children (ID_c, Surname, Name, SName, Born, Adress, G_Name) " +
+                                             "VALUES (@ID, @Прізвище, @Ім_я, @По_батькові, @Дата_народження, @Адреса, @Група)";
+
+                            command.Parameters.AddWithValue("@ID", count + 1);
+                            command.Parameters.AddWithValue("@Прізвище", surname);
+                            command.Parameters.AddWithValue("@Ім_я", name);
+                            command.Parameters.AddWithValue("@По_батькові", sname);
+                            command.Parameters.AddWithValue("@Дата_народження", born);
+                            command.Parameters.AddWithValue("@Адреса", adress);
+                            command.Parameters.AddWithValue("@Група", deletedChildGroup);
+
+                            connection.Open();
+                            command.ExecuteNonQuery();
+                            connection.Close();
+                            connection.Open();
+                            command.CommandText = "INSERT INTO pclind (ID_PC, ID_P, ID_C) " +
+                          "SELECT (SELECT COALESCE(MAX(ID_PC), 0) + 1 FROM pclind), ID_P, @count " +
+                          "FROM pqueue WHERE ID_Q = @DeletedChildGroup;";
+                            command.Parameters.AddWithValue("@count", count + 1);
+                            command.Parameters.AddWithValue("@DeletedChildGroup", queueChildId);
+                            command.ExecuteNonQuery();
+                            connection.Close();
+
+
+                            string temp = "SELECT c.ID_c, c.Surname, c.Name, c.SName, c.Born, c.Adress, c.G_Name, " +
+                    "p.ID as Parent_ID, p.Surname as Parent_Surname, p.Name as Parent_Name, p.SName" +
+                    " as Parent_SName, p.Adress as Parent_Adress, p.Number, p.Email FROM children c" +
+                    " INNER JOIN pclind pc ON c.ID_c = pc.ID_C INNER JOIN parent p ON pc.ID_P = p.ID;";
+                            LoadTable(temp);
+
+                            connection.Open();
+                            command.CommandText = "DELETE FROM pclind WHERE ID_C = @DeletedChild";
+                            command.Parameters.AddWithValue("@DeletedChild", deletedChildId);
+                            command.ExecuteNonQuery();
+                            connection.Close();
+
+                            connection.Open();
+                            command.CommandText = "DELETE FROM children WHERE ID_C = @DeletedChildG";
+                            command.Parameters.AddWithValue("@DeletedChildG", deletedChildId);
+                            command.ExecuteNonQuery();
+                            connection.Close();
+
+                            connection.Open();
+                            command.CommandText = "DELETE FROM pqueue WHERE ID_Q = @DeletedChild";
+                            command.Parameters.AddWithValue("@DeletedChildQ", queueChildId);
+                            command.ExecuteNonQuery();
+                            connection.Close();
+
+                            connection.Open();
+                            command.CommandText = "DELETE FROM children WHERE ID_Q = @DeletedChildG";
+                            command.Parameters.AddWithValue("@DeletedChildQU", queueChildId);
+                            command.ExecuteNonQuery();
+                            connection.Close();
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -72,6 +72,7 @@
             this.Delete = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button6 = new System.Windows.Forms.Button();
             this.AgeSearch = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
@@ -80,7 +81,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.kindergartenerBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.button6 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenerBindingSource2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenerBindingSource)).BeginInit();
@@ -97,6 +97,7 @@
             // dataGridView1
             // 
             this.dataGridView1.AutoGenerateColumns = false;
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Info;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.iDDataGridViewTextBoxColumn,
@@ -110,7 +111,7 @@
             this.dataGridView1.DataSource = this.kindergartenerBindingSource2;
             this.dataGridView1.Location = new System.Drawing.Point(12, 57);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(794, 381);
+            this.dataGridView1.Size = new System.Drawing.Size(816, 381);
             this.dataGridView1.TabIndex = 0;
             // 
             // iDDataGridViewTextBoxColumn
@@ -484,6 +485,17 @@
             this.tabPage3.Text = "Запити";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // button6
+            // 
+            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button6.Location = new System.Drawing.Point(144, 73);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(132, 61);
+            this.button6.TabIndex = 7;
+            this.button6.Text = "Стаж роботи більше 4 років";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // AgeSearch
             // 
             this.AgeSearch.Location = new System.Drawing.Point(77, 179);
@@ -556,21 +568,11 @@
             this.kindergartenerBindingSource1.DataMember = "kindergartener";
             this.kindergartenerBindingSource1.DataSource = this.kindergartenerBindingSource;
             // 
-            // button6
-            // 
-            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button6.Location = new System.Drawing.Point(144, 73);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(132, 61);
-            this.button6.TabIndex = 7;
-            this.button6.Text = "Стаж роботи більше 4 років";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(1187, 450);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.dataGridView1);

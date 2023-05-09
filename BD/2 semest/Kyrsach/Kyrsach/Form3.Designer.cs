@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form3));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.kindergartenDataSet1 = new Kyrsach.kindergartenDataSet1();
@@ -61,6 +62,10 @@
             this.Delete = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.SearchName = new System.Windows.Forms.TextBox();
@@ -70,10 +75,6 @@
             this.ZapMin = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.label11 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenDataSet1)).BeginInit();
@@ -88,10 +89,11 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Info;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 48);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(646, 390);
+            this.dataGridView1.Size = new System.Drawing.Size(772, 390);
             this.dataGridView1.TabIndex = 0;
             // 
             // groupBindingSource
@@ -128,7 +130,7 @@
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(747, 48);
+            this.tabControl1.Location = new System.Drawing.Point(790, 48);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(385, 390);
@@ -298,9 +300,10 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(240, 13);
+            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button5.Location = new System.Drawing.Point(215, 13);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 49);
+            this.button5.Size = new System.Drawing.Size(134, 42);
             this.button5.TabIndex = 2;
             this.button5.Text = "Редагувати";
             this.button5.UseVisualStyleBackColor = true;
@@ -337,9 +340,10 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(243, 15);
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F);
+            this.button4.Location = new System.Drawing.Point(226, 15);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(90, 51);
+            this.button4.Size = new System.Drawing.Size(128, 41);
             this.button4.TabIndex = 2;
             this.button4.Text = "Видалити";
             this.button4.UseVisualStyleBackColor = true;
@@ -383,6 +387,40 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Запит";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(208, 227);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(101, 20);
+            this.textBox2.TabIndex = 12;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 230);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(185, 13);
+            this.label12.TabIndex = 11;
+            this.label12.Text = "Назва групи для інф-ції про батьків";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(208, 192);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(101, 20);
+            this.textBox1.TabIndex = 10;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 195);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(196, 13);
+            this.label11.TabIndex = 9;
+            this.label11.Text = "Назва групи для інформації про дітей";
             // 
             // button7
             // 
@@ -464,47 +502,16 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 195);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(196, 13);
-            this.label11.TabIndex = 9;
-            this.label11.Text = "Назва групи для інформації про дітей";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(208, 192);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(101, 20);
-            this.textBox1.TabIndex = 10;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(6, 230);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(185, 13);
-            this.label12.TabIndex = 11;
-            this.label12.Text = "Назва групи для інф-ції про батьків";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(208, 227);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(101, 20);
-            this.textBox2.TabIndex = 12;
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
-            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(1187, 450);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.dataGridView1);
+            this.ForeColor = System.Drawing.Color.Black;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form3";
             this.Text = "Групи";
             this.Load += new System.EventHandler(this.Form3_Load);
