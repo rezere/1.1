@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
 using Org.BouncyCastle.Tls;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -153,7 +154,7 @@ namespace Kyrsach
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            if (textBox1.Text != "")
+            if (textBox1.Text != "" && IsNumericInput(textBox1.Text))
             {
                 MySqlCommand command = connection.CreateCommand();
 
@@ -288,6 +289,77 @@ namespace Kyrsach
                 EditButton.Visible = false;
                 LoadTable("SELECT * FROM parent");
             }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            MySqlCommand command = connection.CreateCommand();
+
+            command.CommandText = "SELECT COUNT(*) FROM pclind where ID_P = " + textBox2.Text;
+
+            connection.Open();
+            int count = Convert.ToInt32(command.ExecuteScalar());
+            connection.Close();
+            if(count>0)
+            {
+                MessageBox.Show("До цього запису батька прив'язані діти");
+            }
+            else
+            {
+                command = connection.CreateCommand();
+
+                command.CommandText = "SELECT COUNT(*) FROM pqueue where ID_P = " + textBox2.Text;
+
+                connection.Open();
+                count = Convert.ToInt32(command.ExecuteScalar());
+                connection.Close();
+                if( count>0)
+                {
+                    MessageBox.Show("До цього запису батька прив'язані діти з черги");
+                }
+                else
+                {
+                    command = connection.CreateCommand();
+
+                    command.CommandText = "DELETE FROM parent WHERE ID = " + textBox2.Text;
+
+                    connection.Open();
+                    command.ExecuteScalar();
+                    connection.Close();
+                    LoadTable("SELECT * FROM parent");
+                }
+            }
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            if(textBox2.Text != "" && IsNumericInput(textBox2.Text))
+            {
+                MySqlCommand command = connection.CreateCommand();
+
+                command.CommandText = "SELECT COUNT(*) FROM parent where ID = " + textBox2.Text;
+
+                connection.Open();
+                int count = Convert.ToInt32(command.ExecuteScalar());
+                connection.Close();
+                if(count > 0)
+                {
+                    button6.Enabled = true;
+                }
+                else
+                {
+                    button6.Enabled = false;
+                }
+            }
+            else
+            {
+                button6.Enabled = false;
+            }
+        }
+        private bool IsNumericInput(string input)
+        {
+            // Проверка, является ли введенный текст числом
+            return int.TryParse(input, out _);
         }
     }
 }

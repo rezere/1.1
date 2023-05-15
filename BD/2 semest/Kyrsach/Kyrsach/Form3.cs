@@ -60,6 +60,16 @@ namespace Kyrsach
         }
         private void Form3_Load(object sender, EventArgs e)
         {
+            if (Form1.user == "educ")
+            {
+                tabPage1.Enabled = false;
+                tabPage1.Hide();
+
+                tabPage2.Enabled = false;
+                tabPage2.Hide();
+                tabPage4.Enabled = false;
+                tabPage4.Hide();
+            }
             string query = "SELECT CONCAT(Surname, ' ', LEFT(Name, 1), '.', " +
                 "LEFT(SName, 1), '.') AS Surname, Name, SName FROM kindergartener";
             MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -179,6 +189,11 @@ namespace Kyrsach
 
         private void button4_Click(object sender, EventArgs e)
         {
+            if (!IsNumericInput(edit.Text))
+            {
+                MessageBox.Show("Номер запису повинен складатися з цифр");
+                return;
+            }
             MySqlCommand command = connection.CreateCommand();
 
             command.CommandText = "SELECT COUNT(*) FROM groups where Name = '" + Delete.Text+ "'";
@@ -228,6 +243,13 @@ namespace Kyrsach
 
         private void button5_Click(object sender, EventArgs e)
         {
+            if (!IsNumericInput(edit.Text))
+            {
+                MessageBox.Show("Номер запису повинен складатися з цифр");
+                return;
+            }
+            
+
             using (connection)
             {
                 connection.Open();
@@ -349,6 +371,11 @@ namespace Kyrsach
                 " p.Email FROM children d JOIN pclind pc ON d.ID_c = pc.ID_C " +
                 "JOIN parent p ON p.ID = pc.ID_P WHERE d.G_Name LIKE '%" + textBox1.Text + "%'; ";
             LoadTable(temp);
+        }
+        private bool IsNumericInput(string input)
+        {
+            // Проверка, является ли введенный текст числом
+            return int.TryParse(input, out _);
         }
     }
 }

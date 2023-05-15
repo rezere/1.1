@@ -597,7 +597,7 @@ namespace Kyrsach
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.dataGridView1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form5";
+            //this.Name = "Form5";
             this.Text = "Діти";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabControl1.ResumeLayout(false);
@@ -987,10 +987,10 @@ namespace Kyrsach
         private void button7_Click(object sender, EventArgs e)
         {
             string connectionString = "User Id=root;Host=127.0.0.1;Database=kindergarten;Charset=utf8;";
-            // Получить ID удаленного ребенка из таблицы "Дети"
+          
             int deletedChildId = Convert.ToInt32(textBox2.Text); // Пример удаленного ID ребенка
-
-            // Создать соединение с базой данных
+            if (!IsNumericInput(textBox2.Text)) return;
+            
             using (connection)
             {
                 connection.Open();
@@ -1110,6 +1110,11 @@ namespace Kyrsach
                     }
                 }
             }
+        }
+        private bool IsNumericInput(string input)
+        {
+            // Проверка, является ли введенный текст числом
+            return int.TryParse(input, out _);
         }
     }
 }
