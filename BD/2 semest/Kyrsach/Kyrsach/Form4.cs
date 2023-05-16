@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
-using Org.BouncyCastle.Tls;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Kyrsach

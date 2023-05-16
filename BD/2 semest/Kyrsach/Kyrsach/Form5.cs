@@ -1,4 +1,6 @@
-﻿using MySql.Data.MySqlClient;
+﻿using iTextSharp.text.pdf;
+using iTextSharp.text;
+using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using MySqlX.XDevAPI;
 using System;
@@ -7,6 +9,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +17,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
+using System.Collections;
 
 namespace Kyrsach
 {
@@ -105,6 +109,7 @@ namespace Kyrsach
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -490,6 +495,7 @@ namespace Kyrsach
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.button8);
             this.tabPage4.Controls.Add(this.button6);
             this.tabPage4.Controls.Add(this.button5);
             this.tabPage4.Controls.Add(this.textBox1);
@@ -589,6 +595,16 @@ namespace Kyrsach
             this.button2.Text = "К-ть дтей в групах";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(13, 383);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(105, 42);
+            this.button8.TabIndex = 9;
+            this.button8.Text = "Звіт дітей, що закінчують садок";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // Form5
             // 
@@ -1115,6 +1131,71 @@ namespace Kyrsach
         {
             // Проверка, является ли введенный текст числом
             return int.TryParse(input, out _);
+        }
+
+        private System.Windows.Forms.Button button8;
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            string value = "SELECT *FROM children WHERE YEAR(CURDATE()) - YEAR(Born) = 6;";
+            MySqlCommand command = new MySqlCommand(value, connection);
+            connection.Open();
+            MySqlDataReader reader = command.ExecuteReader();
+
+            DataTable childrenData = new DataTable();
+            childrenData.Load(reader);
+            connection.Close();
+            string outputPath = "C:/Users/merkyr/Documents/output.pdf";
+            // Создание документа PDF
+            Document document = new Document();
+                // Создание писателя PDF
+                PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(outputPath, FileMode.Create));
+
+                // Открытие документа
+                document.Open();
+
+                // Добавление иконки садка
+                string imagePath = "path/to/garden-icon.png";
+                if (File.Exists(imagePath))
+                {
+                    iTextSharp.text.Image gardenIcon = iTextSharp.text.Image.GetInstance(imagePath);
+                    document.Add(gardenIcon);
+                }
+
+            // Добавление заголовка
+            BaseFont font = BaseFont.CreateFont("C:\\Windows\\Fonts\\arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            iTextSharp.text.Font titleFont = new iTextSharp.text.Font(font, 20, iTextSharp.text.Font.ITALIC);
+            Paragraph title = new Paragraph("Звіт про дітей", titleFont);
+            title.Alignment = Element.ALIGN_CENTER;
+            document.Add(title);
+
+            // Добавление данных из таблицы "children"
+            BaseFont cellFont = BaseFont.CreateFont("C:\\Windows\\Fonts\\arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            iTextSharp.text.Font cellFontStyle = new iTextSharp.text.Font(cellFont);
+            PdfPTable table = new PdfPTable(childrenData.Columns.Count);
+            for (int i = 0; i < childrenData.Columns.Count; i++)
+            {
+                PdfPCell cell = new PdfPCell(new Phrase(childrenData.Columns[i].ColumnName, cellFontStyle));
+                table.AddCell(cell);
+            }
+
+            for (int row = 0; row < childrenData.Rows.Count; row++)
+            {
+                for (int column = 0; column < childrenData.Columns.Count; column++)
+                {
+                    PdfPCell cell = new PdfPCell(new Phrase(childrenData.Rows[row][column].ToString(), cellFontStyle));
+                    table.AddCell(cell);
+                }
+            }
+            document.Add(table);
+
+            // Добавление даты
+            Paragraph date = new Paragraph(DateTime.Now.ToString("dd.MM.yyyy"));
+            date.Alignment = Element.ALIGN_RIGHT;
+            document.Add(date);
+
+            // Закрытие документа
+            document.Close();
         }
     }
 }

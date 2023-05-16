@@ -23,7 +23,6 @@ V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\System.Buffers.dll
 V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\System.Memory.dll
 V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\System.Numerics.Vectors.dll
 V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
-V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\BouncyCastle.Crypto.xml
 V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\Google.Protobuf.pdb
 V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\Google.Protobuf.xml
 V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\K4os.Compression.LZ4.xml
@@ -37,3 +36,5 @@ V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\System.Runtime.CompilerServices.Uns
 V:\1.1\BD\2 semest\Kyrsach\Kyrsach\obj\Debug\Kyrsach.Form3.resources
 V:\1.1\BD\2 semest\Kyrsach\Kyrsach\obj\Debug\Kyrsach.Form4.resources
 V:\1.1\BD\2 semest\Kyrsach\Kyrsach\obj\Debug\Kyrsach.Form5.resources
+V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\itextsharp.dll
+V:\1.1\BD\2 semest\Kyrsach\Kyrsach\bin\Debug\itextsharp.xml
