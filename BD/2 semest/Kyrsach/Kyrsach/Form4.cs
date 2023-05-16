@@ -28,7 +28,8 @@ namespace Kyrsach
 
                 tabPage2.Enabled = false;
                 tabPage2.Hide();
-
+                tabPage4.Enabled = false;
+                tabPage4.Hide();
                 button3.Enabled = false;
             }
         }
@@ -360,6 +361,20 @@ namespace Kyrsach
         {
             // Проверка, является ли введенный текст числом
             return int.TryParse(input, out _);
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            if(textBox3.Text != "")
+            {
+                string temp = " SELECT *FROM parent WHERE Surname LIKE '%" + textBox3.Text + "%'";
+                LoadTable(temp);
+            }
+            else if(textBox3.Text == "")
+            {
+                string temp = " SELECT *FROM parent";
+                LoadTable(temp);
+            }
         }
     }
 }
