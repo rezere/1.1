@@ -72,6 +72,7 @@
             this.Delete = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.zvit = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.AgeSearch = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -81,6 +82,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.kindergartenerBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.label12 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenerBindingSource2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenerBindingSource)).BeginInit();
@@ -469,6 +472,9 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.comboBox1);
+            this.tabPage3.Controls.Add(this.label12);
+            this.tabPage3.Controls.Add(this.zvit);
             this.tabPage3.Controls.Add(this.button6);
             this.tabPage3.Controls.Add(this.AgeSearch);
             this.tabPage3.Controls.Add(this.label11);
@@ -485,20 +491,31 @@
             this.tabPage3.Text = "Запити";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // zvit
+            // 
+            this.zvit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.zvit.Location = new System.Drawing.Point(9, 288);
+            this.zvit.Name = "zvit";
+            this.zvit.Size = new System.Drawing.Size(132, 61);
+            this.zvit.TabIndex = 8;
+            this.zvit.Text = "Звіт вихователів предпенсійний вік";
+            this.zvit.UseVisualStyleBackColor = true;
+            this.zvit.Click += new System.EventHandler(this.button7_Click);
+            // 
             // button6
             // 
             this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button6.Location = new System.Drawing.Point(144, 73);
+            this.button6.Location = new System.Drawing.Point(220, 154);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(132, 61);
+            this.button6.Size = new System.Drawing.Size(78, 46);
             this.button6.TabIndex = 7;
-            this.button6.Text = "Стаж роботи більше 4 років";
+            this.button6.Text = "Пошук";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // AgeSearch
             // 
-            this.AgeSearch.Location = new System.Drawing.Point(77, 179);
+            this.AgeSearch.Location = new System.Drawing.Point(68, 119);
             this.AgeSearch.Name = "AgeSearch";
             this.AgeSearch.Size = new System.Drawing.Size(61, 20);
             this.AgeSearch.TabIndex = 6;
@@ -507,7 +524,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 182);
+            this.label11.Location = new System.Drawing.Point(6, 122);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(22, 13);
             this.label11.TabIndex = 5;
@@ -516,9 +533,9 @@
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.Location = new System.Drawing.Point(6, 73);
+            this.button3.Location = new System.Drawing.Point(210, 6);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(132, 61);
+            this.button3.Size = new System.Drawing.Size(117, 61);
             this.button3.TabIndex = 4;
             this.button3.Text = "Предпенсійний вік";
             this.button3.UseVisualStyleBackColor = true;
@@ -526,7 +543,7 @@
             // 
             // SurnameSearch
             // 
-            this.SurnameSearch.Location = new System.Drawing.Point(77, 144);
+            this.SurnameSearch.Location = new System.Drawing.Point(68, 87);
             this.SurnameSearch.Name = "SurnameSearch";
             this.SurnameSearch.Size = new System.Drawing.Size(146, 20);
             this.SurnameSearch.TabIndex = 3;
@@ -535,7 +552,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 147);
+            this.label8.Location = new System.Drawing.Point(6, 90);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(56, 13);
             this.label8.TabIndex = 2;
@@ -544,9 +561,9 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Location = new System.Drawing.Point(144, 6);
+            this.button2.Location = new System.Drawing.Point(105, 6);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(132, 61);
+            this.button2.Size = new System.Drawing.Size(99, 61);
             this.button2.TabIndex = 1;
             this.button2.Text = "Загальна кількість вихователів";
             this.button2.UseVisualStyleBackColor = true;
@@ -555,9 +572,9 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(6, 6);
+            this.button1.Location = new System.Drawing.Point(3, 6);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(132, 61);
+            this.button1.Size = new System.Drawing.Size(96, 61);
             this.button1.TabIndex = 0;
             this.button1.Text = "Виведення всіх вихователів";
             this.button1.UseVisualStyleBackColor = true;
@@ -567,6 +584,28 @@
             // 
             this.kindergartenerBindingSource1.DataMember = "kindergartener";
             this.kindergartenerBindingSource1.DataSource = this.kindergartenerBindingSource;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 157);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(33, 13);
+            this.label12.TabIndex = 9;
+            this.label12.Text = "Стаж";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "До 5",
+            "5-10",
+            "10-15",
+            "Більше 15"});
+            this.comboBox1.Location = new System.Drawing.Point(68, 154);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 10;
             // 
             // Form2
             // 
@@ -652,5 +691,8 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox AgeSearch;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button zvit;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label12;
     }
 }

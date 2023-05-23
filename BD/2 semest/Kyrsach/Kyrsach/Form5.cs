@@ -42,6 +42,9 @@ namespace Kyrsach
             {
                 tabPage1.Enabled = false;
                 tabPage1.Hide();
+                tabPage2.Enabled = false;
+                tabPage2.Hide();
+                Zvit.Visible = false;
             }
             string temp = "SELECT c.ID_c, c.Surname, c.Name, c.SName, c.Born, c.Adress, c.G_Name, " +
                 "p.ID as Parent_ID, p.Surname as Parent_Surname, p.Name as Parent_Name, p.SName" +
@@ -100,6 +103,7 @@ namespace Kyrsach
             this.label14 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.Zvit = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -109,7 +113,6 @@ namespace Kyrsach
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -495,7 +498,7 @@ namespace Kyrsach
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.button8);
+            this.tabPage4.Controls.Add(this.Zvit);
             this.tabPage4.Controls.Add(this.button6);
             this.tabPage4.Controls.Add(this.button5);
             this.tabPage4.Controls.Add(this.textBox1);
@@ -511,6 +514,16 @@ namespace Kyrsach
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Запити";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // Zvit
+            // 
+            this.Zvit.Location = new System.Drawing.Point(13, 383);
+            this.Zvit.Name = "Zvit";
+            this.Zvit.Size = new System.Drawing.Size(105, 42);
+            this.Zvit.TabIndex = 9;
+            this.Zvit.Text = "Звіт дітей, що закінчують садок";
+            this.Zvit.UseVisualStyleBackColor = true;
+            this.Zvit.Click += new System.EventHandler(this.button8_Click);
             // 
             // button6
             // 
@@ -595,16 +608,6 @@ namespace Kyrsach
             this.button2.Text = "К-ть дтей в групах";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(13, 383);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(105, 42);
-            this.button8.TabIndex = 9;
-            this.button8.Text = "Звіт дітей, що закінчують садок";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // Form5
             // 
@@ -878,15 +881,20 @@ namespace Kyrsach
 
         private void Year_TextChanged(object sender, EventArgs e)
         {
+            if(Year.Text == "")
+            {
+                return;
+            }
             Group.Items.Clear();
             DateTime date = DateTime.Now;
             connection.Open();
             int temp = date.Year - int.Parse(Year.Text);
             // SQL запит
-            string sql = @"SELECT g.Name, g.MaxClindren FROM groups g INNER JOIN 
-            children c ON g.Name = c.G_Name WHERE "+
-                temp + " BETWEEN g.MinYear AND g.MaxYear GROUP BY g.Name, g.MaxClindren " +
-                "HAVING COUNT(*) < g.MaxClindren;";
+            string sql = @"SELECT g.Name, g.MaxClindren
+                FROM groups g
+                LEFT JOIN children c ON g.Name = c.G_Name
+                WHERE " + temp + " BETWEEN g.MinYear AND g.MaxYear " +
+                "GROUP BY g.Name, g.MaxClindren HAVING COUNT(c.G_Name) < g.MaxClindren; ";
 
             // створення об'єкта команди та передача SQL запиту та з'єднання
             MySqlCommand cmd = new MySqlCommand(sql, connection);
@@ -1133,7 +1141,7 @@ namespace Kyrsach
             return int.TryParse(input, out _);
         }
 
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button Zvit;
 
         private void button8_Click(object sender, EventArgs e)
         {
@@ -1145,7 +1153,7 @@ namespace Kyrsach
             DataTable childrenData = new DataTable();
             childrenData.Load(reader);
             connection.Close();
-            string outputPath = "C:/Users/merkyr/Documents/output.pdf";
+            string outputPath = "C:/Users/merkyr/Documents/zvitChild.pdf";
             // Создание документа PDF
             Document document = new Document();
                 // Создание писателя PDF
@@ -1155,12 +1163,15 @@ namespace Kyrsach
                 document.Open();
 
                 // Добавление иконки садка
-                string imagePath = "path/to/garden-icon.png";
-                if (File.Exists(imagePath))
-                {
-                    iTextSharp.text.Image gardenIcon = iTextSharp.text.Image.GetInstance(imagePath);
-                    document.Add(gardenIcon);
-                }
+                string imagePath = "V:\\1.1\\BD\\2 semest\\Kyrsach\\Kyrsach\\obj\\Debug\\garden-icon.jpg";
+            float logoWidth = 100f; // Укажите требуемую ширину логотипа
+            float logoHeight = 100f; // Укажите требуемую высоту логотипа
+            if (File.Exists(imagePath))
+            {
+                iTextSharp.text.Image gardenIcon = iTextSharp.text.Image.GetInstance(imagePath);
+                gardenIcon.ScaleToFit(logoWidth, logoHeight);
+                document.Add(gardenIcon);
+            }
 
             // Добавление заголовка
             BaseFont font = BaseFont.CreateFont("C:\\Windows\\Fonts\\arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
@@ -1168,10 +1179,10 @@ namespace Kyrsach
             Paragraph title = new Paragraph("Звіт про дітей", titleFont);
             title.Alignment = Element.ALIGN_CENTER;
             document.Add(title);
-
+            document.Add(new Paragraph("\n"));
             // Добавление данных из таблицы "children"
             BaseFont cellFont = BaseFont.CreateFont("C:\\Windows\\Fonts\\arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-            iTextSharp.text.Font cellFontStyle = new iTextSharp.text.Font(cellFont);
+            iTextSharp.text.Font cellFontStyle = new iTextSharp.text.Font(cellFont, 9);
             PdfPTable table = new PdfPTable(childrenData.Columns.Count);
             for (int i = 0; i < childrenData.Columns.Count; i++)
             {
@@ -1193,7 +1204,10 @@ namespace Kyrsach
             Paragraph date = new Paragraph(DateTime.Now.ToString("dd.MM.yyyy"));
             date.Alignment = Element.ALIGN_RIGHT;
             document.Add(date);
-
+            document.Add(new Paragraph("\n"));
+            Paragraph directorInfo = new Paragraph("Прізвище директора: Войцехов М.О.", cellFontStyle);
+            directorInfo.Alignment = Element.ALIGN_LEFT;
+            document.Add(directorInfo);
             // Закрытие документа
             document.Close();
         }

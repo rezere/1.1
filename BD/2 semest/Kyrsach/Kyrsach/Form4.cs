@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
@@ -39,7 +40,7 @@ namespace Kyrsach
             {
                 MessageBox.Show("Заповніть поле Прізвище");
             }
-            else if(Name.Text.Length == 0)
+            else if (Name.Text.Length == 0)
             {
                 MessageBox.Show("Заповніть поле Ім'я");
             }
@@ -71,9 +72,9 @@ namespace Kyrsach
             {
                 MessageBox.Show("Поле Адреса не може перевищювати 50 символів");
             }
-            else if (Number.Text.Length > 10)
+            else if (Number.Text.Length != 10 )
             {
-                MessageBox.Show("Поле Номер не може перевищювати 10 символів");
+                MessageBox.Show("Поле Номер повинен містити 10 символів");
             }
             else if (Email.Text.Length > 50)
             {
@@ -81,35 +82,46 @@ namespace Kyrsach
             }
             else
             {
-                MySqlCommand command = connection.CreateCommand();
+                string pattern = @"^(099|098|066|050|039|096|097|063|080)\d{7}$";
 
-                command.CommandText = "SELECT COUNT(*) FROM parent";
+                bool isValid = Regex.IsMatch(Number.Text, pattern);
 
-                connection.Open();
-                int count = Convert.ToInt32(command.ExecuteScalar());
-                connection.Close();
+                if (!isValid)
+                {
+                    MessageBox.Show("Номер телефона неверный.");
+                }
+                else
+                {
+                    MySqlCommand command = connection.CreateCommand();
 
-                command = connection.CreateCommand();
-                command.CommandText = "INSERT INTO parent (ID, Surname, Name, SName, Adress, Number, Email) " +
-                    "VALUES (@ID, @Surname, @Name, @SName, @Adress, @Number, @Email)";
-                command.Parameters.AddWithValue("@ID", count);
-                command.Parameters.AddWithValue("@Surname", Surname.Text);
-                command.Parameters.AddWithValue("@Name", Name.Text);
-                command.Parameters.AddWithValue("@SName", SecondName.Text);
-                command.Parameters.AddWithValue("@Adress", Adress.Text);
-                command.Parameters.AddWithValue("@Number", Number.Text);
-                command.Parameters.AddWithValue("@Email", Email.Text);
+                    command.CommandText = "SELECT Max(ID) FROM parent";
 
-                connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();
+                    connection.Open();
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+                    connection.Close();
 
-                Surname.Text = "";
-                Name.Text = "";
-                SecondName.Text = "";
-                Adress.Text = "";
-                Number.Text = "";
-                Email.Text = "";
+                    command = connection.CreateCommand();
+                    command.CommandText = "INSERT INTO parent (ID, Surname, Name, SName, Adress, Number, Email) " +
+                        "VALUES (@ID, @Surname, @Name, @SName, @Adress, @Number, @Email)";
+                    command.Parameters.AddWithValue("@ID", count + 1);
+                    command.Parameters.AddWithValue("@Surname", Surname.Text);
+                    command.Parameters.AddWithValue("@Name", Name.Text);
+                    command.Parameters.AddWithValue("@SName", SecondName.Text);
+                    command.Parameters.AddWithValue("@Adress", Adress.Text);
+                    command.Parameters.AddWithValue("@Number", Number.Text);
+                    command.Parameters.AddWithValue("@Email", Email.Text);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+
+                    Surname.Text = "";
+                    Name.Text = "";
+                    SecondName.Text = "";
+                    Adress.Text = "";
+                    Number.Text = "";
+                    Email.Text = "";
+                }
             }
             
 
@@ -265,6 +277,15 @@ namespace Kyrsach
             }
             else
             {
+                string pattern = @"^(099|098|066|050|039|096|097|063|080)\d{7}$";
+
+                bool isValid = Regex.IsMatch(Number.Text, pattern);
+
+                if (!isValid)
+                {
+                    Console.WriteLine("Номер телефона неверный.");
+                    return;
+                }
                 MySqlCommand command = connection.CreateCommand();
 
                 command = connection.CreateCommand();

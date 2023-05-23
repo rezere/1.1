@@ -112,14 +112,34 @@ namespace Kyrsach
             }
             else
             {
-                MySqlCommand command = connection.CreateCommand();
+                List<int> parentIds = new List<int>();
+                MySqlCommand command;
+                using (connection)
+                {
+                    string query = "SELECT ID FROM kindergartener";
+
+                    command = new MySqlCommand(query, connection);
+                    connection.Open();
+
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int parentId = reader.GetInt32("ID");
+                            parentIds.Add(parentId);
+                        }
+                    }
+
+                    connection.Close();
+                }
+                command = connection.CreateCommand();
                 command.CommandText = "INSERT INTO groups (Name, MaxClindren, MinYear, MaxYear, Schedule, ID_k) VALUES (@Name, @MaxClindren, @MinYear, @MaxYear, @Schedule, @ID_k)";
                 command.Parameters.AddWithValue("@Name", NameBox.Text);
                 command.Parameters.AddWithValue("@MaxClindren", Int32.Parse(MaxCount.Text));
                 command.Parameters.AddWithValue("@MinYear", Int32.Parse(MinAge.Text));
                 command.Parameters.AddWithValue("@MaxYear", Int32.Parse(MaxAge.Text));
                 command.Parameters.AddWithValue("@Schedule", Rozklad.Text);
-                command.Parameters.AddWithValue("@ID_k", Edu.SelectedIndex + 1);
+                command.Parameters.AddWithValue("@ID_k", parentIds[Edu.SelectedIndex]);
 
                 connection.Open();
                 command.ExecuteNonQuery();
