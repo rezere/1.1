@@ -277,13 +277,12 @@ namespace Kyrsach
             }
             else
             {
-                string pattern = @"^(099|098|066|050|039|096|097|063|080)\d{7}$";
-
-                bool isValid = Regex.IsMatch(Number.Text, pattern);
+                
+                bool isValid = isNumber(Number.Text);
 
                 if (!isValid)
                 {
-                    Console.WriteLine("Номер телефона неверный.");
+                    MessageBox.Show("Номер телефона неверный.");
                     return;
                 }
                 MySqlCommand command = connection.CreateCommand();
@@ -310,6 +309,12 @@ namespace Kyrsach
                 EditButton.Visible = false;
                 LoadTable("SELECT * FROM parent");
             }
+        }
+
+        private bool isNumber(string number)
+        {
+            string pattern = @"^(099|098|066|050|039|096|097|063|080)\d{7}$";
+            return Regex.IsMatch(number, pattern);
         }
 
         private void button6_Click(object sender, EventArgs e)

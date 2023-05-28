@@ -114,7 +114,7 @@ namespace Kyrsach
 
                 if (!isValid)
                 {
-                    Console.WriteLine("Номер телефона неверный.");
+                    MessageBox.Show("Номер телефона неверный.");
                     return;
                 }
 
@@ -346,7 +346,7 @@ namespace Kyrsach
 
                 if (!isValid)
                 {
-                    Console.WriteLine("Номер телефона неверный.");
+                    MessageBox.Show("Номер телефона неверный.");
                     return;
                 }
                 MySqlCommand command = connection.CreateCommand();

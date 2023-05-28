@@ -262,12 +262,26 @@ namespace Kyrsach
 
         private void button5_Click(object sender, EventArgs e)
         {
-            if (!IsNumericInput(edit.Text))
+            List<int> parentIds = new List<int>();
+            MySqlCommand command;
+            using (connection)
             {
-                MessageBox.Show("Номер запису повинен складатися з цифр");
-                return;
+                string query = "SELECT ID FROM kindergartener";
+
+                command = new MySqlCommand(query, connection);
+                connection.Open();
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int parentId = reader.GetInt32("ID");
+                        parentIds.Add(parentId);
+                    }
+                }
+
+                connection.Close();
             }
-            
 
             using (connection)
             {
@@ -299,8 +313,16 @@ namespace Kyrsach
                             {
                                 Rozklad.SelectedIndex = index; // Выбрать элемент в комбобоксе
                             }
-
-                            Edu.SelectedIndex = id_k-1;
+                            int k = 0;
+                            foreach(var t in parentIds)
+                            {
+                                if(t == id_k)
+                                {
+                                    break;
+                                }
+                                k++;
+                            }
+                            Edu.SelectedIndex = k;
                             tabControl1.SelectedIndex = 0;
                             button1.Visible = false;
                             EditButton.Visible = true;
@@ -308,6 +330,7 @@ namespace Kyrsach
                         else
                         {
                             NameGroup = "";
+                            edit.Text = "";
                             MessageBox.Show("Запис не існує");
                         }
                     }
@@ -335,23 +358,42 @@ namespace Kyrsach
             }
             else
             {
+                List<int> parentIds = new List<int>();
                 MySqlCommand command;
+                using (connection)
+                {
+                    string query = "SELECT ID FROM kindergartener";
+
+                    command = new MySqlCommand(query, connection);
+                    connection.Open();
+
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int parentId = reader.GetInt32("ID");
+                            parentIds.Add(parentId);
+                        }
+                    }
+
+                    connection.Close();
+                }
+                
+                command = connection.CreateCommand();
+                command.CommandText = "UPDATE groups SET Name = '" + NameBox.Text +"', MaxClindren = " + MaxCount.Text + ", MinYear = " + MinAge.Text + ", MaxYear = " + MaxAge.Text + ", Schedule = '" + Rozklad.Text + "', ID_k = " + parentIds[Edu.SelectedIndex] + " WHERE Name = '" + NameGroup + "';";
+
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
                 if (NameBox.Text != NameGroup)
                 {
                     command = connection.CreateCommand();
-                    command.CommandText = "UPDATE children SET G_Name = '" + NameBox.Text + "' WHERE Name = '" + NameGroup + "';";
+                    command.CommandText = "UPDATE children SET G_Name = '" + NameBox.Text + "' WHERE G_Name = '" + NameGroup + "';";
 
                     connection.Open();
                     command.ExecuteNonQuery();
                     connection.Close();
                 }
-                command = connection.CreateCommand();
-                command.CommandText = "UPDATE groups SET Name = '" + NameBox.Text +"', MaxClindren = " + MaxCount.Text + ", MinYear = " + MinAge.Text + ", MaxYear = " + MaxAge.Text + ", Schedule = '" + Rozklad.Text + "', ID_k = " + (Edu.SelectedIndex + 1) + " WHERE Name = '" + NameGroup + "';";
-
-                connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();
-                
                 NameGroup = "";
                 LoadTable("SELECT groups.Name, groups.MaxClindren, groups.MinYear, groups.MaxYear, " +
                "groups.Schedule, " +

@@ -169,6 +169,7 @@
             this.EditButton.TabIndex = 13;
             this.EditButton.Text = "Редагувати";
             this.EditButton.UseVisualStyleBackColor = true;
+            this.EditButton.Visible = false;
             this.EditButton.Click += new System.EventHandler(this.EditButton_Click);
             // 
             // button1

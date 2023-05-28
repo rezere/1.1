@@ -101,15 +101,14 @@ namespace Kyrsach
             this.button7 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.Zvit = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.Search = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -134,7 +133,6 @@ namespace Kyrsach
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Location = new System.Drawing.Point(754, 12);
             this.tabControl1.Name = "tabControl1";
@@ -487,24 +485,15 @@ namespace Kyrsach
             this.label14.TabIndex = 0;
             this.label14.Text = "Номер запису";
             // 
-            // tabPage3
-            // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(369, 447);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Редагування";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.radioButton3);
+            this.tabPage4.Controls.Add(this.radioButton2);
             this.tabPage4.Controls.Add(this.Zvit);
             this.tabPage4.Controls.Add(this.button6);
             this.tabPage4.Controls.Add(this.button5);
             this.tabPage4.Controls.Add(this.textBox1);
-            this.tabPage4.Controls.Add(this.label13);
             this.tabPage4.Controls.Add(this.label12);
-            this.tabPage4.Controls.Add(this.Search);
             this.tabPage4.Controls.Add(this.button4);
             this.tabPage4.Controls.Add(this.button3);
             this.tabPage4.Controls.Add(this.button2);
@@ -515,9 +504,31 @@ namespace Kyrsach
             this.tabPage4.Text = "Запити";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // radioButton3
+            // 
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Location = new System.Drawing.Point(33, 184);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(143, 17);
+            this.radioButton3.TabIndex = 11;
+            this.radioButton3.TabStop = true;
+            this.radioButton3.Text = "Інформація про батьків";
+            this.radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(33, 161);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(140, 17);
+            this.radioButton2.TabIndex = 10;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "Інформація про дитину";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
             // Zvit
             // 
-            this.Zvit.Location = new System.Drawing.Point(13, 383);
+            this.Zvit.Location = new System.Drawing.Point(13, 379);
             this.Zvit.Name = "Zvit";
             this.Zvit.Size = new System.Drawing.Size(105, 42);
             this.Zvit.TabIndex = 9;
@@ -527,7 +538,7 @@ namespace Kyrsach
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(13, 226);
+            this.button6.Location = new System.Drawing.Point(13, 62);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(105, 64);
             this.button6.TabIndex = 8;
@@ -537,7 +548,7 @@ namespace Kyrsach
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(13, 178);
+            this.button5.Location = new System.Drawing.Point(244, 62);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(105, 42);
             this.button5.TabIndex = 7;
@@ -547,37 +558,20 @@ namespace Kyrsach
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(173, 131);
+            this.textBox1.Location = new System.Drawing.Point(92, 217);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(121, 20);
             this.textBox1.TabIndex = 6;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(10, 134);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(145, 13);
-            this.label13.TabIndex = 5;
-            this.label13.Text = "Прізвище для ін-ціїї батьків";
-            // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(10, 96);
+            this.label12.Location = new System.Drawing.Point(30, 220);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(56, 13);
             this.label12.TabIndex = 4;
             this.label12.Text = "Прізвище";
-            // 
-            // Search
-            // 
-            this.Search.Location = new System.Drawing.Point(72, 93);
-            this.Search.Name = "Search";
-            this.Search.Size = new System.Drawing.Size(121, 20);
-            this.Search.TabIndex = 3;
-            this.Search.TextChanged += new System.EventHandler(this.Search_TextChanged);
             // 
             // button4
             // 
@@ -616,7 +610,7 @@ namespace Kyrsach
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.dataGridView1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            //this.Name = "Form5";
+            this.Name = "Form5";
             this.Text = "Діти";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabControl1.ResumeLayout(false);
@@ -775,8 +769,27 @@ namespace Kyrsach
                     int mothercount;
                     if (comboBox1.SelectedIndex != 1)
                     {
-                        command.CommandText = "SELECT COUNT(*) FROM pclind";
+                        List<int> parentIds = new List<int>();
+                        using (connection)
+                        {
+                            string query = "SELECT ID FROM parent";
 
+                            command = new MySqlCommand(query, connection);
+                            connection.Open();
+
+                            using (MySqlDataReader reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    int parentId = reader.GetInt32("ID");
+                                    parentIds.Add(parentId);
+                                }
+                            }
+
+                            connection.Close();
+                        }
+
+                        command.CommandText = "SELECT COUNT(*) FROM pclind";
                         connection.Open();
                         mothercount = Convert.ToInt32(command.ExecuteScalar());
                         connection.Close();
@@ -785,7 +798,7 @@ namespace Kyrsach
                                               "VALUES (@ID, @Code, @Ім_я)";
 
                         command.Parameters.AddWithValue("@ID", mothercount + 1);
-                        command.Parameters.AddWithValue("@Code", Mother.SelectedIndex + 1);
+                        command.Parameters.AddWithValue("@Code", parentIds[Mother.SelectedIndex]);
                         command.Parameters.AddWithValue("@Ім_я", count + 1);
 
                         connection.Open();
@@ -794,6 +807,25 @@ namespace Kyrsach
                     }
                     if(comboBox1.SelectedIndex != 0)
                     {
+                        List<int> parentIds = new List<int>();
+                        using (connection)
+                        {
+                            string query = "SELECT ID FROM parent";
+
+                            command = new MySqlCommand(query, connection);
+                            connection.Open();
+
+                            using (MySqlDataReader reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    int parentId = reader.GetInt32("ID");
+                                    parentIds.Add(parentId);
+                                }
+                            }
+
+                            connection.Close();
+                        }
                         command.CommandText = "SELECT COUNT(*) FROM pclind";
 
                         connection.Open();
@@ -804,7 +836,7 @@ namespace Kyrsach
                                               "VALUES (@ID, @Code, @Ім_я)";
 
                         command.Parameters.AddWithValue("@ID", mothercount + 1);
-                        command.Parameters.AddWithValue("@Code", Father.SelectedIndex + 1);
+                        command.Parameters.AddWithValue("@Code", parentIds[Father.SelectedIndex]);
                         command.Parameters.AddWithValue("@Ім_я", count + 1);
 
                         connection.Open();
@@ -876,6 +908,23 @@ namespace Kyrsach
                         connection.Close();
                     }
                 }
+                Surname.Text = "";
+                Name.Text = "";
+                SName.Text = "";
+                Day.Text = "";
+                Month.SelectedIndex = 0;
+                Year.Text = "";
+                Adress.Text = "";
+                Group.Text = "";
+                Group.Items.Clear();
+                groupBox1.Visible = false;
+                radioButton1.Checked = false;
+                Parent.Checked = false;
+                string temp = "SELECT c.ID_c, c.Surname, c.Name, c.SName, c.Born, c.Adress, c.G_Name, " +
+                               "p.ID as Parent_ID, p.Surname as Parent_Surname, p.Name as Parent_Name, p.SName" +
+                               " as Parent_SName, p.Adress as Parent_Adress, p.Number, p.Email FROM children c" +
+                               " INNER JOIN pclind pc ON c.ID_c = pc.ID_C INNER JOIN parent p ON pc.ID_P = p.ID;";
+                LoadTable(temp);
             }
         }
 
@@ -938,8 +987,6 @@ namespace Kyrsach
                 Father.Visible = true;
             }
         }
-
-        private TabPage tabPage3;
         private TabPage tabPage4;
         private System.Windows.Forms.Button button2;
 
@@ -964,24 +1011,28 @@ namespace Kyrsach
             string value = "SELECT *FROM children WHERE YEAR(CURDATE()) - YEAR(Born) = 6;";
             LoadTable(value);
         }
-
-        private System.Windows.Forms.TextBox Search;
         private Label label12;
 
         private void Search_TextChanged(object sender, EventArgs e)
         {
-            string temp = " SELECT *FROM children WHERE Surname LIKE '%" + Search.Text + "%'";
-            LoadTable(temp);
+
         }
 
         private System.Windows.Forms.TextBox textBox1;
-        private Label label13;
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            string temp = " SELECT p.ID, p.Surname, p.Name, p.SName, p.Adress, p.Number, " +
-                "p.Email FROM children c JOIN pclind pc ON c.ID_c = pc.ID_C JOIN parent p " +
-                "ON p.ID = pc.ID_P WHERE c.Surname LIKE '%" + textBox1.Text + "%'";
+            string temp = " SELECT *FROM children";
+            if (radioButton2.Checked)
+            {
+                temp = " SELECT *FROM children WHERE Surname LIKE '%" + textBox1.Text + "%'";
+            }
+            if (radioButton3.Checked)
+            {
+                temp = " SELECT p.ID, p.Surname, p.Name, p.SName, p.Adress, p.Number, " +
+                    "p.Email FROM children c JOIN pclind pc ON c.ID_c = pc.ID_C JOIN parent p " +
+                    "ON p.ID = pc.ID_P WHERE c.Surname LIKE '%" + textBox1.Text + "%'";
+            }
             LoadTable(temp);
         }
 
@@ -1051,6 +1102,11 @@ namespace Kyrsach
                         command.Parameters.AddWithValue("@DeletedChildG", deletedChildId);
                         command.ExecuteNonQuery();
                         connection.Close();
+                        string temp = "SELECT c.ID_c, c.Surname, c.Name, c.SName, c.Born, c.Adress, c.G_Name, " +
+                    "p.ID as Parent_ID, p.Surname as Parent_Surname, p.Name as Parent_Name, p.SName" +
+                    " as Parent_SName, p.Adress as Parent_Adress, p.Number, p.Email FROM children c" +
+                    " INNER JOIN pclind pc ON c.ID_c = pc.ID_C INNER JOIN parent p ON pc.ID_P = p.ID;";
+                        LoadTable(temp);
                     }
                     else
                     {
@@ -1211,5 +1267,8 @@ namespace Kyrsach
             // Закрытие документа
             document.Close();
         }
+
+        private RadioButton radioButton3;
+        private RadioButton radioButton2;
     }
 }
