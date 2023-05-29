@@ -88,7 +88,7 @@ namespace Kyrsach
 
                 if (!isValid)
                 {
-                    MessageBox.Show("Номер телефона неверный.");
+                    MessageBox.Show("Номер телефона некоректний.");
                 }
                 else
                 {

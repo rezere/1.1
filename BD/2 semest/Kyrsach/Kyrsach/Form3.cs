@@ -110,6 +110,18 @@ namespace Kyrsach
             {
                 MessageBox.Show("Введіть максимальний вік");
             }
+            else if(Int32.Parse(MinAge.Text)<1)
+            {
+                MessageBox.Show("Мінімальний вік повинен бути від 1 року");
+            }
+            else if (Int32.Parse(MaxAge.Text) > 7)
+            {
+                MessageBox.Show("Максимальний вік повинен бути до 7 років");
+            }
+            else if (Int32.Parse(MaxCount.Text) <1 || Int32.Parse(MaxCount.Text) > 30)
+            {
+                MessageBox.Show("Максимальна кількість повинна бути від 1 до 30 дітей");
+            }
             else
             {
                 List<int> parentIds = new List<int>();

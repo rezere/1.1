@@ -610,7 +610,7 @@ namespace Kyrsach
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.dataGridView1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form5";
+            //this.Name = "Form5";
             this.Text = "Діти";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabControl1.ResumeLayout(false);
