@@ -41,6 +41,8 @@
             this.TeachersButton = new System.Windows.Forms.Button();
             this.childrenButton = new System.Windows.Forms.Button();
             this.parentButton = new System.Windows.Forms.Button();
+            this.Save = new System.Windows.Forms.Button();
+            this.LoadButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kindergartenerBindingSource)).BeginInit();
@@ -147,12 +149,38 @@
             this.parentButton.UseVisualStyleBackColor = true;
             this.parentButton.Click += new System.EventHandler(this.parentButton_Click);
             // 
+            // Save
+            // 
+            this.Save.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Save.Location = new System.Drawing.Point(3, 412);
+            this.Save.Name = "Save";
+            this.Save.Size = new System.Drawing.Size(111, 43);
+            this.Save.TabIndex = 8;
+            this.Save.Text = "Збереження БД";
+            this.Save.UseVisualStyleBackColor = true;
+            this.Save.Visible = false;
+            this.Save.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // LoadButton
+            // 
+            this.LoadButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LoadButton.Location = new System.Drawing.Point(154, 412);
+            this.LoadButton.Name = "LoadButton";
+            this.LoadButton.Size = new System.Drawing.Size(114, 43);
+            this.LoadButton.TabIndex = 9;
+            this.LoadButton.Text = "Завантаження БД";
+            this.LoadButton.UseVisualStyleBackColor = true;
+            this.LoadButton.Visible = false;
+            this.LoadButton.Click += new System.EventHandler(this.button2_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(268, 467);
+            this.Controls.Add(this.LoadButton);
+            this.Controls.Add(this.Save);
             this.Controls.Add(this.parentButton);
             this.Controls.Add(this.childrenButton);
             this.Controls.Add(this.TeachersButton);
@@ -186,6 +214,8 @@
         private System.Windows.Forms.Button TeachersButton;
         private System.Windows.Forms.Button childrenButton;
         private System.Windows.Forms.Button parentButton;
+        private System.Windows.Forms.Button Save;
+        private System.Windows.Forms.Button LoadButton;
     }
 }
 
