@@ -42,8 +42,6 @@ V:\1.1\BD\2 semest\Курсовий код\Kyrsach\bin\Debug\Kyrsach.exe.config
 V:\1.1\BD\2 semest\Курсовий код\Kyrsach\bin\Debug\Kyrsach.exe
 V:\1.1\BD\2 semest\Курсовий код\Kyrsach\bin\Debug\Kyrsach.pdb
 V:\1.1\BD\2 semest\Курсовий код\Kyrsach\bin\Debug\BouncyCastle.Crypto.dll
-V:\1.1\BD\2 semest\Курсовий код\Kyrsach\bin\Debug\Devart.Data.dll
-V:\1.1\BD\2 semest\Курсовий код\Kyrsach\bin\Debug\Devart.Data.MySql.dll
 V:\1.1\BD\2 semest\Курсовий код\Kyrsach\bin\Debug\Google.Protobuf.dll
 V:\1.1\BD\2 semest\Курсовий код\Kyrsach\bin\Debug\itextsharp.dll
 V:\1.1\BD\2 semest\Курсовий код\Kyrsach\bin\Debug\K4os.Compression.LZ4.dll

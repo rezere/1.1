@@ -1,0 +1,11 @@
+V:\1.1\Krypto\2_2\2_2\obj\Debug\2_2.csproj.AssemblyReference.cache
+V:\1.1\Krypto\2_2\2_2\obj\Debug\2_2.csproj.SuggestedBindingRedirects.cache
+V:\1.1\Krypto\2_2\2_2\obj\Debug\_2_2.Form1.resources
+V:\1.1\Krypto\2_2\2_2\obj\Debug\_2_2.Properties.Resources.resources
+V:\1.1\Krypto\2_2\2_2\obj\Debug\2_2.csproj.GenerateResource.cache
+V:\1.1\Krypto\2_2\2_2\obj\Debug\2_2.csproj.CoreCompileInputs.cache
+V:\1.1\Krypto\2_2\2_2\bin\Debug\2_2.exe.config
+V:\1.1\Krypto\2_2\2_2\bin\Debug\2_2.exe
+V:\1.1\Krypto\2_2\2_2\bin\Debug\2_2.pdb
+V:\1.1\Krypto\2_2\2_2\obj\Debug\2_2.exe
+V:\1.1\Krypto\2_2\2_2\obj\Debug\2_2.pdb
