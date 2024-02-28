@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:crypto/crypto.dart';
 import 'main.dart';
 import 'auth.dart';
 
@@ -14,7 +15,6 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
-
   final surname = TextEditingController();
   final name = TextEditingController();
   final mail = TextEditingController();
@@ -36,6 +36,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         _image = File(pickedFile.path);
       });
       urlImage = await uploadImage(_image!);
+    }
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      AddProfile(surname.text, name.text, bio.text, country.text, city.text,
+          street.text, mail.text, password.text, urlImage);
+    } else {
+      // Если какие-либо поля не прошли валидацию, действия не требуются,
+      // так как сообщения об ошибках будут автоматически показаны пользователю.
     }
   }
 
@@ -75,24 +85,49 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 controller: surname,
                 decoration: InputDecoration(labelText: 'Фамилия'),
                 maxLength: 50,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Пожалуйста, заполните поле Фамилия';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
                 controller: name,
                 decoration: InputDecoration(labelText: 'Имя'),
                 maxLength: 50,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Пожалуйста, заполните поле Имя';
+                  }
+                  return null; // Возвращаем null, если ошибок нет
+                },
               ),
               TextFormField(
-                  controller: bio,
-                  decoration: InputDecoration(labelText: 'BIO')),
+                controller: bio,
+                decoration: InputDecoration(labelText: 'BIO'),
+              ),
               TextFormField(
                 controller: country,
                 decoration: InputDecoration(labelText: 'Страна'),
                 maxLength: 50,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Пожалуйста, заполните поле Страна';
+                  }
+                  return null; // Возвращаем null, если ошибок нет
+                },
               ),
               TextFormField(
                 controller: city,
                 decoration: InputDecoration(labelText: 'Город'),
                 maxLength: 50,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Пожалуйста, заполните поле Город';
+                  }
+                  return null; // Возвращаем null, если ошибок нет
+                },
               ),
               TextFormField(
                 controller: street,
@@ -103,32 +138,41 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 controller: mail,
                 decoration: InputDecoration(labelText: 'Почта'),
                 maxLength: 50,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Пожалуйста, заполните поле Почта';
+                  }
+                  return null; // Возвращаем null, если ошибок нет
+                },
               ),
               TextFormField(
                 controller: password,
                 decoration: InputDecoration(labelText: 'Пароль'),
                 obscureText: true,
                 maxLength: 100,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Пожалуйста, заполните поле Пароль';
+                  }
+                  return null; // Возвращаем null, если ошибок нет
+                },
               ),
               TextFormField(
                 controller: passwordCheck,
                 decoration: InputDecoration(labelText: 'Подтвердите пароль'),
                 obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Пожалуйста, заполните поле BIO';
+                  } else if (value != password.text) {
+                    return 'Пароли не совпадают';
+                  }
+                  return null; // Возвращаем null, если ошибок нет
+                },
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  AddProfile(
-                      surname.text,
-                      name.text,
-                      bio.text,
-                      country.text,
-                      city.text,
-                      street.text,
-                      mail.text,
-                      password.text,
-                      urlImage);
-                },
+                onPressed: _submitForm,
                 child: Text('Зарегистрироваться'),
               ),
             ],
@@ -179,24 +223,48 @@ void AddProfile(
     String password,
     String? urlImage) async {
   DateTime date = DateTime.now();
+  bool emailResult = await sendAuth(mail);
   if (urlImage != null) {
     // Разбиваем URL по частям и вставляем 'couchsurfing'
     List<String> parts = urlImage.split('/');
-    int indexToInsert = parts.indexOf('uploads');
+    int indexToInsert = parts.indexOf('uploads'); 
     parts.insert(indexToInsert, 'couchsurfing');
     urlImage = parts.join('/');
   }
-
-  String request =
-      "INSERT INTO `users` (`Surname`, `Name`, `Email`, `Bio`, `ProfilePicture`, `Password`, `CreateAt`, `Country`, `City`, `Street`) VALUES ('$surname', '$name', '$mail', '$bio', '$urlImage', '$password', '$date', '$country', '$city', '$street');";
-  final response = await http.post(
-    Uri.parse('http://10.0.2.2/couchsurfing/addTable.php'),
-    body: {'request': request},
-  );
-  if (response.statusCode == 200) {
-    saveEmail(mail);
-    runApp(Profile(
-      userEmail: mail,
-    ));
+  if (emailResult == true) {
+    String passwordHash = generatePasswordHash(password);
+    String request =
+        "INSERT INTO `users` (`Surname`, `Name`, `Email`, `Bio`, `ProfilePicture`, `Password`, `CreateAt`, `Country`, `City`, `Street`) VALUES ('$surname', '$name', '$mail', '$bio', '$urlImage', '$passwordHash', '$date', '$country', '$city', '$street');";
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2/couchsurfing/addTable.php'),
+      body: {'request': request},
+    );
+    if (response.statusCode == 200) {
+      saveEmail(mail);
+      runApp(Profile(
+        userEmail: mail,
+      ));
+    } else {}
   } else {}
+}
+
+Future<bool> sendAuth(String email) async {
+  final response = await http.post(
+    Uri.parse('http://10.0.2.2/couchsurfing/auth.php'),
+    body: {'email': email},
+  );
+
+  if (response.statusCode == 200) {
+    var jsonResponse = json.decode(response.body);
+    String storedPassword = jsonResponse['password'] ?? '';
+    return storedPassword == '';
+  } else {
+    // Ошибка
+    return false;
+  }
+}
+String generatePasswordHash(String password) {
+  final bytes = utf8.encode(password);
+  final digest = sha256.convert(bytes);
+  return digest.toString();
 }

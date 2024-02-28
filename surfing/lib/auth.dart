@@ -1,3 +1,4 @@
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -74,8 +75,7 @@ class MyFormState extends State<MyForm> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                   runApp(MaterialApp(
-    home: RegistrationScreen()));
+                  runApp(MaterialApp(home: RegistrationScreen()));
                 },
                 child: Text("Регистрация"),
               ),
@@ -84,7 +84,6 @@ class MyFormState extends State<MyForm> {
                   if (myController1.text.isNotEmpty &&
                       myController2.text.isNotEmpty) {
                     if (isValidEmail(myController1.text) == true) {
-                      
                       checkPassword(myController1, myController2, context);
                     } else {
                       showCustomDialog(context, "Не коректный формат почты");
@@ -132,12 +131,15 @@ void showCustomDialog(BuildContext context, String text) {
   );
 }
 
-void checkPassword(final myController1, final myController2, BuildContext context) async {
+void checkPassword(
+    final myController1, final myController2, BuildContext context) async {
   bool authResult = await sendAuth(myController1.text, myController2.text);
   if (authResult == true) {
     await saveEmail(myController1.text);
     showCustomDialog(context, "Всё хорошо");
-    runApp(Profile(userEmail: myController1.text,));
+    runApp(Profile(
+      userEmail: myController1.text,
+    ));
     // Успешно
   } else {
     showCustomDialog(context, "Не корректная почта или пароль");
@@ -152,16 +154,15 @@ Future<bool> sendAuth(String email, String password) async {
   );
 
   if (response.statusCode == 200) {
-   
     var jsonResponse = json.decode(response.body);
     String storedPassword = jsonResponse['password'] ?? '';
-    return password ==
-        storedPassword;
+    return generatePasswordHash(password) == storedPassword;
   } else {
     // Ошибка
     return false;
   }
 }
+
 Future<void> saveEmail(String email) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString('userEmail', email);
@@ -170,4 +171,10 @@ Future<void> saveEmail(String email) async {
 Future<String?> loadEmail() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getString('userEmail');
+}
+
+String generatePasswordHash(String password) {
+  final bytes = utf8.encode(password);
+  final digest = sha256.convert(bytes);
+  return digest.toString();
 }

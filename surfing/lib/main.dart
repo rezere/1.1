@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:surfing/home.dart';
 import 'auth.dart';
 import 'account.dart';
 import 'find.dart';
+import 'map.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+
+import 'rental.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  initializeApp();
+  runApp(Rental());
+  //initializeApp();
 }
 
+
+
 Future<void> initializeApp() async {
-  String? userEmail =
-      await loadEmail();
+  String? userEmail = await loadEmail();
   if (userEmail != null) {
     runApp(Profile(userEmail: userEmail)); // Передаем userEmail в MyApp
   } else {

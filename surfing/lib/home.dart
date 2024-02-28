@@ -5,28 +5,30 @@ import 'dart:convert';
 import 'account.dart';
 import 'auth.dart';
 import 'map.dart';
-import 'home.dart';
-class Find extends StatelessWidget {
+import 'find.dart';
+
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SearchScreen(),
+      home: HomePage(),
     );
   }
 }
 
-class SearchScreen extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  _HomePage createState() => _HomePage();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _HomePage extends State<HomePage> {
   int _currentIndex = 2;
   String? email = '';
 
   @override
   void initState() {
     loadUserEmail();
+    _loadRental();
     super.initState();
   }
 
@@ -41,7 +43,7 @@ class _SearchScreenState extends State<SearchScreen> {
       switch (_currentIndex) {
         case 0:
           {
-            runApp(Home());
+            //runApp();
             break;
           }
         case 1:
@@ -62,18 +64,20 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   final TextEditingController _controller = TextEditingController();
-  List<dynamic> _searchResults = [];
+  List<dynamic> _loadResults = [];
+  int _count = -1;
 
-  Future<void> _search() async {
+  Future<void> _loadRental() async {
     final response = await http.get(Uri.parse(
-        'http://10.0.2.2/couchsurfing/findTable.php?search=${_controller.text}'));
+        'http://10.0.2.2/couchsurfing/getRental.php'));
     if (response.statusCode == 200) {
+      print(response.body);
       final List<dynamic> results = json.decode(response.body);
+      _count = results.length;
       setState(() {
-        _searchResults = results;
+        _loadResults = results;
       });
     } else {
-      // Обработка ошибки
     }
   }
 
@@ -81,58 +85,32 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Поиск пользователей'),
+        title: Text('Главная $_count'),
         backgroundColor: Color.fromARGB(255, 96, 150, 180),
         centerTitle: true,
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Поиск',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: _search,
-                ),
-              ),
-            ),
-          ),
           Expanded(
             child: ListView.builder(
-              itemCount: _searchResults.length,
+              itemCount: _loadResults.length,
               itemBuilder: (context, index) {
-                final user = _searchResults[index];
-                final rating = user['averageRating'] != null
-                    ? double.parse(user['averageRating'].toString())
-                        .toStringAsFixed(1)
-                    : '0';
+                final rental = _loadResults[index];
                 return ListTile(
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          ClipOval(
-                            child: Image.network(
-                              user['ProfilePicture'],
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
                           SizedBox(width: 10),
-                          Text('${user['Surname']} ${user['Name']}'),
+                          Text('${rental['Title']}'),
                         ],
                       ),
-                      Text('$rating ★'),
+                      Text('${rental['Country']} ${rental['City']}'),
                     ],
                   ),
                   onTap: () {
-                    runApp(Profile(userEmail: user['Email']));
+                    //runApp(Profile(userEmail: user['Email']));
                   },
                 );
               },

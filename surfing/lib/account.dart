@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'auth.dart';
+import 'find.dart';
+import 'map.dart';
+import 'home.dart';
 
-class MyApp extends StatelessWidget {
+class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,8 +29,11 @@ class UserProfilePage extends StatefulWidget {
 class _UserProfilePageState extends State<UserProfilePage> {
   late Future<dynamic> userDataFuture, userRateFuture;
   int totalStars = 5;
-  String? userEmail;
+  String? userEmail, profileEmail;
   int _currentIndex = 3;
+  dynamic userData;
+  String? selectedReason;
+
   @override
   void initState() {
     loadUserEmail();
@@ -36,6 +43,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
       _fetchUserData(widget.email),
       _fetchRateData(widget.email),
     ]);
+    profileEmail = '';
   }
 
   void loadUserEmail() async {
@@ -46,6 +54,71 @@ class _UserProfilePageState extends State<UserProfilePage> {
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
+      switch (_currentIndex) {
+        case 0:
+          {
+            runApp(Home());
+            break;
+          }
+        case 1:
+          {
+            runApp(MapPage());
+          }
+        case 2:
+          {
+            runApp(Find());
+            break;
+          }
+      }
+    });
+  }
+
+  void _showReasonDialog() {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: const Text('Выберите причину жалобы'),
+          children: <Widget>[
+            SimpleDialogOption(
+              onPressed: () {
+                AddReport(
+                    userEmail!, profileEmail!, 'Обман/Ввод в заблуждение');
+                Navigator.of(context).pop();
+              },
+              child: const Text('Обман/Ввод в заблуждение'),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                AddReport(userEmail!, profileEmail!, 'Ложная информация');
+                Navigator.of(context).pop();
+              },
+              child: const Text('Ложная информация'),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                AddReport(userEmail!, profileEmail!, 'Плохое качество');
+                Navigator.of(context).pop();
+              },
+              child: const Text('Плохое качество'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('ОК'),
+            ),
+          ],
+        );
+      },
+    ).then((value) {
+      // Обновление состояния виджета с выбранной причиной
+      if (value != null) {
+        setState(() {
+          selectedReason = value;
+        });
+        // Отображение выбранной причины
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Выбранная причина: $selectedReason')));
+      }
     });
   }
 
@@ -56,13 +129,20 @@ class _UserProfilePageState extends State<UserProfilePage> {
         title: Text('Профиль'),
         backgroundColor: Color.fromARGB(255, 96, 150, 180),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.announcement_outlined),
+            onPressed: _showReasonDialog,
+          ),
+        ],
       ),
       body: FutureBuilder<dynamic>(
         future: userDataFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
-              final userData = snapshot.data![0];
+              userData = snapshot.data![0];
+              profileEmail = userData['Email'];
               final userRateData = snapshot.data![1];
               return Column(
                 children: <Widget>[
@@ -128,15 +208,30 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   Text('О себе: ${userData['BIO']}'),
                   SizedBox(height: 20),
                   if (userData['Email'] == userEmail)
-                    ElevatedButton(
-                      onPressed: () {
-                        showCustomDialog(
-                            context,
-                            "Вы уверены что хотите удалить аккаунт?",
-                            userEmail.toString());
-                      },
-                      child: Text('Удалить'),
-                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        ElevatedButton(
+                          onPressed: () {
+                            removeEmail();
+                            runApp(Auth());
+                          },
+                          child: const Text('Выйти'),
+                        ),
+                        SizedBox(
+                          width: 50,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            showCustomDialog(
+                                context,
+                                "Вы уверены что хотите удалить аккаунт?",
+                                userEmail.toString());
+                          },
+                          child: const Text('Удалить'),
+                        ),
+                      ],
+                    )
                 ],
               );
             } else if (snapshot.hasError) {
@@ -158,7 +253,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
-            icon: Icon(Icons.favorite),
+            icon: Icon(Icons.fmd_good_outlined),
             label: 'Избранное',
           ),
           BottomNavigationBarItem(
@@ -185,7 +280,6 @@ Future<dynamic> _fetchUserData(String email) async {
   );
 
   if (response.statusCode == 200) {
-    print(response.body);
     return json.decode(response.body);
   } else {
     throw Exception('Failed to load user data');
@@ -199,7 +293,6 @@ Future<dynamic> _fetchRateData(String email) async {
   );
 
   if (response.statusCode == 200) {
-    print(response.body);
     return json.decode(response.body);
   } else {
     throw Exception('Failed to load user data');
@@ -222,7 +315,10 @@ void showCustomDialog(BuildContext context, String text, String email) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Внимание', textAlign: TextAlign.center,),
+        title: Text(
+          'Внимание',
+          textAlign: TextAlign.center,
+        ),
         content: Text(text),
         actions: <Widget>[
           TextButton(
@@ -241,4 +337,39 @@ void showCustomDialog(BuildContext context, String text, String email) {
       );
     },
   );
+}
+
+Future<void> removeEmail() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('userEmail');
+}
+
+void AddReport(String email, String reportedEmail, String info) async {
+  DateTime date = DateTime.now();
+  String? ID, reportedID;
+  final response = await http.post(
+    Uri.parse('http://10.0.2.2/couchsurfing/getID.php'),
+    body: {'email': email},
+  );
+  if (response.statusCode == 200) {
+    var jsonResponse = json.decode(response.body);
+    ID = jsonResponse['UserID'].toString() ?? '';
+    final respon = await http.post(
+      Uri.parse('http://10.0.2.2/couchsurfing/getID.php'),
+      body: {'email': reportedEmail},
+    );
+    if (respon.statusCode == 200) {
+      jsonResponse = json.decode(respon.body);
+      reportedID = jsonResponse['UserID'].toString() ?? '';
+
+      String request =
+          "INSERT INTO `report` (`firstID`, `secondID`, `Info`, `Date`) VALUES ('$ID', '$reportedID', '$info', '$date');";
+      final del = await http.post(
+        Uri.parse('http://10.0.2.2/couchsurfing/addTable.php'),
+        body: {'request': request},
+      );
+    }
+  } else {
+    throw Exception('Failed to load user data');
+  }
 }
