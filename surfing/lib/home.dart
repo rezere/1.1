@@ -85,7 +85,7 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Главная $_count'),
+        title: Text('Главная'),
         backgroundColor: Color.fromARGB(255, 96, 150, 180),
         centerTitle: true,
       ),

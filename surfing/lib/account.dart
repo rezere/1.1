@@ -152,15 +152,15 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         EdgeInsets.all(2), // Расстояние рамки от CircleAvatar
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 0, 0,
-                          0), // Цвет фона рамки, можно задать любой цвет
-                      shape: BoxShape.circle, // Форма рамки
+                          0), 
+                      shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
                           color:
-                              Colors.grey.withOpacity(0.5), // Цвет тени рамки
-                          spreadRadius: 5, // Размер тени
-                          blurRadius: 7, // Размытие тени
-                          offset: Offset(0, 3), // Смещение тени
+                              Colors.grey.withOpacity(0.5), 
+                          spreadRadius: 5, 
+                          blurRadius: 7,
+                          offset: Offset(0, 3),
                         ),
                       ],
                     ),

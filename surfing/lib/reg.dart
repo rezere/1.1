@@ -53,6 +53,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => runApp(Auth()),
+        ),
         title: Text('Регистрация'),
         backgroundColor: Color.fromARGB(255, 96, 150, 180),
         centerTitle: true,
@@ -227,7 +231,7 @@ void AddProfile(
   if (urlImage != null) {
     // Разбиваем URL по частям и вставляем 'couchsurfing'
     List<String> parts = urlImage.split('/');
-    int indexToInsert = parts.indexOf('uploads'); 
+    int indexToInsert = parts.indexOf('uploads');
     parts.insert(indexToInsert, 'couchsurfing');
     urlImage = parts.join('/');
   }
@@ -263,6 +267,7 @@ Future<bool> sendAuth(String email) async {
     return false;
   }
 }
+
 String generatePasswordHash(String password) {
   final bytes = utf8.encode(password);
   final digest = sha256.convert(bytes);

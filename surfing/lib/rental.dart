@@ -52,7 +52,9 @@ class _InputPageState extends State<InputPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Enter Data'),
+        title: Text('Новое объявление'),
+        backgroundColor: Color.fromARGB(255, 96, 150, 180),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
