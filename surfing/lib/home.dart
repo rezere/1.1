@@ -22,7 +22,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-  int _currentIndex = 2;
+  int _currentIndex = 0;
   String? email = '';
 
   @override
@@ -116,6 +116,12 @@ class _HomePage extends State<HomePage> {
               },
             ),
           ),
+          FloatingActionButton(
+          onPressed: () {
+            // Действие кнопки
+          },
+          child: Icon(Icons.add),
+        ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

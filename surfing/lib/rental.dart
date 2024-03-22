@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'auth.dart';
@@ -28,23 +29,57 @@ class _InputPageState extends State<InputPage> {
   int _peopleCount = 1;
   DateTime? _startDate;
   DateTime? _endDate;
+  final ImagePicker _picker = ImagePicker();
+  List<XFile>? _images = [];
 
-  Future<void> _selectDate(BuildContext context, bool isStart) async {
+  Future<void> _pickImages() async {
+    final List<XFile>? selectedImages = await _picker.pickMultiImage();
+    if (selectedImages!.isNotEmpty) {
+      setState(() {
+        _images = selectedImages;
+      });
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context, bool isStartDate) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate:
-          isStart ? _startDate ?? DateTime.now() : _endDate ?? DateTime.now(),
+      initialDate: isStartDate
+          ? _startDate ?? DateTime.now()
+          : _endDate ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2025),
     );
     if (picked != null) {
-      setState(() {
-        if (isStart) {
-          _startDate = picked;
+      if (isStartDate) {
+        if (_endDate != null && picked.isAfter(_endDate!)) {
+          // Показываем сообщение об ошибке
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content:
+                  Text('Дата заселения не может быть позже даты выселения.'),
+            ),
+          );
         } else {
-          _endDate = picked;
+          setState(() {
+            _startDate = picked;
+          });
         }
-      });
+      } else {
+        if (_startDate != null && picked.isBefore(_startDate!)) {
+          // Показываем сообщение об ошибке
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content:
+                  Text('Дата выселения не может быть раньше даты заселения.'),
+            ),
+          );
+        } else {
+          setState(() {
+            _endDate = picked;
+          });
+        }
+      }
     }
   }
 
@@ -63,6 +98,15 @@ class _InputPageState extends State<InputPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  _pickImages();
+                },
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.grey[200],
+                ),
+              ),
               TextFormField(
                 controller: _titleController,
                 decoration: InputDecoration(labelText: 'Заголовок'),
@@ -147,9 +191,19 @@ class _InputPageState extends State<InputPage> {
               ),
               ElevatedButton(
                 onPressed: () {
+                  prepareFilesForUpload(_images!);
                   if (_formKey.currentState!.validate()) {
-                    AddRental(_titleController.text, _infoController.text, _countryController.text, _cityController.text, _streetController.text, _peopleCount, _startDate, _endDate);
+                    AddRental(
+                        _titleController.text,
+                        _infoController.text,
+                        _countryController.text,
+                        _cityController.text,
+                        _streetController.text,
+                        _peopleCount,
+                        _startDate,
+                        _endDate);
                   }
+                  
                 },
                 child: Text('Добавить'),
               ),
@@ -195,4 +249,42 @@ Future<String> GetID() async {
     ID = jsonResponse['UserID'].toString() ?? '';
   }
   return ID;
+}
+
+void prepareFilesForUpload(List<XFile> images) {
+  List<Map<String, dynamic>> files = [];
+  for (int i = 0; i < images.length; i++) {
+    String newName = "mail_$i.jpg";
+    Map<String, dynamic> fileData = {
+      "path": images[i].path,
+      "newName": newName,
+    };
+    files.add(fileData);
+  }
+  print(files);
+  uploadFiles(files, );
+}
+Future<void> uploadFiles(List<Map<String, dynamic>> files) async {
+  var uri = Uri.parse("http://10.0.2.2/couchsurfing/upload.php");
+  var request = http.MultipartRequest('POST', uri);
+  String prefix = await GetID();
+
+  // Добавление префикса к запросу
+  request.fields['prefix'] = prefix;
+
+  for (var file in files) {
+    request.files.add(await http.MultipartFile.fromPath(
+      'file', 
+      file['path'], 
+      filename: file['newName']
+    ));
+  }
+
+  var response = await request.send();
+
+  if (response.statusCode == 200) {
+    print('Upload successful');
+  } else {
+    print('Upload failed');
+  }
 }

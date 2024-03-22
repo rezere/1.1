@@ -6,6 +6,7 @@ import 'account.dart';
 import 'auth.dart';
 import 'map.dart';
 import 'home.dart';
+
 class Find extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -81,8 +82,8 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Поиск пользователей'),
-        backgroundColor: Color.fromARGB(255, 96, 150, 180),
+        title: const Text('Поиск пользователей'),
+        backgroundColor: const Color.fromARGB(255, 96, 150, 180),
         centerTitle: true,
       ),
       body: Column(
@@ -92,10 +93,10 @@ class _SearchScreenState extends State<SearchScreen> {
             child: TextField(
               controller: _controller,
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 labelText: 'Поиск',
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                   onPressed: _search,
                 ),
               ),
@@ -117,14 +118,30 @@ class _SearchScreenState extends State<SearchScreen> {
                       Row(
                         children: <Widget>[
                           ClipOval(
-                            child: Image.network(
-                              user['ProfilePicture'],
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
-                            ),
+                            child: user['ProfilePicture'] != null
+                                ? Image.network(
+                                    user['ProfilePicture'],
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace? stackTrace) {
+                                      return Icon(Icons.person, size: 50);
+                                    },
+                                  )
+                                : Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.grey,
+                                    ),
+                                    child: Icon(Icons.person,
+                                        size: 50, color: Colors.white),
+                                  ),
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Text('${user['Surname']} ${user['Name']}'),
                         ],
                       ),

@@ -7,6 +7,8 @@ import 'auth.dart';
 import 'find.dart';
 import 'map.dart';
 import 'home.dart';
+import 'dart:typed_data';
+
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -33,7 +35,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
   int _currentIndex = 3;
   dynamic userData;
   String? selectedReason;
-
+Uint8List kTransparentImage = Uint8List.fromList([
+  0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52,
+  0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x08, 0x06, 0x00, 0x00, 0x00, 0x1F, 0x15, 0xC4,
+  0x89, 0x00, 0x00, 0x00, 0x0A, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9C, 0x63, 0x00, 0x01, 0x00, 0x00,
+  0x05, 0x00, 0x01, 0x0D, 0x0A, 0x2D, 0xB4, 0x00, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4E, 0x44, 0xAE,
+  0x42, 0x60, 0x82
+]);
   @override
   void initState() {
     loadUserEmail();
@@ -148,27 +156,34 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 children: <Widget>[
                   SizedBox(height: 20),
                   Container(
-                    padding:
-                        EdgeInsets.all(2), // Расстояние рамки от CircleAvatar
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 0, 0,
-                          0), 
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color:
-                              Colors.grey.withOpacity(0.5), 
-                          spreadRadius: 5, 
-                          blurRadius: 7,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(userData['ProfilePicture']),
-                    ),
-                  ),
+                      padding:
+                          EdgeInsets.all(2), // Расстояние рамки от CircleAvatar
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 0, 0, 0),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: CircleAvatar(
+                        radius: 50,
+                        // Используйте FadeInImage.memoryNetwork для загрузки изображения
+                        backgroundImage: FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage, // Это должна быть прозрачная картинка
+                          image: userData['ProfilePicture'],
+                          fit: BoxFit.cover,
+                          imageErrorBuilder: (context, error, stackTrace) {
+                            // Возвращает виджет с иконкой, если изображение не загружено
+                            return Icon(Icons.person,
+                                size: 100, color: Colors.grey);
+                          },
+                        ).image,
+                      )),
                   SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -353,7 +368,7 @@ void AddReport(String email, String reportedEmail, String info) async {
   );
   if (response.statusCode == 200) {
     var jsonResponse = json.decode(response.body);
-    ID = jsonResponse['UserID'].toString() ?? '';
+    ID = jsonResponse['UserID'].toString();
     final respon = await http.post(
       Uri.parse('http://10.0.2.2/couchsurfing/getID.php'),
       body: {'email': reportedEmail},
