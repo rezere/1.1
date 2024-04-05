@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -5,6 +7,9 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'reg.dart';
 import 'main.dart';
+
+int codeEmail = -1;
+String emailUpdate = '';
 
 class Auth extends StatelessWidget {
   const Auth({super.key});
@@ -51,8 +56,7 @@ class MyFormState extends State<MyForm> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
-        mainAxisSize: MainAxisSize
-            .min, // Используется для занимания минимального пространства по вертикали
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextField(
             controller: myController1,
@@ -60,7 +64,7 @@ class MyFormState extends State<MyForm> {
               hintText: 'Введите почту',
             ),
           ),
-          const SizedBox(height: 8), // Отступ между полями
+          const SizedBox(height: 8),
           TextField(
             controller: myController2,
             decoration: const InputDecoration(
@@ -68,25 +72,24 @@ class MyFormState extends State<MyForm> {
             ),
             obscureText: true,
           ),
-          const SizedBox(height: 16), // Отступ между полями ввода и кнопками
+          const SizedBox(height: 16),
           Row(
-            mainAxisAlignment: MainAxisAlignment
-                .spaceEvenly, // Равномерное распределение по горизонтали
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
                 onPressed: () {
                   runApp(MaterialApp(home: RegistrationScreen()));
                 },
-                child: Text("Регистрация"),
+                child: const Text("Регистрация"),
               ),
               ElevatedButton(
                 onPressed: () {
                   if (myController1.text.isNotEmpty &&
                       myController2.text.isNotEmpty) {
-                    if (isValidEmail(myController1.text) == true) {
+                    if (isValidEmail(myController1.text)) {
                       checkPassword(myController1, myController2, context);
                     } else {
-                      showCustomDialog(context, "Не коректный формат почты");
+                      showCustomDialog(context, "Некорректный формат почты");
                     }
                   } else {
                     showCustomDialog(context, "Заполните все поля");
@@ -96,7 +99,143 @@ class MyFormState extends State<MyForm> {
               ),
             ],
           ),
+          const SizedBox(height: 20),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Recovery()));
+            },
+            child: const Text(
+              "Забыл пароль?",
+              style: TextStyle(
+                color: Colors.blue,
+              ),
+            ),
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class Recovery extends StatelessWidget {
+  final mailController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Востановление пароля'),
+          backgroundColor: Color.fromARGB(255, 96, 150, 180),
+          centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Auth())),
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: mailController,
+                decoration: const InputDecoration(
+                  hintText: 'Введите почту',
+                ),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  if (mailController.text.isNotEmpty) {
+                    if (isValidEmail(mailController.text)) {
+                      checkEmail(mailController, context);
+                    } else {
+                      showCustomDialog(context, "Некорректный формат почты");
+                    }
+                  } else {
+                    showCustomDialog(context, "Заполните все поля");
+                  }
+                },
+                child: const Text('Востановить'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ChangePassword extends StatelessWidget {
+  final codeController = TextEditingController();
+  final passwordController = TextEditingController();
+  final password2Controller = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Востановление пароля'),
+          backgroundColor: Color.fromARGB(255, 96, 150, 180),
+          centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () => runApp(Auth()),
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: codeController,
+                decoration: const InputDecoration(
+                  hintText: 'Введите код с почты',
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: passwordController,
+                decoration: const InputDecoration(
+                  hintText: 'Введите новый пароль',
+                ),
+                obscureText: true,
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: password2Controller,
+                decoration: const InputDecoration(
+                  hintText: 'Подтвердите пароль',
+                ),
+                obscureText: true,
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  if (codeController.text.isNotEmpty &&
+                      passwordController.text.isNotEmpty &&
+                      password2Controller.text.isNotEmpty) {
+                    if (codeController.text == codeEmail.toString()) {
+                      if (passwordController.text == password2Controller.text) {
+                        UpdatePassword(emailUpdate, passwordController.text);
+                      } else {
+                        showCustomDialog(context, "Не совпадают пароли");
+                      }
+                    } else {
+                      showCustomDialog(context, "Не верный код");
+                    }
+                  } else {
+                    showCustomDialog(context, "Заполните все поля");
+                  }
+                },
+                child: const Text('Изменить'),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -140,10 +279,36 @@ void checkPassword(
     runApp(Profile(
       userEmail: myController1.text,
     ));
-    // Успешно
   } else {
     showCustomDialog(context, "Не корректная почта или пароль");
+  }
+}
+
+void checkEmail(final myController1, BuildContext context) async {
+  bool authResult = await mailFind(myController1.text);
+  if (authResult == true) {
+    sendEmail(myController1.text);
+    emailUpdate = myController1.text;
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ChangePassword()));
+  } else {
+    showCustomDialog(context, "Не существует почты");
     // Не успешно
+  }
+}
+
+Future<bool> mailFind(String email) async {
+  final response = await http.post(
+    Uri.parse('http://10.0.2.2/couchsurfing/auth.php'),
+    body: {'email': email},
+  );
+
+  if (response.statusCode == 200) {
+    var jsonResponse = json.decode(response.body);
+    String storedPassword = jsonResponse['password'] ?? '';
+    return storedPassword != '';
+  } else {
+    return false;
   }
 }
 
@@ -161,6 +326,44 @@ Future<bool> sendAuth(String email, String password) async {
     // Ошибка
     return false;
   }
+}
+
+Future<void> sendEmail(String email) async {
+  var rnd = Random();
+  int code = rnd.nextInt(9000) + 1000;
+  codeEmail = code;
+  final uri = Uri.parse('http://10.0.2.2/couchsurfing/sendmail.php');
+  final response = await http.post(
+    uri,
+    body: {
+      'email': email,
+      'body': "Добрый день, вы хотите изменить пароль. Введите данный код",
+      'code': code.toString(),
+    },
+  );
+  if (response.statusCode == 200) {
+    print('Письмо успешно отправлено');
+    print(response.body);
+  } else {
+    print('Ошибка при отправке письма: ${response.body}');
+  }
+}
+
+void UpdatePassword(String mail, String password) async {
+  String passwordHash = generatePasswordHash(password);
+  final response = await http.post(
+    Uri.parse('http://10.0.2.2/couchsurfing/updateInfo.php'),
+    body: {
+      'email': mail,
+      'passwordHash': passwordHash,
+    },
+  );
+  if (response.statusCode == 200) {
+    saveEmail(mail);
+    runApp(Profile(
+      userEmail: mail,
+    ));
+  } else {}
 }
 
 Future<void> saveEmail(String email) async {

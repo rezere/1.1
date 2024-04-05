@@ -6,6 +6,8 @@ import 'account.dart';
 import 'auth.dart';
 import 'map.dart';
 import 'find.dart';
+import 'rental.dart';
+import 'serverInfo.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -69,7 +71,7 @@ class _HomePage extends State<HomePage> {
 
   Future<void> _loadRental() async {
     final response = await http.get(Uri.parse(
-        'http://10.0.2.2/couchsurfing/getRental.php'));
+        '${GetServer()}/getRental.php'));
     if (response.statusCode == 200) {
       print(response.body);
       final List<dynamic> results = json.decode(response.body);
@@ -92,33 +94,50 @@ class _HomePage extends State<HomePage> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: _loadResults.length,
-              itemBuilder: (context, index) {
-                final rental = _loadResults[index];
-                return ListTile(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          SizedBox(width: 10),
-                          Text('${rental['Title']}'),
-                        ],
-                      ),
+  child: ListView.builder(
+    itemCount: _loadResults.length,
+    itemBuilder: (context, index) {
+      final rental = _loadResults[index];
+      final imageUrl = '${GetServer()}/uploads/rental/${rental['RentalID']}_1.jpg'; // Укажите точный путь к изображению
+      return InkWell( // Используем InkWell для обработки нажатий
+        onTap: () {
+          // Действие при нажатии на элемент списка
+          print('Tapped on ${rental['Title']}');
+        },
+        child: Card( // Для визуального выделения каждого элемента списка
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.network(
+                imageUrl,
+                width: 100, // Укажите нужную ширину
+                height: 100, // Укажите нужную высоту
+                fit: BoxFit.cover,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(rental['Title'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                       Text('${rental['Country']} ${rental['City']}'),
+                      Text('Бронь: с ${rental['DateRental']} до ${rental['DateEviction']}'),
+                      Text('Людей: ${rental['MaxPeople']}'),
                     ],
                   ),
-                  onTap: () {
-                    //runApp(Profile(userEmail: user['Email']));
-                  },
-                );
-              },
-            ),
+                ),
+              ),
+            ],
           ),
+        ),
+      );
+    },
+  ),
+),
           FloatingActionButton(
           onPressed: () {
-            // Действие кнопки
+            runApp(Rental());
           },
           child: Icon(Icons.add),
         ),

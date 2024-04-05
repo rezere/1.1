@@ -9,6 +9,7 @@ import 'map.dart';
 import 'home.dart';
 import 'dart:typed_data';
 
+import 'serverInfo.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -35,13 +36,75 @@ class _UserProfilePageState extends State<UserProfilePage> {
   int _currentIndex = 3;
   dynamic userData;
   String? selectedReason;
-Uint8List kTransparentImage = Uint8List.fromList([
-  0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52,
-  0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x08, 0x06, 0x00, 0x00, 0x00, 0x1F, 0x15, 0xC4,
-  0x89, 0x00, 0x00, 0x00, 0x0A, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9C, 0x63, 0x00, 0x01, 0x00, 0x00,
-  0x05, 0x00, 0x01, 0x0D, 0x0A, 0x2D, 0xB4, 0x00, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4E, 0x44, 0xAE,
-  0x42, 0x60, 0x82
-]);
+  Uint8List kTransparentImage = Uint8List.fromList([
+    0x89,
+    0x50,
+    0x4E,
+    0x47,
+    0x0D,
+    0x0A,
+    0x1A,
+    0x0A,
+    0x00,
+    0x00,
+    0x00,
+    0x0D,
+    0x49,
+    0x48,
+    0x44,
+    0x52,
+    0x00,
+    0x00,
+    0x00,
+    0x01,
+    0x00,
+    0x00,
+    0x00,
+    0x01,
+    0x08,
+    0x06,
+    0x00,
+    0x00,
+    0x00,
+    0x1F,
+    0x15,
+    0xC4,
+    0x89,
+    0x00,
+    0x00,
+    0x00,
+    0x0A,
+    0x49,
+    0x44,
+    0x41,
+    0x54,
+    0x78,
+    0x9C,
+    0x63,
+    0x00,
+    0x01,
+    0x00,
+    0x00,
+    0x05,
+    0x00,
+    0x01,
+    0x0D,
+    0x0A,
+    0x2D,
+    0xB4,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x49,
+    0x45,
+    0x4E,
+    0x44,
+    0xAE,
+    0x42,
+    0x60,
+    0x82
+  ]);
   @override
   void initState() {
     loadUserEmail();
@@ -156,34 +219,44 @@ Uint8List kTransparentImage = Uint8List.fromList([
                 children: <Widget>[
                   SizedBox(height: 20),
                   Container(
-                      padding:
-                          EdgeInsets.all(2), // Расстояние рамки от CircleAvatar
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 0, 0, 0),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: CircleAvatar(
-                        radius: 50,
-                        // Используйте FadeInImage.memoryNetwork для загрузки изображения
-                        backgroundImage: FadeInImage.memoryNetwork(
-                          placeholder: kTransparentImage, // Это должна быть прозрачная картинка
-                          image: userData['ProfilePicture'],
-                          fit: BoxFit.cover,
-                          imageErrorBuilder: (context, error, stackTrace) {
-                            // Возвращает виджет с иконкой, если изображение не загружено
-                            return Icon(Icons.person,
-                                size: 100, color: Colors.grey);
-                          },
-                        ).image,
-                      )),
+                    padding:
+                        EdgeInsets.all(2), // Расстояние рамки от CircleAvatar
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: ClipOval(
+                      child: userData['ProfilePicture'] != null
+                          ? Image.network(
+                              userData['ProfilePicture'],
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                return Icon(Icons.person, size: 100);
+                              },
+                            )
+                          : Container(
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.grey,
+                              ),
+                              child: Icon(Icons.person,
+                                  size: 100, color: Colors.white),
+                            ),
+                    ),
+                  ),
                   SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -290,7 +363,7 @@ Uint8List kTransparentImage = Uint8List.fromList([
 
 Future<dynamic> _fetchUserData(String email) async {
   final response = await http.post(
-    Uri.parse('http://10.0.2.2/couchsurfing/getTable.php'),
+    Uri.parse('${GetServer()}/getTable.php'),
     body: {'email': email},
   );
 
@@ -303,7 +376,7 @@ Future<dynamic> _fetchUserData(String email) async {
 
 Future<dynamic> _fetchRateData(String email) async {
   final response = await http.post(
-    Uri.parse('http://10.0.2.2/couchsurfing/rate.php'),
+    Uri.parse('${GetServer()}/rate.php'),
     body: {'email': email},
   );
 
@@ -317,7 +390,7 @@ Future<dynamic> _fetchRateData(String email) async {
 void DestroyAccount(String email) async {
   String request = "DELETE FROM users WHERE `users`.`Email` = $email";
   final response = await http.post(
-    Uri.parse('http://10.0.2.2/couchsurfing/destroyTable.php'),
+    Uri.parse('${GetServer()}/destroyTable.php'),
     body: {'request': request},
   );
   if (response.statusCode == 200) {
@@ -363,14 +436,14 @@ void AddReport(String email, String reportedEmail, String info) async {
   DateTime date = DateTime.now();
   String? ID, reportedID;
   final response = await http.post(
-    Uri.parse('http://10.0.2.2/couchsurfing/getID.php'),
+    Uri.parse('${GetServer()}/getID.php'),
     body: {'email': email},
   );
   if (response.statusCode == 200) {
     var jsonResponse = json.decode(response.body);
     ID = jsonResponse['UserID'].toString();
     final respon = await http.post(
-      Uri.parse('http://10.0.2.2/couchsurfing/getID.php'),
+      Uri.parse('${GetServer()}/getID.php'),
       body: {'email': reportedEmail},
     );
     if (respon.statusCode == 200) {
@@ -380,7 +453,7 @@ void AddReport(String email, String reportedEmail, String info) async {
       String request =
           "INSERT INTO `report` (`firstID`, `secondID`, `Info`, `Date`) VALUES ('$ID', '$reportedID', '$info', '$date');";
       final del = await http.post(
-        Uri.parse('http://10.0.2.2/couchsurfing/addTable.php'),
+        Uri.parse('${GetServer()}/addTable.php'),
         body: {'request': request},
       );
     }

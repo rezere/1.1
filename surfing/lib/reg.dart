@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:crypto/crypto.dart';
 import 'main.dart';
 import 'auth.dart';
+import 'serverInfo.dart';
 
 class RegistrationScreen extends StatefulWidget {
   @override
@@ -260,7 +261,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
 Future<String?> uploadImage(File imageFile) async {
   var uri = Uri.parse(
-      "http://10.0.2.2/couchsurfing/upload.php"); // Укажите URL вашего API для загрузки
+      "${GetServer()}/uploadPhoto.php"); // Укажите URL вашего API для загрузки
   var request = http.MultipartRequest('POST', uri)
     ..files.add(await http.MultipartFile.fromPath(
       'file', // Ключ, по которому сервер ожидает файл
@@ -309,7 +310,7 @@ void AddProfile(
     String request =
         "INSERT INTO `users` (`Surname`, `Name`, `Email`, `Bio`, `ProfilePicture`, `Password`, `CreateAt`, `Country`, `City`, `Street`) VALUES ('$surname', '$name', '$mail', '$bio', '$urlImage', '$passwordHash', '$date', '$country', '$city', '$street');";
     final response = await http.post(
-      Uri.parse('http://10.0.2.2/couchsurfing/addTable.php'),
+      Uri.parse('${GetServer()}/addTable.php'),
       body: {'request': request},
     );
     if (response.statusCode == 200) {
@@ -323,7 +324,7 @@ void AddProfile(
 
 Future<bool> sendAuth(String email) async {
   final response = await http.post(
-    Uri.parse('http://10.0.2.2/couchsurfing/auth.php'),
+    Uri.parse('${GetServer()}/auth.php'),
     body: {'email': email},
   );
   if (response.statusCode == 200) {
@@ -343,11 +344,12 @@ String generatePasswordHash(String password) {
 }
 
 Future<void> sendEmail(String email, int code) async {
-  final uri = Uri.parse('http://10.0.2.2/couchsurfing/sendmail.php');
+  final uri = Uri.parse('${GetServer()}/sendmail.php');
   final response = await http.post(
     uri,
     body: {
       'email': email,
+      'body': "Добрый день, для подтверждения почты введите данный код",
       'code': code.toString(),
     },
   );

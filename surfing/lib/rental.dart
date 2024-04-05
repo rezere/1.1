@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:surfing/serverInfo.dart';
 import 'dart:convert';
 import 'auth.dart';
+import 'home.dart';
 
 class Rental extends StatelessWidget {
   @override
@@ -191,7 +193,6 @@ class _InputPageState extends State<InputPage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  prepareFilesForUpload(_images!);
                   if (_formKey.currentState!.validate()) {
                     AddRental(
                         _titleController.text,
@@ -201,9 +202,11 @@ class _InputPageState extends State<InputPage> {
                         _streetController.text,
                         _peopleCount,
                         _startDate,
-                        _endDate);
+                        _endDate,
+                        _images!);
+                    ;
+                    runApp(Home());
                   }
-                  
                 },
                 child: Text('Добавить'),
               ),
@@ -223,16 +226,18 @@ void AddRental(
     String adress,
     int count,
     DateTime? dateRental,
-    DateTime? dateEviction) async {
+    DateTime? dateEviction,
+    List<XFile> images) async {
   DateTime date = DateTime.now();
   String? userID = await GetID();
   String request =
       "INSERT INTO `rental` (`Title`, `Description`, `MaxPeople`, `Country`, `City`, `Street`, `DateRental`, `DateEviction`, `LessorID`, `DateCreate`) VALUES ('$title', '$info', '$count', '$country', '$city', '$adress', '$dateRental', '$dateEviction', '$userID', '$date');";
   final response = await http.post(
-    Uri.parse('http://10.0.2.2/couchsurfing/addTable.php'),
+    Uri.parse('${GetServer()}/addTable.php'),
     body: {'request': request},
   );
   if (response.statusCode == 200) {
+    prepareFilesForUpload(images);
   } else {}
 }
 
@@ -241,7 +246,7 @@ Future<String> GetID() async {
   String ID = '-1';
   String? email = await loadEmail();
   final response = await http.post(
-    Uri.parse('http://10.0.2.2/couchsurfing/getID.php'),
+    Uri.parse('${GetServer()}/getID.php'),
     body: {'email': email},
   );
   if (response.statusCode == 200) {
@@ -261,30 +266,43 @@ void prepareFilesForUpload(List<XFile> images) {
     };
     files.add(fileData);
   }
-  print(files);
-  uploadFiles(files, );
+  uploadFiles(files);
 }
-Future<void> uploadFiles(List<Map<String, dynamic>> files) async {
-  var uri = Uri.parse("http://10.0.2.2/couchsurfing/upload.php");
+
+Future<void> uploadFiles(List<Map<String, dynamic>> filest) async {
+  var uri = Uri.parse("${GetServer()}/uploadRental.php");
+  String prefix = await GetLastRental();
+  print(prefix);
   var request = http.MultipartRequest('POST', uri);
-  String prefix = await GetID();
-
-  // Добавление префикса к запросу
   request.fields['prefix'] = prefix;
-
-  for (var file in files) {
+  var response;
+  for (var file in filest) {
     request.files.add(await http.MultipartFile.fromPath(
-      'file', 
-      file['path'], 
-      filename: file['newName']
+      'file[]',
+      file['path'],
+      filename: file['newName'],
     ));
   }
-
-  var response = await request.send();
-
+  response = await request.send();
   if (response.statusCode == 200) {
     print('Upload successful');
   } else {
     print('Upload failed');
+  }
+}
+
+Future<String> GetLastRental() async {
+  
+  String? email = await loadEmail(); 
+  final response = await http.post(
+    Uri.parse('${GetServer()}/lastRental.php'),
+    body: {'email': email},
+  );
+  if (response.statusCode == 200) {
+    var jsonResponse = json.decode(response.body);
+    String ID = jsonResponse['RentalID'].toString();
+    return ID;
+  } else {
+    return '';
   }
 }
