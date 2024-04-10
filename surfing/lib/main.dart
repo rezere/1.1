@@ -20,7 +20,7 @@ void main() {
 Future<void> initializeApp() async {
   String? userEmail = await loadEmail();
   if (userEmail != null) {
-    runApp(Profile(userEmail: userEmail)); // Передаем userEmail в MyApp
+    runApp(Home());
   } else {
     runApp(Auth());
   }

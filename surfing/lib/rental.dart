@@ -230,8 +230,9 @@ void AddRental(
     List<XFile> images) async {
   DateTime date = DateTime.now();
   String? userID = await GetID();
+  int photoCount = images.length;
   String request =
-      "INSERT INTO `rental` (`Title`, `Description`, `MaxPeople`, `Country`, `City`, `Street`, `DateRental`, `DateEviction`, `LessorID`, `DateCreate`) VALUES ('$title', '$info', '$count', '$country', '$city', '$adress', '$dateRental', '$dateEviction', '$userID', '$date');";
+      "INSERT INTO `rental` (`Title`, `Description`, `MaxPeople`, `Country`, `City`, `Street`, `DateRental`, `DateEviction`, `LessorID`, `DateCreate`, `PhotoCount`) VALUES ('$title', '$info', '$count', '$country', '$city', '$adress', '$dateRental', '$dateEviction', '$userID', '$date', '$photoCount');";
   final response = await http.post(
     Uri.parse('${GetServer()}/addTable.php'),
     body: {'request': request},
