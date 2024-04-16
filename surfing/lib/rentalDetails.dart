@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:surfing/rental.dart';
 import 'package:surfing/serverInfo.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 class RentalDetailPage extends StatelessWidget {
   final Map<String, dynamic> rental;
@@ -23,11 +27,36 @@ class RentalDetailPage extends StatelessWidget {
     }
     return null;
   }
+   Future<void> updateRenterID(int rentalID,) async {
+    String userID = await GetID();
+    final uri = Uri.parse('${GetServer()}/respondRental.php');
+    final response = await http.post(uri, body: {
+      'rentalID': rentalID.toString(),
+      'renterID': userID,
+    });
 
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      if (jsonResponse['success'] != null) {
+        // Успешное обновление
+        print('RenterID updated successfully');
+        showDialog("Вы откликнулись на объявление");
+      } else if (jsonResponse['error'] != null) {
+        // Обработка конфликта дат
+        print('Date conflict detected');
+        showDialog("К сожалению произошёл конфликт дат");
+      }
+    } else {
+      // Обработка ошибки запроса
+      print('Failed to update RenterID: ${response.statusCode}');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final String imagePath = '${GetServer()}/uploads/rental/${rental['RentalID']}_';
-    return Scaffold(
+    return ScaffoldMessenger(
+      key: scaffoldMessengerKey,
+      child: Scaffold(
       appBar: AppBar(
         title: Text('Объявление'),
         backgroundColor: Color.fromARGB(255, 96, 150, 180),
@@ -74,11 +103,11 @@ class RentalDetailPage extends StatelessWidget {
               future: getIDUser(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-                  if (snapshot.data != rental['LessorID'].toString()) {
+                  if (snapshot.data != rental['LessorID'].toString() && rental['RenterID'] == null) {
                     return Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          // Действия, когда пользователь - арендодатель
+                          updateRenterID(rental['RentalID']);
                         },
                         child: Text('Откликнутся'),
                       ),
@@ -91,6 +120,12 @@ class RentalDetailPage extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
+}
+
+void showDialog(String value) {
+  final snackBar = SnackBar(content: Text(value));
+  scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
 }
