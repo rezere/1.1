@@ -17,16 +17,6 @@ class RentalDetailPage extends StatelessWidget {
 
   RentalDetailPage({Key? key, required this.rental}) : super(key: key);
   String? userID;
-
-  @override
-  void initState() {
-    GetUserID();
-  }
-
-  void GetUserID() async {
-    userID = await getIDUser();
-  }
-
   Future<String?> getIDUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? email = prefs.getString('userEmail');
@@ -36,6 +26,7 @@ class RentalDetailPage extends StatelessWidget {
     );
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
+      userID = jsonResponse['UserID'].toString();
       return jsonResponse['UserID'].toString();
     }
     return null;
@@ -68,15 +59,17 @@ class RentalDetailPage extends StatelessWidget {
   }
 
   Future<dynamic> getRateInfo(int rental) async {
+    String? temp = await getIDUser();
     final response = await http.post(
       Uri.parse('${GetServer()}/getRateInfo.php'),
       body: {
-        'firstID': getIDUser().toString(),
+        'firstID': userID.toString(),
         'rental': rental.toString(),
       },
     );
 
     if (response.statusCode == 200) {
+      print(json.decode(response.body));
       return json.decode(response.body);
     } else {
       throw Exception('Failed to fetch rate data');
@@ -198,18 +191,18 @@ class RentalDetailPage extends StatelessWidget {
                             evictionDate != null &&
                             evictionDate.isBefore(currentDate) &&
                             snapshot.data == null &&
-                            (rental['RenterID'] == userID ||
-                                rental['LessonerID'] == userID);
-
+                            (rental['RenterID'].toString() == userID.toString() ||
+                                rental['LessorID'].toString() == userID.toString());
                         if (snapshot.connectionState == ConnectionState.done &&
                             shouldShowButton) {
                           return Center(
                             child: ElevatedButton(
                               onPressed: () {
-                                if (rental['RenterID'] == userID) {
+                                
+                                if (rental['RenterID'].toString() == userID.toString()) {
                                   showRatingDialog(context, userID.toString(),
-                                      rental['LessonerID'].toString(), rental['RentalID'].toString());
-                                } else if (rental['LessonerID'] == userID) {
+                                      rental['LessorID'].toString(), rental['RentalID'].toString());
+                                } else if (rental['LessorID'].toString() == userID.toString()) {
                                   showRatingDialog(context, userID.toString(),
                                       rental['RenterID'].toString(), rental['RentalID'].toString());
                                 }
@@ -382,8 +375,9 @@ void showRatingDialog(
 }
 
 void AddRating(String firstID, String secondID, int stars, String info, String rentalID) async {
+  
   String request =
-      "INSERT INTO `rate` (`firstID`, `secondID`, `Stars`, `Info`, `RentalID`) VALUES ('$firstID', '$secondID', '$stars','$info', '$rentalID');";
+      "INSERT INTO `rate` (`firstID`, `secondID`, `Stars`, `Info`, `RentalID`) VALUES ('${int.parse(firstID)}', '${int.parse(secondID)}', '$stars','$info', '${int.parse(rentalID)}');";
   final response = await http.post(
     Uri.parse('${GetServer()}/addTable.php'),
     body: {'request': request},
