@@ -19,7 +19,7 @@ class Auth extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Авторизация'),
+          title: const Text('Авторизація'),
           backgroundColor: Color.fromARGB(255, 96, 150, 180),
           centerTitle: true,
         ),
@@ -42,7 +42,7 @@ class MyFormState extends State<MyForm> {
   // Контроллеры для текстовых полей
   final myController1 = TextEditingController();
   final myController2 = TextEditingController();
-  String text = "Не валидно";
+  String text = "Не валідно";
   @override
   void dispose() {
     // Очистка контроллеров при уничтожении виджета
@@ -61,14 +61,14 @@ class MyFormState extends State<MyForm> {
           TextField(
             controller: myController1,
             decoration: const InputDecoration(
-              hintText: 'Введите почту',
+              hintText: 'Введіть пошту',
             ),
           ),
           const SizedBox(height: 8),
           TextField(
             controller: myController2,
             decoration: const InputDecoration(
-              hintText: 'Введите пароль',
+              hintText: 'Введіть пароль',
             ),
             obscureText: true,
           ),
@@ -80,7 +80,7 @@ class MyFormState extends State<MyForm> {
                 onPressed: () {
                   runApp(MaterialApp(home: RegistrationScreen()));
                 },
-                child: const Text("Регистрация"),
+                child: const Text("Реєстрація"),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -92,10 +92,10 @@ class MyFormState extends State<MyForm> {
                       showCustomDialog(context, "Некорректный формат почты");
                     }
                   } else {
-                    showCustomDialog(context, "Заполните все поля");
+                    showCustomDialog(context, "Заповніть всі поля");
                   }
                 },
-                child: const Text('Авторизация'),
+                child: const Text('Авторизація'),
               ),
             ],
           ),
@@ -106,7 +106,7 @@ class MyFormState extends State<MyForm> {
                   context, MaterialPageRoute(builder: (context) => Recovery()));
             },
             child: const Text(
-              "Забыл пароль?",
+              "Забули пароль?",
               style: TextStyle(
                 color: Colors.blue,
               ),
@@ -125,7 +125,7 @@ class Recovery extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Востановление пароля'),
+          title: const Text('Відновлення пароля'),
           backgroundColor: Color.fromARGB(255, 96, 150, 180),
           centerTitle: true,
           leading: IconButton(
@@ -142,7 +142,7 @@ class Recovery extends StatelessWidget {
               TextField(
                 controller: mailController,
                 decoration: const InputDecoration(
-                  hintText: 'Введите почту',
+                  hintText: 'Введіть пошту',
                 ),
               ),
               const SizedBox(height: 8),
@@ -152,13 +152,13 @@ class Recovery extends StatelessWidget {
                     if (isValidEmail(mailController.text)) {
                       checkEmail(mailController, context);
                     } else {
-                      showCustomDialog(context, "Некорректный формат почты");
+                      showCustomDialog(context, "Некоректний формат пошти");
                     }
                   } else {
-                    showCustomDialog(context, "Заполните все поля");
+                    showCustomDialog(context, "Заповніть всі поля");
                   }
                 },
-                child: const Text('Востановить'),
+                child: const Text('Відновити'),
               ),
             ],
           ),
@@ -177,7 +177,7 @@ class ChangePassword extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Востановление пароля'),
+          title: const Text('Відновлення пароля'),
           backgroundColor: Color.fromARGB(255, 96, 150, 180),
           centerTitle: true,
           leading: IconButton(
@@ -193,14 +193,14 @@ class ChangePassword extends StatelessWidget {
               TextField(
                 controller: codeController,
                 decoration: const InputDecoration(
-                  hintText: 'Введите код с почты',
+                  hintText: 'Введіть код із пошти',
                 ),
               ),
               const SizedBox(height: 8),
               TextField(
                 controller: passwordController,
                 decoration: const InputDecoration(
-                  hintText: 'Введите новый пароль',
+                  hintText: 'Введіть новий пароль',
                 ),
                 obscureText: true,
               ),
@@ -208,7 +208,7 @@ class ChangePassword extends StatelessWidget {
               TextField(
                 controller: password2Controller,
                 decoration: const InputDecoration(
-                  hintText: 'Подтвердите пароль',
+                  hintText: 'Підтвердіть пароль',
                 ),
                 obscureText: true,
               ),
@@ -222,16 +222,16 @@ class ChangePassword extends StatelessWidget {
                       if (passwordController.text == password2Controller.text) {
                         UpdatePassword(emailUpdate, passwordController.text);
                       } else {
-                        showCustomDialog(context, "Не совпадают пароли");
+                        showCustomDialog(context, "Не збігаються паролі");
                       }
                     } else {
-                      showCustomDialog(context, "Не верный код");
+                      showCustomDialog(context, "Невірний код");
                     }
                   } else {
-                    showCustomDialog(context, "Заполните все поля");
+                    showCustomDialog(context, "Заповніть всі поля");
                   }
                 },
-                child: const Text('Изменить'),
+                child: const Text('Змінити'),
               ),
             ],
           ),
@@ -255,7 +255,7 @@ void showCustomDialog(BuildContext context, String text) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Внимание'),
+        title: Text('Увага'),
         content: Text(text),
         actions: <Widget>[
           TextButton(
@@ -275,12 +275,12 @@ void checkPassword(
   bool authResult = await sendAuth(myController1.text, myController2.text);
   if (authResult == true) {
     await saveEmail(myController1.text);
-    showCustomDialog(context, "Всё хорошо");
+    showCustomDialog(context, "Все добре");
     runApp(Profile(
       userEmail: myController1.text,
     ));
   } else {
-    showCustomDialog(context, "Не корректная почта или пароль");
+    showCustomDialog(context, "Не коректна пошта або пароль");
   }
 }
 
@@ -292,7 +292,7 @@ void checkEmail(final myController1, BuildContext context) async {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => ChangePassword()));
   } else {
-    showCustomDialog(context, "Не существует почты");
+    showCustomDialog(context, "Неіснує такої пошти");
     // Не успешно
   }
 }
@@ -337,15 +337,15 @@ Future<void> sendEmail(String email) async {
     uri,
     body: {
       'email': email,
-      'body': "Добрый день, вы хотите изменить пароль. Введите данный код",
+      'body': "Доброго дня, ви хочете змінити пароль. Введіть цей код",
       'code': code.toString(),
     },
   );
   if (response.statusCode == 200) {
-    print('Письмо успешно отправлено');
+    print('Лист успішно надіслано');
     print(response.body);
   } else {
-    print('Ошибка при отправке письма: ${response.body}');
+    print('Помилка при надсиланні листа: ${response.body}');
   }
 }
 

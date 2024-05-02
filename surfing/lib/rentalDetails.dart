@@ -91,11 +91,11 @@ class RentalDetailPage extends StatelessWidget {
       if (jsonResponse['success'] != null) {
         // Успешное обновление
         print('RenterID updated successfully');
-        showDialogDate("Вы откликнулись на объявление");
+        showDialogDate("Ви відгукнулися на оголошення");
       } else if (jsonResponse['error'] != null) {
         // Обработка конфликта дат
         print('Date conflict detected');
-        showDialogDate("К сожалению произошёл конфликт дат");
+        showDialogDate("На жаль, стався конфлікт дат");
       }
     } else {
       // Обработка ошибки запроса
@@ -116,7 +116,7 @@ class RentalDetailPage extends StatelessWidget {
       key: scaffoldMessengerKey,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Объявление'),
+          title: Text('Оголошення'),
           backgroundColor: Color.fromARGB(255, 96, 150, 180),
           centerTitle: true,
         ),
@@ -134,7 +134,7 @@ class RentalDetailPage extends StatelessWidget {
                       imageUrl,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) =>
-                          Center(child: Text('Изображение не доступно')),
+                          Center(child: Text('Зображення недоступне')),
                     );
                   },
                 ),
@@ -156,7 +156,7 @@ class RentalDetailPage extends StatelessWidget {
                       onPressed: () {
                         // Add action for viewing the address if necessary
                       },
-                      child: Text('Просмотреть адрес'),
+                      child: Text('Переглянути адресу'),
                     ),
                     FutureBuilder<String?>(
                       future: getIDUser(),
@@ -170,7 +170,7 @@ class RentalDetailPage extends StatelessWidget {
                                 onPressed: () {
                                   updateRenterID(rental['RentalID']);
                                 },
-                                child: Text('Откликнутся'),
+                                child: Text('Відгукнуться'),
                               ),
                             );
                           }
@@ -207,7 +207,7 @@ class RentalDetailPage extends StatelessWidget {
                                       rental['RenterID'].toString(), rental['RentalID'].toString());
                                 }
                               },
-                              child: Text('Оценить'),
+                              child: Text('Оцінити'),
                             ),
                           );
                         }
@@ -252,7 +252,7 @@ class RentalDetailPage extends StatelessWidget {
                                           child: userData['ProfilePicture'] !=
                                                   null
                                               ? Image.network(
-                                                  userData['ProfilePicture'],
+                                                  '${GetServer()}/uploads/account/${userData['ProfilePicture']}',
                                                   width: 50,
                                                   height: 50,
                                                   fit: BoxFit.cover,
@@ -298,7 +298,7 @@ class RentalDetailPage extends StatelessWidget {
                             );
                           } else if (snapshot.hasError) {
                             return Text(
-                                "Ошибка загрузки данных пользователя: ${snapshot.error}");
+                                "Помилка завантаження даних користувача: ${snapshot.error}");
                           }
                         }
                         return CircularProgressIndicator();
@@ -329,7 +329,7 @@ void showRatingDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text('Оценить'),
+        title: Text('Оцінити'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -350,19 +350,19 @@ void showRatingDialog(
             ),
             TextField(
               controller: _commentController,
-              decoration: InputDecoration(hintText: 'Комментарий'),
+              decoration: InputDecoration(hintText: 'Коментар'),
             ),
           ],
         ),
         actions: <Widget>[
           TextButton(
-            child: Text('Отмена'),
+            child: Text('Відміна'),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
           TextButton(
-            child: Text('Оценить'),
+            child: Text('Оцінити'),
             onPressed: () {
               AddRating(firstID,secondID,_currentRating.round(),_commentController.text,rentalID);
               Navigator.of(context).pop();

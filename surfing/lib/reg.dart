@@ -76,7 +76,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Введите код с почты'),
+          title: const Text('Введіть код із пошти'),
           content: TextField(
             controller: _controller,
             keyboardType: TextInputType.number,
@@ -84,7 +84,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Зарегистрироваться'),
+              child: const Text('Зареєструватись'),
               onPressed: () {
                 final int? enteredNumber = int.tryParse(_controller.text);
                 if (enteredNumber != null && enteredNumber == code) {
@@ -108,7 +108,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () => runApp(Auth()),
         ),
-        title: Text('Регистрация'),
+        title: Text('Реєстрація'),
         backgroundColor: Color.fromARGB(255, 96, 150, 180),
         centerTitle: true,
       ),
@@ -138,37 +138,37 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               TextFormField(
                 controller: surname,
-                decoration: InputDecoration(labelText: 'Фамилия'),
+                decoration: InputDecoration(labelText: 'Прізвище'),
                 maxLength: 50,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, заполните поле Фамилия';
+                    return 'Будь ласка, заповніть поле Прізвище';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: name,
-                decoration: InputDecoration(labelText: 'Имя'),
+                decoration: InputDecoration(labelText: 'Ім`я'),
                 maxLength: 50,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, заполните поле Имя';
+                    return 'Будь ласка, заповніть поле Ім`я';
                   }
                   return null; // Возвращаем null, если ошибок нет
                 },
               ),
               TextFormField(
                 controller: bio,
-                decoration: InputDecoration(labelText: 'О себе'),
+                decoration: InputDecoration(labelText: 'Про себе'),
               ),
               TextFormField(
                 controller: country,
-                decoration: InputDecoration(labelText: 'Страна'),
+                decoration: InputDecoration(labelText: 'Країна'),
                 maxLength: 50,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, заполните поле Страна';
+                    return 'Будь ласка, заповніть поле Країна';
                   }
                   return null; // Возвращаем null, если ошибок нет
                 },
@@ -176,27 +176,27 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               TextFormField(
                 controller: city,
-                decoration: InputDecoration(labelText: 'Город'),
+                decoration: InputDecoration(labelText: 'Місто'),
                 maxLength: 50,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, заполните поле Город';
+                    return 'Будь ласка, заповніть поле Місто';
                   }
                   return null; // Возвращаем null, если ошибок нет
                 },
               ),
               TextFormField(
                 controller: street,
-                decoration: InputDecoration(labelText: 'Улица'),
+                decoration: InputDecoration(labelText: 'Вулиця'),
                 maxLength: 100,
               ),
               TextFormField(
                 controller: mail,
-                decoration: InputDecoration(labelText: 'Почта'),
+                decoration: InputDecoration(labelText: 'Пошта'),
                 maxLength: 50,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, заполните поле Почта';
+                    return 'Будь ласка, заповніть поле Пошта';
                   }
                   return null; // Возвращаем null, если ошибок нет
                 },
@@ -208,20 +208,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 maxLength: 100,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, заполните поле Пароль';
+                    return 'Будь ласка, заповніть поле Пароль';
                   }
                   return null; // Возвращаем null, если ошибок нет
                 },
               ),
               TextFormField(
                 controller: passwordCheck,
-                decoration: InputDecoration(labelText: 'Подтвердите пароль'),
+                decoration: InputDecoration(labelText: 'Підтвердіть пароль'),
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, заполните поле Пароль';
+                    return 'Будь ласка, заповніть поле Пароль';
                   } else if (value != password.text) {
-                    return 'Пароли не совпадают';
+                    return 'Паролі не співпадають';
                   }
                   return null; // Возвращаем null, если ошибок нет
                 },
@@ -249,7 +249,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     } else {}
                   }
                 },
-                child: Text('Зарегистрироваться'),
+                child: Text('Зареєструватись'),
               ),
             ],
           ),
@@ -298,13 +298,6 @@ void AddProfile(
     String? urlImage) async {
   DateTime date = DateTime.now();
   bool emailResult = await sendAuth(mail);
-  if (urlImage != null) {
-    // Разбиваем URL по частям и вставляем 'couchsurfing'
-    List<String> parts = urlImage.split('/');
-    int indexToInsert = parts.indexOf('uploads');
-    parts.insert(indexToInsert, 'couchsurfing');
-    urlImage = parts.join('/');
-  }
   if (emailResult == true) {
     String passwordHash = generatePasswordHash(password);
     String request =
@@ -349,14 +342,14 @@ Future<void> sendEmail(String email, int code) async {
     uri,
     body: {
       'email': email,
-      'body': "Добрый день, для подтверждения почты введите данный код",
+      'body': "Доброго дня, для підтвердження пошти введіть цей код",
       'code': code.toString(),
     },
   );
   if (response.statusCode == 200) {
-    print('Письмо успешно отправлено');
+    print('Лист успішно надіслано');
     print(response.body);
   } else {
-    print('Ошибка при отправке письма: ${response.body}');
+    print('Помилка при надсиланні листа: ${response.body}');
   }
 }

@@ -6,6 +6,7 @@ import 'account.dart';
 import 'auth.dart';
 import 'map.dart';
 import 'home.dart';
+import 'serverInfo.dart';
 
 class Find extends StatelessWidget {
   @override
@@ -82,7 +83,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Поиск пользователей'),
+        title: const Text('Пошук користувачів'),
         backgroundColor: const Color.fromARGB(255, 96, 150, 180),
         centerTitle: true,
       ),
@@ -94,7 +95,7 @@ class _SearchScreenState extends State<SearchScreen> {
               controller: _controller,
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
-                labelText: 'Поиск',
+                labelText: 'Пошук',
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.search),
                   onPressed: _search,
@@ -120,7 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           ClipOval(
                             child: user['ProfilePicture'] != null
                                 ? Image.network(
-                                    user['ProfilePicture'],
+                                    '${GetServer()}/uploads/account/${user['ProfilePicture']}',
                                     width: 50,
                                     height: 50,
                                     fit: BoxFit.cover,
@@ -165,22 +166,22 @@ class _SearchScreenState extends State<SearchScreen> {
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.home),
-            label: 'Главная',
+            label: 'головна',
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.fmd_good_outlined),
-            label: 'Избранное',
+            label: 'Уподобання',
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.search),
-            label: 'Поиск',
+            label: 'Пошук',
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.account_circle),
-            label: 'Аккаунт',
+            label: 'Профіль',
           ),
         ],
         selectedItemColor: Colors.amber[800], // Цвет выбранного элемента

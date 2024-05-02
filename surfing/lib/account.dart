@@ -149,29 +149,28 @@ class _UserProfilePageState extends State<UserProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: const Text('Выберите причину жалобы'),
+          title: const Text('Виберіть причину скарги'),
           children: <Widget>[
             SimpleDialogOption(
               onPressed: () {
-                AddReport(
-                    userEmail!, profileEmail!, 'Обман/Ввод в заблуждение');
+                AddReport(userEmail!, profileEmail!, 'Обман/Введення в оману');
                 Navigator.of(context).pop();
               },
-              child: const Text('Обман/Ввод в заблуждение'),
+              child: const Text('Обман/Введення в оману'),
             ),
             SimpleDialogOption(
               onPressed: () {
-                AddReport(userEmail!, profileEmail!, 'Ложная информация');
+                AddReport(userEmail!, profileEmail!, 'Неправдива інформація');
                 Navigator.of(context).pop();
               },
-              child: const Text('Ложная информация'),
+              child: const Text('Неправдива інформація'),
             ),
             SimpleDialogOption(
               onPressed: () {
-                AddReport(userEmail!, profileEmail!, 'Плохое качество');
+                AddReport(userEmail!, profileEmail!, 'Погана якість');
                 Navigator.of(context).pop();
               },
-              child: const Text('Плохое качество'),
+              child: const Text('Погана якість'),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -188,7 +187,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
         });
         // Отображение выбранной причины
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Выбранная причина: $selectedReason')));
+            SnackBar(content: Text('Вибрана причина: $selectedReason')));
       }
     });
   }
@@ -197,7 +196,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Профиль'),
+        title: Text('Профіль'),
         backgroundColor: Color.fromARGB(255, 96, 150, 180),
         centerTitle: true,
         actions: <Widget>[
@@ -236,7 +235,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     child: ClipOval(
                       child: userData['ProfilePicture'] != null
                           ? Image.network(
-                              userData['ProfilePicture'],
+                              "${GetServer()}/uploads/account/${userData['ProfilePicture']}",
                               width: 100,
                               height: 100,
                               fit: BoxFit.cover,
@@ -293,7 +292,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   Text(
                       'Адрес: ${userData['Country']}, ${userData['City']}, ${userData['Street']}'),
                   SizedBox(height: 10),
-                  Text('О себе: ${userData['BIO']}'),
+                  Text('Про себе: ${userData['BIO']}'),
                   SizedBox(height: 20),
                   if (userData['Email'] == userEmail)
                     Row(
@@ -304,7 +303,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             removeEmail();
                             runApp(Auth());
                           },
-                          child: const Text('Выйти'),
+                          child: const Text('Вийти'),
                         ),
                         SizedBox(
                           width: 50,
@@ -313,10 +312,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           onPressed: () {
                             showCustomDialog(
                                 context,
-                                "Вы уверены что хотите удалить аккаунт?",
+                                "Ви впевнені, що хочете видалити обліковий запис?",
                                 userEmail.toString());
                           },
-                          child: const Text('Удалить'),
+                          child: const Text('Видалити'),
                         ),
                       ],
                     )
@@ -337,22 +336,22 @@ class _UserProfilePageState extends State<UserProfilePage> {
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.home),
-            label: 'Главная',
+            label: 'Головна',
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.fmd_good_outlined),
-            label: 'Избранное',
+            label: 'Уподобання',
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.search),
-            label: 'Поиск',
+            label: 'Пошук',
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.account_circle),
-            label: 'Аккаунт',
+            label: 'Профіль',
           ),
         ],
         selectedItemColor: Colors.amber[800], // Цвет выбранного элемента
@@ -388,7 +387,7 @@ Future<dynamic> _fetchRateData(String email) async {
 }
 
 void DestroyAccount(String email) async {
-  String request = "DELETE FROM users WHERE `users`.`Email` = $email";
+  String request = "DELETE FROM `users` WHERE Email = '$email'";
   final response = await http.post(
     Uri.parse('${GetServer()}/destroyTable.php'),
     body: {'request': request},

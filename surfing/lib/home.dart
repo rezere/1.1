@@ -114,15 +114,15 @@ Widget build(BuildContext context) {
           children: [
             ElevatedButton(
               onPressed: _loadRental,
-              child: Text('Все'),
+              child: Text('Усе'),
             ),
             ElevatedButton(
               onPressed: _loadMyRentals,
-              child: Text('Мои объявления'),
+              child: Text('Мої оголошення'),
             ),
             ElevatedButton(
               onPressed: _loadMyResponses,
-              child: Text('Отклики'),
+              child: Text('Відгуки'),
             ),
           ],
         ),
@@ -184,22 +184,22 @@ Widget build(BuildContext context) {
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.home),
-            label: 'Главная',
+            label: 'Головна',
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.fmd_good_outlined),
-            label: 'Избранное',
+            label: 'Уподобання',
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.search),
-            label: 'Поиск',
+            label: 'Пошук',
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.account_circle),
-            label: 'Аккаунт',
+            label: 'Профіль',
           ),
         ],
         selectedItemColor: Colors.amber[800], // Цвет выбранного элемента

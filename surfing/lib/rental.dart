@@ -59,7 +59,7 @@ class _InputPageState extends State<InputPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content:
-                  Text('Дата заселения не может быть позже даты выселения.'),
+                  Text('Дата заселення може бути пізніше дати виселення.'),
             ),
           );
         } else {
@@ -73,7 +73,7 @@ class _InputPageState extends State<InputPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content:
-                  Text('Дата выселения не может быть раньше даты заселения.'),
+                  Text('Дата виселення не може бути раніше дати заселення.'),
             ),
           );
         } else {
@@ -89,7 +89,7 @@ class _InputPageState extends State<InputPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Новое объявление'),
+        title: Text('Нове оголошення'),
         backgroundColor: Color.fromARGB(255, 96, 150, 180),
         centerTitle: true,
       ),
@@ -115,17 +115,17 @@ class _InputPageState extends State<InputPage> {
                 maxLength: 50,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Введите заголовок';
+                    return 'Введіть заголовок';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _infoController,
-                decoration: InputDecoration(labelText: 'Информация'),
+                decoration: InputDecoration(labelText: 'Інформація'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Введите информацию';
+                    return 'Введіть інформацію';
                   }
                   return null;
                 },
@@ -136,7 +136,7 @@ class _InputPageState extends State<InputPage> {
                 decoration: InputDecoration(labelText: 'Страна'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Введите страну';
+                    return 'Введіть країну';
                   }
                   return null;
                 },
@@ -144,10 +144,10 @@ class _InputPageState extends State<InputPage> {
               TextFormField(
                 controller: _cityController,
                 maxLength: 50,
-                decoration: InputDecoration(labelText: 'Город'),
+                decoration: InputDecoration(labelText: 'Місто'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Введите город';
+                    return 'Введіть місто';
                   }
                   return null;
                 },
@@ -155,17 +155,17 @@ class _InputPageState extends State<InputPage> {
               TextFormField(
                 controller: _streetController,
                 maxLength: 100,
-                decoration: InputDecoration(labelText: 'Адрес'),
+                decoration: InputDecoration(labelText: 'Адреса'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Введите адрес';
+                    return 'Введіть адресу';
                   }
                   return null;
                 },
               ),
               DropdownButtonFormField<int>(
                 value: _peopleCount,
-                decoration: InputDecoration(labelText: 'Количество людей'),
+                decoration: InputDecoration(labelText: 'Кількість людей'),
                 items: List.generate(
                   5,
                   (index) => DropdownMenuItem(
@@ -181,13 +181,13 @@ class _InputPageState extends State<InputPage> {
               ),
               ListTile(
                 title: Text(
-                    'Дата заселения: ${_startDate?.toIso8601String().split('T').first ?? "Не выбрано"}'),
+                    'Дата заселення: ${_startDate?.toIso8601String().split('T').first ?? "Не вибрано"}'),
                 trailing: Icon(Icons.calendar_today),
                 onTap: () => _selectDate(context, true),
               ),
               ListTile(
                 title: Text(
-                    'Дата выселения: ${_endDate?.toIso8601String().split('T').first ?? "Не выбрано"}'),
+                    'Дата виселення: ${_endDate?.toIso8601String().split('T').first ?? "Не вибрано"}'),
                 trailing: Icon(Icons.calendar_today),
                 onTap: () => _selectDate(context, false),
               ),
@@ -208,7 +208,7 @@ class _InputPageState extends State<InputPage> {
                     runApp(Home());
                   }
                 },
-                child: Text('Добавить'),
+                child: Text('Додати'),
               ),
             ],
           ),

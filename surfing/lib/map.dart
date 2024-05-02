@@ -66,22 +66,22 @@ class _MapPage extends State<MapPage> {
             BottomNavigationBarItem(
               backgroundColor: Colors.black,
               icon: Icon(Icons.home),
-              label: 'Главная',
+              label: 'Головна',
             ),
             BottomNavigationBarItem(
               backgroundColor: Colors.black,
               icon: Icon(Icons.fmd_good_outlined),
-              label: 'Избранное',
+              label: 'Уподобання',
             ),
             BottomNavigationBarItem(
               backgroundColor: Colors.black,
               icon: Icon(Icons.search),
-              label: 'Поиск',
+              label: 'Пошук',
             ),
             BottomNavigationBarItem(
               backgroundColor: Colors.black,
               icon: Icon(Icons.account_circle),
-              label: 'Аккаунт',
+              label: 'Профіль',
             ),
           ],
           selectedItemColor: Colors.amber[800], // Цвет выбранного элемента
