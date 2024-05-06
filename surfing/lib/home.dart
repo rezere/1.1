@@ -131,7 +131,6 @@ Widget build(BuildContext context) {
             itemCount: _loadResults.length,
             itemBuilder: (context, index) {
               final rental = _loadResults[index];
-              print(rental);
               final imageUrl = '${GetServer()}/uploads/rental/${rental['RentalID']}_1.jpg';
               return InkWell(
                 onTap: () {

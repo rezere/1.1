@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:surfing/home.dart';
 import 'package:surfing/rental.dart';
 import 'package:surfing/serverInfo.dart';
 import 'package:intl/intl.dart';
@@ -218,6 +219,25 @@ class RentalDetailPage extends StatelessWidget {
                       height: 50,
                     ),
                     FutureBuilder<dynamic>(
+                      future: getRateInfo(rental['RentalID']),
+                      builder: (context, snapshot) {                  
+                        if (snapshot.connectionState == ConnectionState.done &&
+                            rental['LessorID'].toString() == userID.toString()) {
+                          return Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                DestroyRental(rental['RentalID'].toString());
+                                Navigator.pop(context);
+                              },
+                            
+                              child: Text('Видалити'),
+                            ),
+                          );
+                        }
+                        return SizedBox();
+                      },
+                    ),
+                    FutureBuilder<dynamic>(
                       future: _fetchUserData(rental['LessorID'].toString()),
                       builder: (BuildContext context,
                           AsyncSnapshot<dynamic> snapshot) {
@@ -384,5 +404,16 @@ void AddRating(String firstID, String secondID, int stars, String info, String r
   );
   if (response.statusCode == 200) {
 print("TEST ");
+  } else {}
+}
+
+void DestroyRental(String rentalID) async {
+  String request = "DELETE FROM `rental` WHERE RentalID = '$rentalID'";
+  final response = await http.post(
+    Uri.parse('${GetServer()}/destroyTable.php'),
+    body: {'request': request},
+  );
+  if (response.statusCode == 200) {
+    runApp(Home());
   } else {}
 }

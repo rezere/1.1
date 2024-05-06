@@ -11,7 +11,6 @@ import 'rental.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  //runApp(Rental());
   initializeApp();
 }
 
@@ -19,6 +18,7 @@ void main() {
 
 Future<void> initializeApp() async {
   String? userEmail = await loadEmail();
+  print(userEmail);
   if (userEmail != null) {
     runApp(Home());
   } else {

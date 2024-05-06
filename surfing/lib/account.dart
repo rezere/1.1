@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'auth.dart';
 import 'find.dart';
 import 'map.dart';
-import 'home.dart';
+import 'home.dart' hide Profile;
 import 'dart:typed_data';
 
 import 'serverInfo.dart';
@@ -140,6 +140,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
             runApp(Find());
             break;
           }
+        case 3:
+        {
+          runApp(Profile(userEmail: userEmail!));
+        }
       }
     });
   }
@@ -393,6 +397,7 @@ void DestroyAccount(String email) async {
     body: {'request': request},
   );
   if (response.statusCode == 200) {
+    removeEmail();
     runApp(Auth());
   } else {}
 }

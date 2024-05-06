@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'reg.dart';
 import 'main.dart';
+import 'serverInfo.dart';
 
 int codeEmail = -1;
 String emailUpdate = '';
@@ -39,13 +40,12 @@ class MyForm extends StatefulWidget {
 }
 
 class MyFormState extends State<MyForm> {
-  // Контроллеры для текстовых полей
   final myController1 = TextEditingController();
   final myController2 = TextEditingController();
   String text = "Не валідно";
   @override
   void dispose() {
-    // Очистка контроллеров при уничтожении виджета
+    
     myController1.dispose();
     myController2.dispose();
     super.dispose();
@@ -273,14 +273,23 @@ void showCustomDialog(BuildContext context, String text) {
 void checkPassword(
     final myController1, final myController2, BuildContext context) async {
   bool authResult = await sendAuth(myController1.text, myController2.text);
+  int reportCount = await getReport(myController1.text);
+  if(reportCount<5)
+  {
   if (authResult == true) {
     await saveEmail(myController1.text);
     showCustomDialog(context, "Все добре");
+
     runApp(Profile(
       userEmail: myController1.text,
     ));
   } else {
     showCustomDialog(context, "Не коректна пошта або пароль");
+  }
+  }
+  else
+  {
+    showCustomDialog(context, "Вы отримали дуже багато скарг, для розблокування зв'яжіться з адміністратором: froust87@gmail.com");
   }
 }
 
@@ -293,13 +302,12 @@ void checkEmail(final myController1, BuildContext context) async {
         context, MaterialPageRoute(builder: (context) => ChangePassword()));
   } else {
     showCustomDialog(context, "Неіснує такої пошти");
-    // Не успешно
   }
 }
 
 Future<bool> mailFind(String email) async {
   final response = await http.post(
-    Uri.parse('http://10.0.2.2/couchsurfing/auth.php'),
+    Uri.parse('${GetServer()}/auth.php'),
     body: {'email': email},
   );
 
@@ -312,9 +320,24 @@ Future<bool> mailFind(String email) async {
   }
 }
 
+Future<int> getReport(String email) async {
+  final response = await http.post(
+    Uri.parse('${GetServer()}/getReport.php'),
+    body: {'email': email},
+  );
+
+  if (response.statusCode == 200) {
+    var jsonResponse = json.decode(response.body);
+    int countReport = jsonResponse['COUNT(*)'];
+    return countReport;
+  } else {
+    return 0;
+  }
+}
+
 Future<bool> sendAuth(String email, String password) async {
   final response = await http.post(
-    Uri.parse('http://10.0.2.2/couchsurfing/auth.php'),
+    Uri.parse('${GetServer()}/auth.php'),
     body: {'email': email},
   );
 
@@ -332,7 +355,7 @@ Future<void> sendEmail(String email) async {
   var rnd = Random();
   int code = rnd.nextInt(9000) + 1000;
   codeEmail = code;
-  final uri = Uri.parse('http://10.0.2.2/couchsurfing/sendmail.php');
+  final uri = Uri.parse('${GetServer()}/sendmail.php');
   final response = await http.post(
     uri,
     body: {
@@ -352,7 +375,7 @@ Future<void> sendEmail(String email) async {
 void UpdatePassword(String mail, String password) async {
   String passwordHash = generatePasswordHash(password);
   final response = await http.post(
-    Uri.parse('http://10.0.2.2/couchsurfing/updateInfo.php'),
+    Uri.parse('${GetServer()}/updateInfo.php'),
     body: {
       'email': mail,
       'passwordHash': passwordHash,
