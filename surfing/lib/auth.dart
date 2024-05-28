@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:surfing/home.dart';
 import 'reg.dart';
 import 'main.dart';
 import 'serverInfo.dart';
@@ -280,9 +281,7 @@ void checkPassword(
     await saveEmail(myController1.text);
     showCustomDialog(context, "Все добре");
 
-    runApp(Profile(
-      userEmail: myController1.text,
-    ));
+    runApp(Home());
   } else {
     showCustomDialog(context, "Не коректна пошта або пароль");
   }
@@ -314,6 +313,8 @@ Future<bool> mailFind(String email) async {
   if (response.statusCode == 200) {
     var jsonResponse = json.decode(response.body);
     String storedPassword = jsonResponse['password'] ?? '';
+    String admin = jsonResponse['admin'] ??'';
+    print('TEST!!' + admin);
     return storedPassword != '';
   } else {
     return false;
@@ -383,22 +384,42 @@ void UpdatePassword(String mail, String password) async {
   );
   if (response.statusCode == 200) {
     saveEmail(mail);
-    runApp(Profile(
-      userEmail: mail,
-    ));
+    runApp(Home());
   } else {}
 }
 
 Future<void> saveEmail(String email) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString('userEmail', email);
+  saveAdmin(email);
 }
 
+Future<void> saveAdmin(String email) async {
+  final results;
+  final response = await http.post(
+    Uri.parse('${GetServer()}/getTable.php'),
+    body: {'email': email},
+  );
+
+  if (response.statusCode == 200) {
+    results = json.decode(response.body);
+  } else {
+    return;
+  }
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  if(results['isAdmin'] == "0")
+  await prefs.setString('admin', false.toString());
+  else await prefs.setString('admin', true.toString());
+
+}
 Future<String?> loadEmail() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getString('userEmail');
 }
-
+Future<String?> loadAdmin() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('admin');
+}
 String generatePasswordHash(String password) {
   final bytes = utf8.encode(password);
   final digest = sha256.convert(bytes);

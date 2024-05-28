@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'rentalDetails.dart';
 import 'account.dart';
 import 'auth.dart';
-import 'map.dart';
 import 'find.dart';
 import 'rental.dart';
 import 'serverInfo.dart';
@@ -71,111 +70,165 @@ class _HomePage extends State<HomePage> {
   int _count = -1;
 
   Future<void> _loadRental() async {
-  final response = await http.get(Uri.parse('${GetServer()}/getRental.php'));
-  _updateRentalList(response);
-}
-
-Future<void> _loadMyRentals() async {
-  String userId = await GetID();
-  final response = await http.get(Uri.parse('${GetServer()}/getRantalUser.php?field=LessorID&value=$userId'));
-  _updateRentalList(response);
-}
-
-Future<void> _loadMyResponses() async {
-  String userId = await GetID();
-  final response = await http.get(Uri.parse('${GetServer()}/getRantalUser.php?field=RenterID&value=$userId'));
-  _updateRentalList(response);
-}
-
-void _updateRentalList(http.Response response) {
-  if (response.statusCode == 200) {
-    final List<dynamic> results = json.decode(response.body);
-    setState(() {
-      _loadResults = results;
-      _count = results.length;
-    });
-  } else {
-    print('Failed to load rentals: ${response.body}');
+    final response = await http.get(Uri.parse('${GetServer()}/getRental.php'));
+    _updateRentalList(response);
   }
-}
 
- @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('Главная'),
-      backgroundColor: Color.fromARGB(255, 96, 150, 180),
-      centerTitle: true,
-    ),
-    body: Column(
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(
-              onPressed: _loadRental,
-              child: Text('Усе'),
+  Future<void> _loadMyRentals() async {
+    String userId = await GetID();
+    final response = await http.get(Uri.parse(
+        '${GetServer()}/getRantalUser.php?field=LessorID&value=$userId'));
+    _updateRentalList(response);
+  }
+
+  Future<void> _loadMyResponses() async {
+    String userId = await GetID();
+    final response = await http.get(Uri.parse(
+        '${GetServer()}/getRantalUser.php?field=RenterID&value=$userId'));
+    _updateRentalList(response);
+  }
+
+  Future<void> _findResponses(String value) async {
+    final response = await http.get(Uri.parse(
+        'http://10.0.2.2/couchsurfing/findRental.php?search=${value}'));
+    _updateRentalList(response);
+  }
+
+  void _updateRentalList(http.Response response) {
+    if (response.statusCode == 200) {
+      final List<dynamic> results = json.decode(response.body);
+      setState(() {
+        _loadResults = results;
+        _count = results.length;
+      });
+    } else {
+      print('Failed to load rentals: ${response.body}');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Головна'),
+        backgroundColor: Color.fromARGB(255, 96, 150, 180),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: <Widget>[
+          TextField(
+            controller: _controller,
+            onChanged: (value) {
+              _findResponses(value);
+            },
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              labelText: 'Пошук',
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: null,
+              ),
             ),
-            ElevatedButton(
-              onPressed: _loadMyRentals,
-              child: Text('Мої оголошення'),
-            ),
-            ElevatedButton(
-              onPressed: _loadMyResponses,
-              child: Text('Відгуки'),
-            ),
-          ],
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: _loadResults.length,
-            itemBuilder: (context, index) {
-              final rental = _loadResults[index];
-              final imageUrl = '${GetServer()}/uploads/rental/${rental['RentalID']}_1.jpg';
-              return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RentalDetailPage(rental: rental),
-                    ),
-                  );
-                },
-                child: Card(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.network(imageUrl, width: 100, height: 100, fit: BoxFit.cover),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(rental['Title'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                              Text('${rental['Country']} ${rental['City']}'),
-                              Text('Бронь: с ${rental['DateRental']} до ${rental['DateEviction']}'),
-                              Text('Людей: ${rental['MaxPeople']}'),
-                            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: _loadRental,
+                child: Text('Усе'),
+              ),
+              ElevatedButton(
+                onPressed: _loadMyRentals,
+                child: Text('Мої оголошення'),
+              ),
+              ElevatedButton(
+                onPressed: _loadMyResponses,
+                child: Text('Відгуки'),
+              ),
+            ],
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _loadResults.length,
+              itemBuilder: (context, index) {
+                final rental = _loadResults[index];
+                final imageUrl;
+                if (rental['PhotoCount'] == 0)
+                  imageUrl = null;
+                else
+                  imageUrl =
+                      '${GetServer()}/uploads/rental/${rental['RentalID']}_1.jpg';
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RentalDetailPage(rental: rental),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 100,
+                          height: 100,
+                          child: imageUrl != null
+                              ? Image.network(
+                                  imageUrl,
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                )
+                              : Container(
+                                  width: 100,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    color: Colors.grey,
+                                  ),
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 100,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(rental['Title'],
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold)),
+                                Text('${rental['Country']} ${rental['City']}'),
+                                Text(
+                                    'Бронь: с ${rental['DateRental']} до ${rental['DateEviction']}'),
+                                Text('Людей: ${rental['MaxPeople']}'),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-        FloatingActionButton(
-          onPressed: () {
-            runApp(Rental());
-          },
-          child: Icon(Icons.add),
-        ),
-      ],
-    ),
-   bottomNavigationBar: BottomNavigationBar(
+          FloatingActionButton(
+            onPressed: () {
+              runApp(Rental());
+            },
+            child: Icon(Icons.add),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
         currentIndex: _currentIndex, // Текущий индекс
         onTap: _onItemTapped, // Обработка нажатий
@@ -203,8 +256,8 @@ Widget build(BuildContext context) {
         ],
         selectedItemColor: Colors.amber[800], // Цвет выбранного элемента
       ),
-  );
-}
+    );
+  }
 }
 
 class Profile extends StatelessWidget {

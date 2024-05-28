@@ -86,17 +86,16 @@ class RentalDetailPage extends StatelessWidget {
       'rentalID': rentalID.toString(),
       'renterID': userID,
     });
-
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       if (jsonResponse['success'] != null) {
         // Успешное обновление
         print('RenterID updated successfully');
-        showDialogDate("Ви відгукнулися на оголошення");
+        showSnackbar("Ви відгукнулися на оголошення");
       } else if (jsonResponse['error'] != null) {
         // Обработка конфликта дат
         print('Date conflict detected');
-        showDialogDate("На жаль, стався конфлікт дат");
+        showSnackbar("На жаль, стався конфлікт дат");
       }
     } else {
       // Обработка ошибки запроса
@@ -403,7 +402,6 @@ void AddRating(String firstID, String secondID, int stars, String info, String r
     body: {'request': request},
   );
   if (response.statusCode == 200) {
-print("TEST ");
   } else {}
 }
 

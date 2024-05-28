@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'auth.dart';
+import 'editProfile.dart';
 import 'find.dart';
 import 'map.dart';
 import 'home.dart' hide Profile;
@@ -11,10 +12,13 @@ import 'dart:typed_data';
 
 import 'serverInfo.dart';
 
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+String? admin;
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorObservers: [routeObserver],
       home: UserProfilePage(email: ''),
     );
   }
@@ -29,7 +33,7 @@ class UserProfilePage extends StatefulWidget {
   _UserProfilePageState createState() => _UserProfilePageState();
 }
 
-class _UserProfilePageState extends State<UserProfilePage> {
+class _UserProfilePageState extends State<UserProfilePage> with RouteAware {
   late Future<dynamic> userDataFuture, userRateFuture;
   int totalStars = 5;
   String? userEmail, profileEmail;
@@ -109,17 +113,42 @@ class _UserProfilePageState extends State<UserProfilePage> {
   void initState() {
     loadUserEmail();
     super.initState();
-    // Объединяем оба Future в один с помощью Future.wait
+    fetchData();
+    profileEmail = '';
+  }
+
+  void fetchData() {
     userDataFuture = Future.wait([
       _fetchUserData(widget.email),
       _fetchRateData(widget.email),
     ]);
-    profileEmail = '';
+  }
+
+  @override
+  void didPopNext() {
+    super.didPopNext();
+    fetchData();
+    setState(() {});
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    if (route is PageRoute) {
+      routeObserver.subscribe(this, route);
+    }
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
   }
 
   void loadUserEmail() async {
     userEmail = await loadEmail();
-    setState(() {}); // Обновляем UI после загрузки email
+    setState(() {});
   }
 
   void _onItemTapped(int index) {
@@ -141,9 +170,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
             break;
           }
         case 3:
-        {
-          runApp(Profile(userEmail: userEmail!));
-        }
+          {
+            runApp(Profile(userEmail: userEmail!));
+          }
       }
     });
   }
@@ -184,7 +213,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
         );
       },
     ).then((value) {
-      // Обновление состояния виджета с выбранной причиной
       if (value != null) {
         setState(() {
           selectedReason = value;
@@ -279,26 +307,25 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         averageRating =
                             double.parse(userRateData['averageRating']);
                       }
-                      // Полная звезда, если индекс меньше целой части среднего рейтинга
+
                       if (index < averageRating.floor()) {
                         return Icon(Icons.star, color: Colors.amber);
-                        // Половина звезды, если индекс меньше среднего рейтинга и больше или равен его целой части
                       } else if (index < averageRating &&
                           index >= averageRating.floor()) {
                         return Icon(Icons.star_half, color: Colors.amber);
-                        // Пустая звезда в остальных случаях
                       } else {
                         return Icon(Icons.star_border, color: Colors.amber);
                       }
                     }),
                   ),
                   SizedBox(height: 20),
+                  Text("Адреса:"),
                   Text(
-                      'Адрес: ${userData['Country']}, ${userData['City']}, ${userData['Street']}'),
+                      '${userData['Country']}, ${userData['City']}, ${userData['Street']}'),
                   SizedBox(height: 10),
                   Text('Про себе: ${userData['BIO']}'),
                   SizedBox(height: 20),
-                  if (userData['Email'] == userEmail)
+                  if (userData['Email'] == userEmail || admin == true.toString())
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -317,12 +344,29 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             showCustomDialog(
                                 context,
                                 "Ви впевнені, що хочете видалити обліковий запис?",
-                                userEmail.toString());
+                                userData['Email'].toString());
                           },
                           child: const Text('Видалити'),
                         ),
                       ],
-                    )
+                    ),
+                  if (userData['Email'] == userEmail)
+                  ElevatedButton(
+                    onPressed: () {
+                      runApp(MaterialApp(
+                        home: FormPage(
+                          surname: userData['Surname'] ?? '',
+                          name: userData['Name'] ?? '',
+                          email: userData['Email'],
+                          bio: userData['BIO'] ?? '',
+                          country: userData['Country'] ?? '',
+                          city: userData['City'] ?? '',
+                          street: userData['Street'] ?? '',
+                        ),
+                      ));
+                    },
+                    child: const Text('Редагувати профіль'),
+                  ),
                 ],
               );
             } else if (snapshot.hasError) {
@@ -365,12 +409,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
 }
 
 Future<dynamic> _fetchUserData(String email) async {
+  admin = await loadAdmin();
   final response = await http.post(
     Uri.parse('${GetServer()}/getTable.php'),
     body: {'email': email},
   );
 
   if (response.statusCode == 200) {
+    
     return json.decode(response.body);
   } else {
     throw Exception('Failed to load user data');
@@ -408,7 +454,7 @@ void showCustomDialog(BuildContext context, String text, String email) {
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(
-          'Внимание',
+          'Увага',
           textAlign: TextAlign.center,
         ),
         content: Text(text),
@@ -417,13 +463,13 @@ void showCustomDialog(BuildContext context, String text, String email) {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('Отмена'),
+            child: Text('Відміна'),
           ),
           TextButton(
             onPressed: () {
               DestroyAccount(email);
             },
-            child: Text('Удалить'),
+            child: Text('Видалити'),
           ),
         ],
       );
