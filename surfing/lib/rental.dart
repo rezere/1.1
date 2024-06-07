@@ -7,6 +7,12 @@ import 'dart:convert';
 import 'auth.dart';
 import 'home.dart';
 
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+
 class Rental extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -33,10 +39,32 @@ class _InputPageState extends State<InputPage> {
   DateTime? _endDate;
   final ImagePicker _picker = ImagePicker();
   List<XFile>? _images = [];
+  List<String> _countryOptions = [
+    'Україна',
+    'Канада',
+    'США',
+    'Німеччина',
+    'Франція',
+    'Велика Британія',
+    'Італія',
+    'Іспанія',
+    'Австралія',
+    'Бразилія',
+    'Аргентина',
+    'Мексика',
+    'Японія',
+    'Китай',
+    'Індія',
+    'Росія',
+    'Швеція',
+    'Норвегія',
+    'Фінляндія',
+    'Данія',
+  ];
 
   Future<void> _pickImages() async {
     final List<XFile>? selectedImages = await _picker.pickMultiImage();
-    if (selectedImages!.isNotEmpty) {
+    if (selectedImages != null && selectedImages.isNotEmpty) {
       setState(() {
         _images = selectedImages;
       });
@@ -85,6 +113,30 @@ class _InputPageState extends State<InputPage> {
     }
   }
 
+  Future<List<String>> _fetchCityOptions(String query, String country) async {
+    final apiKey = 'AijrCN7Z38en6zUT31gTgEFQUjsx_FbcgrEGSdEnFcK48Wq5yo03uVxbjkqva-W4';
+    final url = 'http://dev.virtualearth.net/REST/v1/Locations?query=$query&key=$apiKey&culture=uk-UA';
+
+  final response = await http.get(Uri.parse(url));
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    final resources = data['resourceSets'][0]['resources'] as List;
+
+    return resources
+        .where((resource) => resource['address']['countryRegion'] == country)
+        .map<String>((resource) {
+          final locality = resource['address']['locality'];
+          final adminDistrict = resource['address']['adminDistrict'];
+          return locality != null && locality.isNotEmpty ? locality : (adminDistrict != null && adminDistrict.isNotEmpty ? adminDistrict : '');
+        })
+        .where((city) => city.isNotEmpty)
+        .toList();
+  } else {
+    throw Exception('Failed to load cities');
+  }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,6 +159,9 @@ class _InputPageState extends State<InputPage> {
                 child: CircleAvatar(
                   radius: 50,
                   backgroundColor: Colors.grey[200],
+                  child: _images != null && _images!.isNotEmpty
+                      ? Image.file(File(_images!.first.path))
+                      : Icon(Icons.add_a_photo, color: Colors.grey[800]),
                 ),
               ),
               TextFormField(
@@ -130,26 +185,105 @@ class _InputPageState extends State<InputPage> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: _countryController,
-                maxLength: 50,
-                decoration: InputDecoration(labelText: 'Страна'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Введіть країну';
+              Autocomplete<String>(
+                optionsBuilder: (TextEditingValue textEditingValue) {
+                  if (textEditingValue.text.isEmpty) {
+                    return const Iterable<String>.empty();
                   }
-                  return null;
+                  return _countryOptions.where((String option) {
+                    return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+                  });
+                },
+                onSelected: (String selection) {
+                  _countryController.text = selection;
+                  print('You just selected $selection');
+                },
+                fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+                  textEditingController.addListener(() {
+                    if (_countryOptions.contains(textEditingController.text)) {
+                      setState(() {
+                        _countryController.text = textEditingController.text;
+                      });
+                    }
+                  });
+                  return TextField(
+                    controller: textEditingController,
+                    focusNode: focusNode,
+                    decoration: InputDecoration(
+                      labelText: 'Країна',
+                    ),
+                  );
+                },
+                optionsViewBuilder: (BuildContext context, AutocompleteOnSelected<String> onSelected, Iterable<String> options) {
+                  return Align(
+                    alignment: Alignment.topLeft,
+                    child: Material(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: ListView.builder(
+                          padding: EdgeInsets.all(8.0),
+                          itemCount: options.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final String option = options.elementAt(index);
+                            return GestureDetector(
+                              onTap: () {
+                                onSelected(option);
+                              },
+                              child: ListTile(
+                                title: Text(option),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  );
                 },
               ),
-              TextFormField(
-                controller: _cityController,
-                maxLength: 50,
-                decoration: InputDecoration(labelText: 'Місто'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Введіть місто';
+              Autocomplete<String>(
+                optionsBuilder: (TextEditingValue textEditingValue) async {
+                  if (textEditingValue.text.isEmpty) {
+                    return const Iterable<String>.empty();
                   }
-                  return null;
+                  return await _fetchCityOptions(textEditingValue.text, _countryController.text);
+                },
+                onSelected: (String selection) {
+                  _cityController.text = selection;
+                  print('You just selected $selection');
+                },
+                fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+                  return TextField(
+                    controller: textEditingController,
+                    focusNode: focusNode,
+                    decoration: InputDecoration(
+                      labelText: 'Місто',
+                    ),
+                  );
+                },
+                optionsViewBuilder: (BuildContext context, AutocompleteOnSelected<String> onSelected, Iterable<String> options) {
+                  return Align(
+                    alignment: Alignment.topLeft,
+                    child: Material(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: ListView.builder(
+                          padding: EdgeInsets.all(8.0),
+                          itemCount: options.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final String option = options.elementAt(index);
+                            return GestureDetector(
+                              onTap: () {
+                                onSelected(option);
+                              },
+                              child: ListTile(
+                                title: Text(option),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  );
                 },
               ),
               TextFormField(
@@ -194,6 +328,7 @@ class _InputPageState extends State<InputPage> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
+                    // Реализуйте функцию AddRental для обработки данных
                     AddRental(
                         _titleController.text,
                         _infoController.text,
@@ -204,7 +339,6 @@ class _InputPageState extends State<InputPage> {
                         _startDate,
                         _endDate,
                         _images!);
-                    ;
                     runApp(Home());
                   }
                 },

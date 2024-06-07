@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'auth.dart';
 import 'editProfile.dart';
@@ -9,11 +13,12 @@ import 'find.dart';
 import 'map.dart';
 import 'home.dart' hide Profile;
 import 'dart:typed_data';
-
+import 'dateBase.dart';
 import 'serverInfo.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 String? admin;
+
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -217,11 +222,60 @@ class _UserProfilePageState extends State<UserProfilePage> with RouteAware {
         setState(() {
           selectedReason = value;
         });
-        // Отображение выбранной причины
+
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Вибрана причина: $selectedReason')));
       }
     });
+  }
+
+  Future<void> uploadBackup(BuildContext context) async {
+    try {
+      // Путь к файлу резервной копии
+      String backupFilePath = '/data/user/0/com.example.surfing/app_flutter/backup.sql';
+
+      File file = File(backupFilePath);
+
+      if (await file.exists()) {
+        // URL вашего PHP-скрипта на сервере
+        final url = '${GetServer()}/restore_database.php';
+
+        var request = http.MultipartRequest('POST', Uri.parse(url));
+        request.files.add(await http.MultipartFile.fromPath('backup_file', file.path));
+
+        var response = await request.send();
+
+        if (response.statusCode == 200) {
+          var responseData = await response.stream.bytesToString();
+          var json = jsonDecode(responseData);
+          if (json['status'] == 'success') {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('База даних успішно завантажена'),
+            ));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('База даних успішно завантажена'),
+            ));
+            /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('Помилка при завантаженні: ${json['message']}'),
+            ));*/
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Помилка при завантаженні'),
+          ));
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Бєкап бази даних не знайдено'),
+        ));
+      }
+    } catch (e) {
+      print('Error while uploading database backup: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error: $e'),
+      ));
+    }
   }
 
   @override
@@ -325,7 +379,7 @@ class _UserProfilePageState extends State<UserProfilePage> with RouteAware {
                   SizedBox(height: 10),
                   Text('Про себе: ${userData['BIO']}'),
                   SizedBox(height: 20),
-                  if (userData['Email'] == userEmail || admin == true.toString())
+                  if (userData['Email'] == userEmail)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -350,23 +404,66 @@ class _UserProfilePageState extends State<UserProfilePage> with RouteAware {
                         ),
                       ],
                     ),
-                  if (userData['Email'] == userEmail)
-                  ElevatedButton(
-                    onPressed: () {
-                      runApp(MaterialApp(
-                        home: FormPage(
-                          surname: userData['Surname'] ?? '',
-                          name: userData['Name'] ?? '',
-                          email: userData['Email'],
-                          bio: userData['BIO'] ?? '',
-                          country: userData['Country'] ?? '',
-                          city: userData['City'] ?? '',
-                          street: userData['Street'] ?? '',
+                  if (userData['Email'] == userEmail &&
+                      admin == true.toString())
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        ElevatedButton(
+                          onPressed: () {
+                            backupDatabase();
+                          },
+                          child: const Text('Копія БД'),
                         ),
-                      ));
-                    },
-                    child: const Text('Редагувати профіль'),
-                  ),
+                        SizedBox(width: 50),
+                        ElevatedButton(
+                          onPressed: () {
+                            uploadBackup(context);
+                          },
+                          child: const Text('Загрузити БД'),
+                        ),
+                      ],
+                    ),
+                  if (admin == true.toString() &&
+                      userData['Email'] != userEmail)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        ElevatedButton(
+                          onPressed: () {
+                            DeleteReport(userData['Email']);
+                          },
+                          child: const Text('Розблокувати'),
+                        ),
+                        SizedBox(width: 50),
+                        ElevatedButton(
+                          onPressed: () {
+                            showCustomDialog(
+                                context,
+                                "Ви впевнені, що хочете видалити обліковий запис?",
+                                userData['Email'].toString());
+                          },
+                          child: const Text('Видалити'),
+                        ),
+                      ],
+                    ),
+                  if (userData['Email'] == userEmail)
+                    ElevatedButton(
+                      onPressed: () {
+                        runApp(MaterialApp(
+                          home: FormPage(
+                            surname: userData['Surname'] ?? '',
+                            name: userData['Name'] ?? '',
+                            email: userData['Email'],
+                            bio: userData['BIO'] ?? '',
+                            country: userData['Country'] ?? '',
+                            city: userData['City'] ?? '',
+                            street: userData['Street'] ?? '',
+                          ),
+                        ));
+                      },
+                      child: const Text('Редагувати профіль'),
+                    ),
                 ],
               );
             } else if (snapshot.hasError) {
@@ -389,7 +486,7 @@ class _UserProfilePageState extends State<UserProfilePage> with RouteAware {
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
             icon: Icon(Icons.fmd_good_outlined),
-            label: 'Уподобання',
+            label: 'Мапа',
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.black,
@@ -416,7 +513,6 @@ Future<dynamic> _fetchUserData(String email) async {
   );
 
   if (response.statusCode == 200) {
-    
     return json.decode(response.body);
   } else {
     throw Exception('Failed to load user data');
@@ -446,6 +542,20 @@ void DestroyAccount(String email) async {
     removeEmail();
     runApp(Auth());
   } else {}
+}
+
+void DeleteReport(String email) async {
+  String request =
+      "DELETE FROM report WHERE secondID IN (SELECT UserID FROM users WHERE Email = '$email');";
+  final response = await http.post(
+    Uri.parse('${GetServer()}/destroyTable.php'),
+    body: {'request': request},
+  );
+  if (response.statusCode == 200) {
+    print(email);
+  } else {
+    print("Bad");
+  }
 }
 
 void showCustomDialog(BuildContext context, String text, String email) {
