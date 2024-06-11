@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:surfing/map.dart';
 import 'dart:convert';
 import 'rentalDetails.dart';
@@ -32,11 +33,70 @@ class _HomePage extends State<HomePage> {
     loadUserEmail();
     _loadRental();
     super.initState();
+    checkLastLogin();
   }
 
   void loadUserEmail() async {
     email = await loadEmail();
     setState(() {});
+  }
+
+  Future<void> checkLastLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String lastLoginDate = prefs.getString('lastLoginDate') ?? '';
+    String? email = await loadEmail();
+    DateTime now = DateTime.now();
+    String today = '${now.year}-${now.month}-${now.day}';
+
+    
+    if (lastLoginDate != today) {
+      await fetchBookingData(email!);
+      prefs.setString('lastLoginDate', today);
+    }
+  }
+
+  Future<void> fetchBookingData(String email) async {
+    String apiUrl = '${GetServer()}/sendPush.php';
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        body: {
+          'email': email,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> rentalData = jsonDecode(response.body);
+
+        if (rentalData.isNotEmpty &&
+            rentalData[0]['message'] != 'No rentals found for tomorrow') {
+          showNotification('Завтра у вас заброньовано житло');
+        }
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  void showNotification(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Повідомлення!'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _onItemTapped(int index) {
@@ -89,8 +149,8 @@ class _HomePage extends State<HomePage> {
   }
 
   Future<void> _findResponses(String value) async {
-    final response = await http.get(Uri.parse(
-        'http://10.0.2.2/couchsurfing/findRental.php?search=${value}'));
+    final response = await http
+        .get(Uri.parse('${GetServer()}/findRental.php?search=${value}'));
     _updateRentalList(response);
   }
 

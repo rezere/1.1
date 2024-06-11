@@ -230,48 +230,33 @@ class _UserProfilePageState extends State<UserProfilePage> with RouteAware {
   }
 
   Future<void> uploadBackup(BuildContext context) async {
-    try {
-      // Путь к файлу резервной копии
-      String backupFilePath = '/data/user/0/com.example.surfing/app_flutter/backup.sql';
+     try {
+      // URL вашего PHP-скрипта на сервере для восстановления базы данных
+      final restoreUrl = '${GetServer()}/restore_database.php';
 
-      File file = File(backupFilePath);
+      var restoreResponse = await http.post(Uri.parse(restoreUrl), body: {});
 
-      if (await file.exists()) {
-        // URL вашего PHP-скрипта на сервере
-        final url = '${GetServer()}/restore_database.php';
-
-        var request = http.MultipartRequest('POST', Uri.parse(url));
-        request.files.add(await http.MultipartFile.fromPath('backup_file', file.path));
-
-        var response = await request.send();
-
-        if (response.statusCode == 200) {
-          var responseData = await response.stream.bytesToString();
-          var json = jsonDecode(responseData);
-          if (json['status'] == 'success') {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('База даних успішно завантажена'),
-            ));
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('База даних успішно завантажена'),
-            ));
-            /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('Помилка при завантаженні: ${json['message']}'),
-            ));*/
-          }
+      if (restoreResponse.statusCode == 200) {
+        var restoreResponseData = jsonDecode(restoreResponse.body);
+        if (restoreResponseData['status'] == 'success') {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Database restored successfully'),
+          ));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Помилка при завантаженні'),
+            content: Text('Failed to restore database: ${restoreResponseData['message']}'),
           ));
+          print('Error details: ${restoreResponseData['error']}');
+          print('Command: ${restoreResponseData['command']}');
+          print('Return var: ${restoreResponseData['return_var']}');
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Бєкап бази даних не знайдено'),
+          content: Text('Failed to restore database'),
         ));
       }
     } catch (e) {
-      print('Error while uploading database backup: $e');
+      print('Error while restoring database: $e');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Error: $e'),
       ));
@@ -533,6 +518,7 @@ Future<dynamic> _fetchRateData(String email) async {
 }
 
 void DestroyAccount(String email) async {
+  deleteProfilePicture(email);
   String request = "DELETE FROM `users` WHERE Email = '$email'";
   final response = await http.post(
     Uri.parse('${GetServer()}/destroyTable.php'),
@@ -542,6 +528,26 @@ void DestroyAccount(String email) async {
     removeEmail();
     runApp(Auth());
   } else {}
+}
+
+Future<void> deleteProfilePicture(String email) async {
+  String request = '${GetServer()}/deletePhoto.php';
+
+  try {
+    final response = await http.post(
+      Uri.parse(request),
+      body: {
+        'email': email,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> responseData = jsonDecode(response.body);
+      print(responseData);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  } catch (e) {}
 }
 
 void DeleteReport(String email) async {

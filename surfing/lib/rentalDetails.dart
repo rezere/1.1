@@ -89,16 +89,13 @@ class RentalDetailPage extends StatelessWidget {
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       if (jsonResponse['success'] != null) {
-        // Успешное обновление
-        print('RenterID updated successfully');
         showSnackbar("Ви відгукнулися на оголошення");
       } else if (jsonResponse['error'] != null) {
-        // Обработка конфликта дат
-        print('Date conflict detected');
+        
         showSnackbar("На жаль, стався конфлікт дат");
       }
     } else {
-      // Обработка ошибки запроса
+      
       print('Failed to update RenterID: ${response.statusCode}');
     }
   }
